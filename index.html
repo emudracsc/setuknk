@@ -3,190 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>सेतु-सेवा पोर्टल - महाराष्ट्र सरकार</title>
-    
+    <title>सेतु-सेवा पोर्टल - डेटा टेबल</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
-        :root {
-            --primary: #4CAF50;
-            --primary-dark: #388E3C;
-            --white: #ffffff;
-            --text: #455A64;
-            --error: #F44336;
-            --success: #4CAF50;
-        }
+        :root { --primary: #4CAF50; --primary-dark: #388E3C; --text: #455A64; }
+        body { font-family: 'Arial', sans-serif; background: #f4f7f6; margin: 20px; color: var(--text); }
+        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h2 { color: var(--primary-dark); text-align: center; }
+        
+        /* सर्च विभाग */
+        .search-box { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; }
+        .input-field { padding: 10px; border: 2px solid #ddd; border-radius: 6px; width: 250px; }
+        .btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #f4f7f6;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background: var(--white);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            text-align: center;
-            width: 90%;
-            max-width: 450px;
-        }
-
-        .header h1 { color: var(--primary-dark); margin-bottom: 5px; }
-        .header p { color: #666; margin-bottom: 25px; }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 12px 10px 12px 40px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary);
-        }
-
-        .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            width: 100%;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn:disabled { background: #ccc; }
-
-        #notification {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 15px;
-            height: 15px;
-            border: 2px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        /* टेबल डिझाइन */
+        .table-container { overflow-x: auto; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: var(--primary); color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        tr:hover { background-color: #f1f1f1; }
+        
+        .download-btn { color: var(--primary-dark); cursor: pointer; text-decoration: underline; font-weight: bold; }
+        
+        #loader { text-align: center; font-weight: bold; color: var(--primary); padding: 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <h1>सेतु-सेवा</h1>
-        <p>अर्ज क्रमांक टाकून प्रमाणपत्र मिळवा</p>
+    <h2><i class="fas fa-file-invoice"></i> सेतु-सेवा प्रमाणपत्र यादी</h2>
+    
+    <div class="search-box">
+        <input type="text" id="searchInput" class="input-field" placeholder="अर्ज क्रमांक टाका...">
+        <button class="btn" onclick="searchData()">शोधा</button>
     </div>
 
-    <div class="input-group">
-        <i class="fas fa-id-card input-icon"></i>
-        <input type="text" id="codeInput1" class="input-field" placeholder="अर्ज क्रमांक टाका">
+    <div id="loader">डेटा लोड होत आहे, कृपया थांबा...</div>
+
+    <div class="table-container">
+        <table id="dataTable" style="display:none;">
+            <thead>
+                <tr id="tableHead">
+                    </tr>
+            </thead>
+            <tbody id="tableBody">
+                </tbody>
+        </table>
     </div>
-
-    <button id="searchBtn" class="btn" onclick="loadAndSearch()">
-        <span id="btnText">शोधा आणि डाऊनलोड करा</span>
-    </button>
-
-    <div id="notification"></div>
 </div>
 
 <script>
-    // १. तुमचा Google Sheet ID येथे बदला
-    const SHEET_ID = 'YOUR_SHEET_ID_HERE'; 
-    // २. शीटचे नाव (जर वेगळे असेल तर बदला)
-    const SHEET_NAME = 'Sheet1'; 
+    const SHEET_ID = 'YOUR_SHEET_ID_HERE'; // तुमचा Sheet ID इथे टाका
+    const SHEET_NAME = 'Sheet1';
+    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
 
-    async function loadAndSearch() {
-        const inputVal = document.getElementById("codeInput1").value.trim();
-        const btn = document.getElementById("searchBtn");
-        const btnText = document.getElementById("btnText");
-        const notification = document.getElementById("notification");
+    let allRows = [];
 
-        if (!inputVal) {
-            showNotify("कृपया अर्ज क्रमांक टाका!", "error");
-            return;
-        }
+    // पेज लोड झाल्यावर डेटा खेचा
+    window.onload = function() {
+        fetchSheetData();
+    };
 
-        // Loading सुरू
-        btn.disabled = true;
-        btnText.innerHTML = '<span class="spinner"></span> तपासत आहे...';
-        notification.style.display = "none";
-
+    async function fetchSheetData() {
         try {
-            // Google Sheets कडून JSON डेटा मिळवा
-            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
-            const response = await fetch(url);
+            const response = await fetch(URL);
             const text = await response.text();
-            
-            // Google च्या विचित्र JSON फॉरमॅटला क्लीन करा
             const jsonData = JSON.parse(text.substring(47).slice(0, -2));
-            const rows = jsonData.table.rows;
+            allRows = jsonData.table.rows;
+            const cols = jsonData.table.cols;
 
-            let foundId = null;
-
-            // कॉलममध्ये डेटा शोधणे (समजा कॉलम A मध्ये अर्ज क्रमांक आहे)
-            for (let row of rows) {
-                if (row.c[0] && row.c[0].v.toString() === inputVal) {
-                    foundId = row.c[0].v.toString();
-                    break;
-                }
-            }
-
-            if (foundId) {
-                showNotify("क्रमांक सापडला! डाऊनलोड सुरू होत आहे...", "success");
-                const downloadLink = `https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=${foundId}&sDist=529`;
-                window.open(downloadLink, '_blank');
-            } else {
-                showNotify("हा अर्ज क्रमांक रेकॉर्डमध्ये सापडला नाही.", "error");
-            }
-
+            displayTable(allRows, cols);
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('dataTable').style.display = 'table';
         } catch (error) {
-            console.error(error);
-            showNotify("डेटा लोड होऊ शकला नाही. इंटरनेट आणि Sheet ID तपासा.", "error");
-        } finally {
-            btn.disabled = false;
-            btnText.innerHTML = "शोधा आणि डाऊनलोड करा";
+            document.getElementById('loader').innerHTML = "त्रुटी: डेटा लोड झाला नाही. कृपया इंटरनेट आणि Sheet ID तपासा.";
         }
     }
 
-    function showNotify(msg, type) {
-        const notification = document.getElementById("notification");
-        notification.innerText = msg;
-        notification.style.display = "block";
-        notification.style.backgroundColor = type === "success" ? "#C8E6C9" : "#FFCDD2";
-        notification.style.color = type === "success" ? "#2E7D32" : "#C62828";
+    function displayTable(rows, cols) {
+        const head = document.getElementById('tableHead');
+        const body = document.getElementById('tableBody');
+        
+        head.innerHTML = "";
+        body.innerHTML = "";
+
+        // १. टेबल हेडर्स तयार करा
+        cols.forEach(col => {
+            let th = document.createElement('th');
+            th.innerText = col.label || "माहिती";
+            head.appendChild(th);
+        });
+        // डाऊनलोडसाठी एक अतिरिक्त कॉलम
+        let actionTh = document.createElement('th');
+        actionTh.innerText = "कृती";
+        head.appendChild(actionTh);
+
+        // २. टेबल रोज (Rows) तयार करा
+        rows.forEach(row => {
+            let tr = document.createElement('tr');
+            let appId = row.c[0] ? row.c[0].v : ""; // पहिला कॉलम अर्ज क्रमांक मानला आहे
+
+            row.c.forEach(cell => {
+                let td = document.createElement('td');
+                td.innerText = cell ? cell.v : "-";
+                tr.appendChild(td);
+            });
+
+            // डाऊनलोड बटण जोडा
+            let actionTd = document.createElement('td');
+            actionTd.innerHTML = `<span class="download-btn" onclick="downloadFile('${appId}')"><i class="fas fa-download"></i> डाऊनलोड</span>`;
+            tr.appendChild(actionTd);
+
+            body.appendChild(tr);
+        });
     }
 
-    // Enter बटन सपोर्ट
-    document.getElementById("codeInput1").addEventListener("keyup", function(event) {
-        if (event.key === "Enter") loadAndSearch();
-    });
+    function searchData() {
+        const input = document.getElementById('searchInput').value.toUpperCase();
+        const trs = document.getElementById('tableBody').getElementsByTagName('tr');
+
+        for (let i = 0; i < trs.length; i++) {
+            let td = trs[i].getElementsByTagName('td')[0]; // पहिल्या कॉलममध्ये सर्च करेल
+            if (td) {
+                let textValue = td.textContent || td.innerText;
+                trs[i].style.display = textValue.toUpperCase().indexOf(input) > -1 ? "" : "none";
+            }
+        }
+    }
+
+    function downloadFile(id) {
+        if(!id) return alert("आयडी उपलब्ध नाही");
+        const downloadLink = `https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=${id}&sDist=529`;
+        window.open(downloadLink, '_blank');
+    }
 </script>
 
 </body>
