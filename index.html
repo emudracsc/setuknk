@@ -3,38 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>सेतु-सेवा पोर्टल - डेटा टेबल</title>
+    <title>सेतु-सेवा डेटा टेबल</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         :root { --primary: #4CAF50; --primary-dark: #388E3C; --text: #455A64; }
-        body { font-family: 'Arial', sans-serif; background: #f4f7f6; margin: 20px; color: var(--text); }
-        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        body { font-family: 'Arial', sans-serif; background: #f4f7f6; margin: 20px; }
+        .container { max-width: 950px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         h2 { color: var(--primary-dark); text-align: center; }
-        
-        /* सर्च विभाग */
-        .search-box { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; }
+        .search-box { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
         .input-field { padding: 10px; border: 2px solid #ddd; border-radius: 6px; width: 250px; }
         .btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-
-        /* टेबल डिझाइन */
-        .table-container { overflow-x: auto; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
         th { background-color: var(--primary); color: white; }
         tr:nth-child(even) { background-color: #f9f9f9; }
-        tr:hover { background-color: #f1f1f1; }
-        
-        .download-btn { color: var(--primary-dark); cursor: pointer; text-decoration: underline; font-weight: bold; }
-        
-        #loader { text-align: center; font-weight: bold; color: var(--primary); padding: 20px; }
+        #loader { text-align: center; padding: 20px; font-weight: bold; color: #e67e22; }
+        .error-box { background: #ff7675; color: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2><i class="fas fa-file-invoice"></i> सेतु-सेवा प्रमाणपत्र यादी</h2>
+    <h2><i class="fas fa-database"></i> तुमची माहिती (Google Sheet)</h2>
     
+    <div id="errorMsg" class="error-box"></div>
+
     <div class="search-box">
         <input type="text" id="searchInput" class="input-field" placeholder="अर्ज क्रमांक टाका...">
         <button class="btn" onclick="searchData()">शोधा</button>
@@ -44,102 +38,92 @@
 
     <div class="table-container">
         <table id="dataTable" style="display:none;">
-            <thead>
-                <tr id="tableHead">
-                    </tr>
-            </thead>
-            <tbody id="tableBody">
-                </tbody>
+            <thead><tr id="tableHead"></tr></thead>
+            <tbody id="tableBody"></tbody>
         </table>
     </div>
 </div>
 
 <script>
-    const SHEET_ID = 'YOUR_SHEET_ID_HERE'; // तुमचा Sheet ID इथे टाका
-    const SHEET_NAME = 'Sheet1';
-    const URL = `https://docs.google.com/spreadsheets/d/1HehDIc5R3enqiCySDHZtZyMgIoe2PdmWrYdO0mIWRi8/gviz/tq?tqx=out:json&sheet=${SetuReport}`;
+    // १. तुमचा खरा ID येथे टाका
+    const SHEET_ID = 'तुमचा_खरा_आयडी_येथे_टाका'; 
+    
+    // २. डेटा आणण्यासाठी नवीन URL फॉरमॅट (हा जास्त सुरक्षित आहे)
+    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
-    let allRows = [];
-
-    // पेज लोड झाल्यावर डेटा खेचा
     window.onload = function() {
         fetchSheetData();
     };
 
     async function fetchSheetData() {
+        const loader = document.getElementById('loader');
+        const errorBox = document.getElementById('errorMsg');
+
         try {
             const response = await fetch(URL);
+            if (!response.ok) throw new Error('Sheet सापडली नाही');
+            
             const text = await response.text();
-            const jsonData = JSON.parse(text.substring(47).slice(0, -2));
-            allRows = jsonData.table.rows;
+            
+            // Google JSON क्लीन करण्याची प्रक्रिया
+            const startPos = text.indexOf('{');
+            const endPos = text.lastIndexOf('}') + 1;
+            const jsonString = text.substring(startPos, endPos);
+            
+            const jsonData = JSON.parse(jsonString);
+            const rows = jsonData.table.rows;
             const cols = jsonData.table.cols;
 
-            displayTable(allRows, cols);
-            document.getElementById('loader').style.display = 'none';
+            if (rows.length === 0) {
+                loader.innerHTML = "शीटमध्ये कोणताही डेटा सापडला नाही.";
+                return;
+            }
+
+            renderTable(rows, cols);
+            loader.style.display = 'none';
             document.getElementById('dataTable').style.display = 'table';
+
         } catch (error) {
-            document.getElementById('loader').innerHTML = "त्रुटी: डेटा लोड झाला नाही. कृपया इंटरनेट आणि Sheet ID तपासा.";
+            console.error(error);
+            loader.style.display = 'none';
+            errorBox.style.display = 'block';
+            errorBox.innerHTML = `<b>त्रुटी:</b> डेटा लोड होऊ शकला नाही. <br> 
+            १. Sheet <b>'Anyone with the link'</b> केली आहे का? तपासा. <br>
+            २. Sheet ID बरोबर आहे का? तपासा.`;
         }
     }
 
-    function displayTable(rows, cols) {
+    function renderTable(rows, cols) {
         const head = document.getElementById('tableHead');
         const body = document.getElementById('tableBody');
         
-        head.innerHTML = "";
-        body.innerHTML = "";
-
-        // १. टेबल हेडर्स तयार करा
+        // हेडर्स
         cols.forEach(col => {
             let th = document.createElement('th');
-            th.innerText = col.label || "माहिती";
+            th.innerText = col.label || "कॉलम";
             head.appendChild(th);
         });
-        // डाऊनलोडसाठी एक अतिरिक्त कॉलम
-        let actionTh = document.createElement('th');
-        actionTh.innerText = "कृती";
-        head.appendChild(actionTh);
 
-        // २. टेबल रोज (Rows) तयार करा
+        // रोज (Rows)
         rows.forEach(row => {
             let tr = document.createElement('tr');
-            let appId = row.c[0] ? row.c[0].v : ""; // पहिला कॉलम अर्ज क्रमांक मानला आहे
-
             row.c.forEach(cell => {
                 let td = document.createElement('td');
-                td.innerText = cell ? cell.v : "-";
+                td.innerText = cell ? (cell.f ? cell.f : cell.v) : "-";
                 tr.appendChild(td);
             });
-
-            // डाऊनलोड बटण जोडा
-            let actionTd = document.createElement('td');
-            actionTd.innerHTML = `<span class="download-btn" onclick="downloadFile('${appId}')"><i class="fas fa-download"></i> डाऊनलोड</span>`;
-            tr.appendChild(actionTd);
-
             body.appendChild(tr);
         });
     }
 
     function searchData() {
         const input = document.getElementById('searchInput').value.toUpperCase();
-        const trs = document.getElementById('tableBody').getElementsByTagName('tr');
-
-        for (let i = 0; i < trs.length; i++) {
-            let td = trs[i].getElementsByTagName('td')[0]; // पहिल्या कॉलममध्ये सर्च करेल
-            if (td) {
-                let textValue = td.textContent || td.innerText;
-                trs[i].style.display = textValue.toUpperCase().indexOf(input) > -1 ? "" : "none";
-            }
-        }
-    }
-
-    function downloadFile(id) {
-        if(!id) return alert("आयडी उपलब्ध नाही");
-        const downloadLink = `https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=${id}&sDist=529`;
-        window.open(downloadLink, '_blank');
+        const trs = document.querySelectorAll('#tableBody tr');
+        trs.forEach(tr => {
+            const text = tr.innerText.toUpperCase();
+            tr.style.display = text.includes(input) ? "" : "none";
+        });
     }
 </script>
-
 </body>
 </html>
-
