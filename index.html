@@ -1,96 +1,212 @@
-<script>
-    // १. तुमच्या Google Sheet चा ID येथे टाका
-    const SHEET_ID = 'Setu Report'; 
-    // २. शीटचे नाव (उदा. Sheet1)
-    const SHEET_NAME = 'Setu Report'; 
+<html lang="mr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>सेतु-सेवा पोर्टल - महाराष्ट्र सरकार</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --primary-dark: #388E3C;
+      --primary-light: #81C784;
+      --secondary: #9C27B0;
+      --accent: #7E57C2;
+      --white: #ffffff;
+      --text: #455A64;
+      --gray: #f5f5f5;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #F1F8E9, #E8F5E9);
+      color: var(--text);
+      padding: 20px;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      overflow: hidden;
+      padding-bottom: 30px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .service-body {
+      padding: 30px;
+      text-align: center;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      position: relative;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 15px 12px 40px;
+      border: 2px solid #C8E6C9;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      border-radius: 8px;
+      color: white;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s infinite linear;
+      margin-right: 10px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>सेतु-सेवा पोर्टल</h1>
+    <p>आपल्या अर्जाची स्थिती आणि प्रमाणपत्र डाऊनलोड करा</p>
+  </div>
+
+  <div class="service-body">
+    <div class="input-group">
+      <i class="fas fa-search input-icon"></i>
+      <input type="text" id="codeInput1" class="input-field" placeholder="अर्ज क्रमांक टाका (उदा. 123456)">
+    </div>
     
-    // Google Sheets API URL
-    const SHEET_URL = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSSSrez80ZuHamCAEkpUtD3G5o5oRQLNZV5YErVEAgh3ttUdZvKuEsc6QUjeB3Y6bqw_kKIolzgAxF0/pub?gid=1589437184&single=true&output=csv`;
+    <button class="btn" onclick="checkSheetAndDownload()">
+      <span id="btnText">प्रमाणपत्र शोधा</span>
+    </button>
+  </div>
+</div>
 
-    async function loadJsonData() {
-      const btn = document.querySelector('.btn');
-      const originalText = btn.innerHTML;
+<div id="notification" class="notification"></div>
+
+<script>
+    // --- कॉन्फिगरेशन ---
+    const SHEET_ID = 'तुमचा_गूगल_शीट_आयडी_येथे_टाका'; // उदा. 1aBcDeFgHiJk...
+    const SHEET_NAME = 'Sheet1'; 
+    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
+
+    async function checkSheetAndDownload() {
+      const inputVal = document.getElementById("codeInput1").value.trim();
+      const btnText = document.getElementById("btnText");
       
-      try {
-        // बटनवर लोडिंग दाखवा
-        btn.innerHTML = '<span class="spinner"></span> डेटा शोधत आहे...';
-        btn.disabled = true;
+      if (!inputVal) {
+        showNotification("कृपया अर्ज क्रमांक टाका.", "#F44336");
+        return;
+      }
 
-        // Google Sheet कडून डेटा मिळवा
-        const response = await fetch(SHEET_URL);
+      // लोडिंग सुरू करा
+      btnText.innerHTML = '<span class="spinner"></span> तपासत आहे...';
+
+      try {
+        const response = await fetch(URL);
         const text = await response.text();
         
-        // Google Sheets कडून येणारा डेटा स्वच्छ करणे (surrounding text काढून टाकणे)
-        const jsonText = text.substring(47).slice(0, -2);
-        const data = JSON.parse(jsonText);
+        // Google JSON फॉरमॅट स्वच्छ करा
+        const jsonData = JSON.parse(text.substring(47).slice(0, -2));
+        const rows = jsonData.table.rows;
         
-        // डेटा रोज (Rows) मध्ये रूपांतरित करा
-        const rows = data.table.rows;
-        
-        // तुमच्या HTML मधील इनपुट व्हॅल्यू मिळवा
-        const inputVal = document.getElementById("codeInput1").value.trim();
-
-        if (!inputVal) {
-          showNotification("कृपया अर्ज क्रमांक टाका.", "warning");
-          resetButton();
-          return;
-        }
-
-        // शीटमध्ये डेटा शोधणे
         let found = false;
-        rows.forEach(row => {
-          // समजा पहिल्या कॉलममध्ये (Index 0) अर्ज क्रमांक आहे
+        
+        // प्रत्येक ओळ तपासा (समजा अर्ज क्रमांक पहिल्या कॉलममध्ये आहे)
+        for (let row of rows) {
           const sheetCode = row.c[0] ? row.c[0].v.toString() : "";
           
           if (sheetCode === inputVal) {
             found = true;
-            // जर डेटा सापडला तर डाऊनलोड फंक्शन कॉल करा
-            downloadApplicationFile(sheetCode);
+            downloadFile(sheetCode);
+            break;
           }
-        });
+        }
 
         if (!found) {
-          showNotification("दिलेला अर्ज क्रमांक सापडला नाही. कृपया पुन्हा तपासा.", "error");
+          showNotification("दिलेला अर्ज क्रमांक सापडला नाही!", "#FF9800");
         }
 
       } catch (error) {
-        console.error("Error fetching sheet data:", error);
-        showNotification("Google Sheet मधून डेटा लोड करताना त्रुटी आली.", "error");
+        console.error(error);
+        showNotification("डेटा लोड करताना त्रुटी आली. इंटरनेट तपासा.", "#F44336");
       } finally {
-        resetButton();
-      }
-
-      function resetButton() {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
+        btnText.innerHTML = "प्रमाणपत्र शोधा";
       }
     }
 
-    // नोटिफिकेशन फंक्शन (तुमच्या कोडमध्ये आधीपासून आहे असे गृहीत धरले आहे)
-    function showNotification(message, type) {
-      console.log(`${type.toUpperCase()}: ${message}`);
-      // तुमच्या मूळ कोडमधील नोटिफिकेशन लॉजिक येथे असेल
-    }
-
-    // डाऊनलोड फंक्शन (तुमच्या index.html मधून घेतलेले)
-    function downloadApplicationFile(applicationId) {
-      if (!applicationId) {
-        showNotification("अर्ज क्रमांक सापडला नाही.", "error");
-        return;
-      }
-      
-      const downloadLink = `https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=${applicationId}&sDist=529`;
+    function downloadFile(id) {
+      const downloadLink = `https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=${id}&sDist=529`;
       window.open(downloadLink, '_blank');
-      showNotification(`अर्ज ${applicationId} साठी डाऊनलोड सुरू केला आहे!`, "success");
-      
-      // अलीकडील हालचाली अपडेट करा
-      updateRecentActivity(applicationId); 
+      showNotification("डाऊनलोड सुरू झाले आहे!", "#4CAF50");
     }
 
-    // पेज लोड झाल्यावर इनपुटवर फोकस करा
-    window.onload = () => {
-      if(document.getElementById("codeInput1")) {
-        document.getElementById("codeInput1").focus();
+    function showNotification(msg, color) {
+      const el = document.getElementById("notification");
+      el.innerText = msg;
+      el.style.backgroundColor = color;
+      el.style.display = "block";
+      setTimeout(() => { el.style.display = "none"; }, 3000);
+    }
+
+    // Enter की वर सर्च व्हावे यासाठी
+    document.getElementById("codeInput1").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        checkSheetAndDownload();
       }
-    };
+    });
 </script>
+
+</body></html>
