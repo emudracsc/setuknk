@@ -367,7 +367,8 @@
             document.getElementById('themeIcon').textContent = '🌙';
             document.getElementById('themeText').textContent = 'Dark Mode';
         }
-        loadSheetData();
+        // थेट डेमो डेटा दाखवा
+        showDemoData();
     };
 
     let timer;
@@ -382,46 +383,21 @@
         }, 500);
     }
 
-    function loadSheetData() {
-        const loader = document.getElementById('loader');
-        loader.style.display = 'block';
-
-        fetch(SHEET_URL)
-            .then(response => response.text())
-            .then(data => {
-                // JSONP response parse करा
-                const jsonData = JSON.parse(data.substring(47).slice(0, -2));
-                const rows = jsonData.table.rows;
-                
-                allData = rows.map((row, index) => {
-                    const cells = row.c;
-                    return {
-                        srNo: cells[0]?.v || (index + 1),
-                        service: cells[1]?.v || '-',
-                        date: cells[2]?.v || '-',
-                        id: cells[3]?.v || '-',
-                        name: cells[4]?.v || '-'
-                    };
-                });
-                
-                loader.style.display = 'none';
-                render(allData);
-            })
-            .catch(error => {
-                loader.style.display = 'none';
-                console.error('Error:', error);
-                // डेमो डेटा दाखवा
-                showDemoData();
-            });
-    }
-
     function showDemoData() {
         allData = [
-            { srNo: '101', service: 'Income Certificate', date: '10/02/2025', id: 'CSC2402A11', name: 'राजेश शर्मा' },
-            { srNo: '102', service: 'Non-Creamy Layer', date: '09/02/2025', id: 'CSC2402B45', name: 'सविता पाटील' },
-            { srNo: '103', service: 'Age Nationality', date: '08/02/2025', id: 'CSC2402C78', name: 'गणेश कदम' },
-            { srNo: '104', service: 'Income Certificate', date: '07/02/2025', id: 'CSC2402D92', name: 'प्रियंका जाधव' },
-            { srNo: '105', service: 'Migrant Caste', date: '06/02/2025', id: 'CSC2402E33', name: 'सूरज यादव' }
+            { srNo: '1', service: 'Income Certificate', date: '10/02/2025', id: 'CSC2402A11', name: 'राजेश शर्मा' },
+            { srNo: '2', service: 'Non-Creamy Layer', date: '09/02/2025', id: 'CSC2402B45', name: 'सविता पाटील' },
+            { srNo: '3', service: 'Age Nationality', date: '08/02/2025', id: 'CSC2402C78', name: 'गणेश कदम' },
+            { srNo: '4', service: 'Income Certificate', date: '07/02/2025', id: 'CSC2402D92', name: 'प्रियंका जाधव' },
+            { srNo: '5', service: 'Migrant Caste', date: '06/02/2025', id: 'CSC2402E33', name: 'सूरज यादव' },
+            { srNo: '6', service: 'Income Certificate', date: '28/02/2025', id: '2452942771251600076386', name: 'Mahesh Atmaram Patil' },
+            { srNo: '7', service: 'Income Certificate', date: '28/02/2025', id: '2452942771251600076422', name: 'Vinayak Laxman Pawar' },
+            { srNo: '8', service: 'Income Certificate', date: '28/02/2025', id: '2452942771251600076429', name: 'Tushar Suresh Desai' },
+            { srNo: '9', service: 'Age Nationality', date: '03/01/2025', id: '2452942771253600076453', name: 'Vidyadhar Shashikant' },
+            { srNo: '14', service: 'Income Certificate', date: '03/01/2025', id: '2452942771251600076459', name: 'Demo User 1' },
+            { srNo: '15', service: 'Non-Creamy Layer', date: '03/01/2025', id: '2452942771286600076446', name: 'Demo User 2' },
+            { srNo: '16', service: 'Age Nationality', date: '03/01/2025', id: '2452942771253600076460', name: 'Demo User 3' },
+            { srNo: '17', service: 'Non-Creamy Layer', date: '03/01/2025', id: '2452942771286600076444', name: 'Demo User 4' }
         ];
         render(allData);
     }
