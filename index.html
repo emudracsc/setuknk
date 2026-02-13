@@ -277,7 +277,7 @@
             background: var(--table-row-hover);
         }
 
-        /* ===== SR NO STYLE - हा sheet मधील क्र. दाखवतो ===== */
+        /* ===== SR NO STYLE ===== */
         .sr-no {
             background: rgba(26,115,232,0.2);
             padding: 5px 10px;
@@ -453,27 +453,20 @@
     </div>
 
     <div class="sidebar">
-        <!-- स्टेटस - पहिला कार्ड -->
         <div class="card">
             <h4>📊 स्टेटस</h4>
             <button class="btn" onclick="go('st')">चेक स्टेटस</button>
         </div>
-        
-        <!-- प्रमाणपत्र - दुसरा कार्ड -->
         <div class="card">
             <h4>📜 प्रमाणपत्र</h4>
             <input type="text" id="d_id" placeholder="App ID">
             <button class="btn" onclick="go('dl')">डाऊनलोड</button>
         </div>
-        
-        <!-- दस्तऐवज - तिसरा कार्ड -->
         <div class="card">
             <h4>📎 दस्तऐवज</h4>
             <input type="text" id="u_id" placeholder="App ID">
             <button class="btn" onclick="go('up')">अपलोड</button>
         </div>
-        
-        <!-- प्रतिज्ञापत्र - शेवटचा कार्ड -->
         <div class="card">
             <h4>📄 प्रतिज्ञापत्र</h4>
             <input type="text" id="p_id" placeholder="App ID">
@@ -483,10 +476,12 @@
 </div>
 
 <script>
-    // 🔴 तुमची Google Apps Script Web App URL येथे टाका
+    // ========== सोपी IFrame API पद्धत ==========
+    
+    // तुमची Google Apps Script URL
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec';
     
-    // Theme Toggle Function
+    // Theme Toggle
     function toggleTheme() {
         const body = document.body;
         const themeIcon = document.getElementById('themeIcon');
@@ -505,7 +500,6 @@
         }
     }
 
-    // Load saved theme on page load
     window.onload = function() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
@@ -513,131 +507,97 @@
             document.getElementById('themeIcon').textContent = '🌙';
             document.getElementById('themeText').textContent = 'Dark Mode';
         }
-        
-        // नेहमी GitHub मोड वापरा (JSONP)
-        loadFromGitHub("");
+        loadData("");
     };
 
     let timer;
     function search(v) {
         clearTimeout(timer);
-        timer = setTimeout(function() { 
-            loadFromGitHub(v);
-        }, 500);
+        timer = setTimeout(function() { loadData(v); }, 500);
     }
 
-    // ===== GitHub Mode (JSONP - CORS एरर सोडवण्यासाठी) =====
-    function loadFromGitHub(q) {
-        var loader = document.getElementById('loader');
+    // ===== सर्वात सोपी पद्धत - IFrame API =====
+    function loadData(query) {
+        const loader = document.getElementById('loader');
         loader.style.display = 'block';
         
-        // युनिक कॉलबॅक नाव तयार करा
-        var callbackName = 'gas_callback_' + Date.now();
+        // युनिक आयडी तयार करा
+        const callbackId = 'callback_' + Date.now();
         
-        // कॉलबॅक फंक्शन डायनॅमिकली तयार करा
-        window[callbackName] = function(response) {
+        // कॉलबॅक फंक्शन तयार करा
+        window[callbackId] = function(data) {
             loader.style.display = 'none';
             
-            // कॉलबॅक नंतर साफ करा
-            delete window[callbackName];
-            if (script && script.parentNode) {
-                script.parentNode.removeChild(script);
-            }
+            // क्लीनअप
+            document.body.removeChild(iframe);
+            delete window[callbackId];
             
-            if (response && response.error) {
-                console.error("Apps Script एरर:", response.error);
-                showDemoData();
-                return;
-            }
-            
-            // रिस्पॉन्स हा array असावा
-            if (Array.isArray(response)) {
-                render(response);
+            // डेटा रेंडर करा
+            if (data && !data.error) {
+                render(data);
             } else {
-                console.warn("अपेक्षित डेटा फॉरमॅट नाही, डेमो दाखवतो");
+                console.error("डेटा एरर:", data?.error);
                 showDemoData();
             }
         };
         
-        // JSONP स्क्रिप्ट एलिमेंट तयार करा
-        var script = document.createElement('script');
-        script.src = GAS_URL + '?query=' + encodeURIComponent(q) + '&callback=' + callbackName;
+        // IFrame तयार करा
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = GAS_URL + '?query=' + encodeURIComponent(query) + '&callback=' + callbackId;
         
         // एरर हँडलिंग
-        script.onerror = function() {
+        iframe.onerror = function() {
             loader.style.display = 'none';
-            console.log("नेटवर्क एरर: JSONP कॉल अयशस्वी. डेमो डेटा दाखवतो.");
-            
-            // क्लीनअप
-            delete window[callbackName];
-            if (script && script.parentNode) {
-                script.parentNode.removeChild(script);
-            }
-            
+            document.body.removeChild(iframe);
+            delete window[callbackId];
             showDemoData();
         };
         
-        document.head.appendChild(script);
+        document.body.appendChild(iframe);
         
-        // टाइमआउट - 10 सेकंदांनंतर कॉलबॅक नाही झाल्यास
+        // टाइमआउट
         setTimeout(function() {
-            if (window[callbackName]) {
+            if (window[callbackId]) {
                 loader.style.display = 'none';
-                console.log("टाइमआउट: JSONP कॉल वेळेत पूर्ण झाला नाही");
-                delete window[callbackName];
-                if (script && script.parentNode) {
-                    script.parentNode.removeChild(script);
-                }
+                document.body.removeChild(iframe);
+                delete window[callbackId];
                 showDemoData();
             }
-        }, 10000);
+        }, 8000);
     }
 
-    // डेमो डेटा (जर Apps Script उपलब्ध नसेल तर)
+    // डेमो डेटा
     function showDemoData() {
         const demoData = [
             { srNo: '101', service: 'Income Certificate', date: '10/02/2025', id: 'CSC2402A11', name: 'राजेश शर्मा' },
-            { srNo: '102', service: 'Non-Creamy Layer Certificate', date: '09/02/2025', id: 'CSC2402B45', name: 'सविता पाटील' },
-            { srNo: '103', service: 'Age Nationality and Domicile', date: '08/02/2025', id: 'CSC2402C78', name: 'गणेश कदम' },
+            { srNo: '102', service: 'Non-Creamy Layer', date: '09/02/2025', id: 'CSC2402B45', name: 'सविता पाटील' },
+            { srNo: '103', service: 'Age Nationality', date: '08/02/2025', id: 'CSC2402C78', name: 'गणेश कदम' },
             { srNo: '104', service: 'Income Certificate', date: '07/02/2025', id: 'CSC2402D92', name: 'प्रियंका जाधव' },
-            { srNo: '105', service: 'Migrant Caste Certificate', date: '06/02/2025', id: 'CSC2402E33', name: 'सूरज यादव' }
+            { srNo: '105', service: 'Migrant Caste', date: '06/02/2025', id: 'CSC2402E33', name: 'सूरज यादव' }
         ];
         render(demoData);
     }
 
     function render(data) {
-        var tbody = document.getElementById('tableBody');
+        const tbody = document.getElementById('tableBody');
         if (!data || data.length === 0) {
             tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;">🔍 कोणताही डेटा सापडला नाही</td></tr>';
             return;
         }
         
-        var html = '';
-        for (var i = 0; i < data.length; i++) {
-            var r = data[i];
-            
-            // क्र. साठी - फक्त sheet मधील srNo वापरा
-            var srNo = r.srNo || '-';
-            
-            // ID safe string बनवा (quotes साठी)
-            var id = (r.id || '').replace(/'/g, "\\'");
+        let html = '';
+        for (let i = 0; i < data.length; i++) {
+            const r = data[i];
+            const srNo = r.srNo || '-';
+            const id = (r.id || '').replace(/'/g, "\\'");
             
             html += '<tr>' +
                 '<td><span class="sr-no">' + srNo + '</span></td>' +
                 '<td><b>' + (r.service || '') + '</b></td>' +
                 '<td>' + (r.date || '') + '</td>' +
-                '<td>' +
-                    '<div class="id-container">' +
-                        '<span class="id-number">' + (r.id || '') + '</span>' +
-                        '<button class="copy-btn" onclick="copyId(\'' + id + '\', this)">📋 कॉपी</button>' +
-                    '</div>' +
-                '</td>' +
-                '<td>' +
-                    '<div class="name-download-container">' +
-                        '<span class="status-badge" title="' + (r.name || '') + '">' + (r.name || '') + '</span>' +
-                        '<button class="download-btn" onclick="openPDF(\'' + (r.id || '') + '\')">⬇️ PDF</button>' +
-                    '</div>' +
-                '</td>' +
+                '<td><div class="id-container"><span class="id-number">' + (r.id || '') + '</span><button class="copy-btn" onclick="copyId(\'' + id + '\', this)">📋 कॉपी</button></div></td>' +
+                '<td><div class="name-download-container"><span class="status-badge" title="' + (r.name || '') + '">' + (r.name || '') + '</span><button class="download-btn" onclick="openPDF(\'' + (r.id || '') + '\')">⬇️ PDF</button></div></td>' +
             '</tr>';
         }
         tbody.innerHTML = html;
@@ -647,24 +607,20 @@
         navigator.clipboard.writeText(id).then(function() {
             buttonElement.classList.add('copied');
             buttonElement.innerHTML = '✓ कॉपी';
-            
-            setTimeout(function() {
+            setTimeout(() => {
                 buttonElement.classList.remove('copied');
                 buttonElement.innerHTML = '📋 कॉपी';
             }, 2000);
-            
-        }).catch(function(err) {
-            var el = document.createElement('textarea');
+        }).catch(() => {
+            const el = document.createElement('textarea');
             el.value = id;
             document.body.appendChild(el);
             el.select();
             document.execCommand('copy');
             document.body.removeChild(el);
-            
             buttonElement.classList.add('copied');
             buttonElement.innerHTML = '✓ कॉपी';
-            
-            setTimeout(function() {
+            setTimeout(() => {
                 buttonElement.classList.remove('copied');
                 buttonElement.innerHTML = '📋 कॉपी';
             }, 2000);
@@ -672,37 +628,18 @@
     }
 
     function openPDF(id) {
-        if (!id) {
-            alert("PDF उघडण्यासाठी ID आवश्यक आहे");
-            return;
-        }
-        var pdfUrl = "https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=" + id + "&sDist=529";
-        window.open(pdfUrl, '_blank');
+        if (!id) { alert("PDF साठी ID टाका"); return; }
+        window.open("https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=" + id + "&sDist=529", '_blank');
     }
 
     function go(type) {
-        var id = "";
-        var url = "";
-        if (type === 'print') { 
-            id = document.getElementById('p_id').value; 
-            url = "https://cscservices.mahaonline.gov.in/General_Affidavit/GeneralAffidavitCertificateEn.aspx?AppID=" + id + "&ServiceId=1268"; 
-        }
-        if (type === 'dl') { 
-            id = document.getElementById('d_id').value; 
-            url = "https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=" + id + "&sDist=529"; 
-        }
-        if (type === 'up') { 
-            id = document.getElementById('u_id').value; 
-            url = "https://cscservices.mahaonline.gov.in/Edistrict/WorkFlow/Attachment.aspx?ApplicantId=" + id + "&ServiceID=1253&ID=INIT"; 
-        }
-        if (type === 'st') { 
-            url = "https://revenue.mahaonline.gov.in/ApplicationSearchStatus/ApplicationStatus.aspx?ServiceID=1&sDist=529"; 
-        }
+        let id = "", url = "";
+        if (type === 'print') { id = document.getElementById('p_id').value; url = "https://cscservices.mahaonline.gov.in/General_Affidavit/GeneralAffidavitCertificateEn.aspx?AppID=" + id + "&ServiceId=1268"; }
+        else if (type === 'dl') { id = document.getElementById('d_id').value; url = "https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=" + id + "&sDist=529"; }
+        else if (type === 'up') { id = document.getElementById('u_id').value; url = "https://cscservices.mahaonline.gov.in/Edistrict/WorkFlow/Attachment.aspx?ApplicantId=" + id + "&ServiceID=1253&ID=INIT"; }
+        else if (type === 'st') { url = "https://revenue.mahaonline.gov.in/ApplicationSearchStatus/ApplicationStatus.aspx?ServiceID=1&sDist=529"; }
         
-        if (type !== 'st' && !id) { 
-            alert("❌ कृपया App ID टाका"); 
-            return; 
-        }
+        if (type !== 'st' && !id) { alert("❌ App ID टाका"); return; }
         window.open(url, "_blank");
     }
 </script>
