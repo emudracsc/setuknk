@@ -188,7 +188,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Main Link Button - Ultra Premium */
+        /* Main Link Button - Ultra Premium (Same Tab) */
         .dashboard-link {
             position: relative;
             display: inline-flex;
@@ -212,6 +212,7 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             overflow: hidden;
             animation: buttonPulse 2s infinite;
+            cursor: pointer;
         }
 
         @keyframes buttonPulse {
@@ -590,10 +591,9 @@
             🚀 प्रीमियम विश्लेषण · रिअल-टाइम डेटा · प्रोफेशनल टूल्स
         </div>
 
-        <!-- Main Link Button -->
+        <!-- Main Link Button - Same Tab (target="_blank" removed) -->
         <a href="https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec" 
-           class="dashboard-link" 
-           target="_blank">
+           class="dashboard-link">
             <span>🔗 लाँच डॅशबोर्ड</span>
             <span class="arrow">→</span>
         </a>
@@ -660,7 +660,6 @@
         </div>
     </div>
 
-    <!-- Add smooth scroll behavior -->
     <script>
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
