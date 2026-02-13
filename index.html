@@ -483,6 +483,11 @@
 </div>
 
 <script>
+    // ========== GitHub + Apps Script Compatible Version ==========
+    
+    // 🔴 IMPORTANT: तुमची Google Apps Script Web App URL येथे टाका
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec'; // तुमची URL येथे बदला
+    
     // Theme Toggle Function
     function toggleTheme() {
         const body = document.body;
@@ -510,15 +515,30 @@
             document.getElementById('themeIcon').textContent = '🌙';
             document.getElementById('themeText').textContent = 'Dark Mode';
         }
-        load("");
+        
+        // GitHub वर आहोत का ते तपासा
+        if (window.location.hostname.includes('github.io') || window.location.hostname.includes('localhost')) {
+            console.log('GitHub/Local mode: Using fetch API');
+            loadFromGitHub("");
+        } else {
+            console.log('Apps Script mode: Using google.script.run');
+            load("");
+        }
     };
 
     let timer;
     function search(v) {
         clearTimeout(timer);
-        timer = setTimeout(function() { load(v); }, 500);
+        timer = setTimeout(function() { 
+            if (window.location.hostname.includes('github.io') || window.location.hostname.includes('localhost')) {
+                loadFromGitHub(v);
+            } else {
+                load(v);
+            }
+        }, 500);
     }
 
+    // ===== Apps Script Mode (Original) =====
     function load(q) {
         var loader = document.getElementById('loader');
         loader.style.display = 'block';
@@ -536,6 +556,42 @@
             .searchData(q);
     }
 
+    // ===== GitHub Mode (Using Fetch API) =====
+    function loadFromGitHub(q) {
+        var loader = document.getElementById('loader');
+        loader.style.display = 'block';
+        
+        // Fetch API वापरून Apps Script ला कॉल करा
+        fetch(GAS_URL + '?query=' + encodeURIComponent(q))
+            .then(response => response.json())
+            .then(data => {
+                loader.style.display = 'none';
+                if(data && data.error) { 
+                    alert(data.error); 
+                    return; 
+                }
+                render(data || []);
+            })
+            .catch(error => {
+                loader.style.display = 'none';
+                alert("नेटवर्क एरर: " + error.message);
+                // डेमो डेटा दाखवा (परीक्षणासाठी)
+                showDemoData();
+            });
+    }
+
+    // डेमो डेटा (जर Apps Script उपलब्ध नसेल तर)
+    function showDemoData() {
+        const demoData = [
+            { srNo: '101', service: 'Income Certificate', date: '10/02/2025', id: 'CSC2402A11', name: 'राजेश शर्मा' },
+            { srNo: '102', service: 'Non-Creamy Layer Certificate', date: '09/02/2025', id: 'CSC2402B45', name: 'सविता पाटील' },
+            { srNo: '103', service: 'Age Nationality and Domicile', date: '08/02/2025', id: 'CSC2402C78', name: 'गणेश कदम' },
+            { srNo: '104', service: 'Income Certificate', date: '07/02/2025', id: 'CSC2402D92', name: 'प्रियंका जाधव' },
+            { srNo: '105', service: 'Migrant Caste Certificate', date: '06/02/2025', id: 'CSC2402E33', name: 'सूरज यादव' }
+        ];
+        render(demoData);
+    }
+
     function render(data) {
         var tbody = document.getElementById('tableBody');
         if (!data || data.length === 0) {
@@ -547,7 +603,7 @@
         for (var i = 0; i < data.length; i++) {
             var r = data[i];
             
-            // क्र. साठी - फक्त sheet मधील srNo वापरा, index वापरू नका
+            // क्र. साठी - फक्त sheet मधील srNo वापरा
             var srNo = r.srNo || '-';
             
             // ID safe string बनवा (quotes साठी)
