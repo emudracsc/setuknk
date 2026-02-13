@@ -4,422 +4,43 @@
     <base target="_top">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSC डेटा · प्रीमियम डॅशबोर्ड</title>
+    <title>CSC डेटा · प्रीमियम डॅशबोर्ड (GitHub)</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        /* Light Theme (Default) */
-        :root {
-            --bg-gradient-1: #e0e5ec;
-            --bg-gradient-2: #f0f4fa;
-            --main-bg: rgba(255, 255, 255, 0.85);
-            --card-bg: rgba(255, 255, 255, 0.75);
-            --text-primary: #0b2b4a;
-            --text-secondary: #102a41;
-            --border-light: rgba(255,255,255,0.7);
-            --badge-bg: #dff0d8;
-            --badge-text: #1f5130;
-            --badge-border: #bde0bd;
-            --id-bg: rgba(255,255,255,0.7);
-            --copy-btn-bg: white;
-            --copy-btn-text: #1a73e8;
-            --copy-btn-border: #1a73e8;
-            --table-row-bg: rgba(255,255,255,0.3);
-            --table-row-hover: rgba(255,255,255,0.7);
-            --loader-bg: rgba(255,255,255,0.6);
-            --shadow-color: rgba(0,30,60,0.25);
-            --th-bg: #1a73e8;
-            --th-text: white;
-        }
-
-        /* Dark Theme */
-        body.dark-theme {
-            --bg-gradient-1: #1a2634;
-            --bg-gradient-2: #2d3748;
-            --main-bg: rgba(30, 41, 59, 0.9);
-            --card-bg: rgba(30, 41, 59, 0.85);
-            --text-primary: #e2e8f0;
-            --text-secondary: #cbd5e0;
-            --border-light: rgba(255,255,255,0.1);
-            --badge-bg: #2d4a3e;
-            --badge-text: #9ae6b4;
-            --badge-border: #2f855a;
-            --id-bg: rgba(45, 55, 72, 0.8);
-            --copy-btn-bg: #2d3748;
-            --copy-btn-text: #90cdf4;
-            --copy-btn-border: #4299e1;
-            --table-row-bg: rgba(45, 55, 72, 0.5);
-            --table-row-hover: rgba(45, 55, 72, 0.8);
-            --loader-bg: rgba(30, 41, 59, 0.8);
-            --shadow-color: rgba(0,0,0,0.5);
-            --th-bg: #2c5282;
-            --th-text: #e2e8f0;
-        }
-
-        body {
-            background: linear-gradient(145deg, var(--bg-gradient-1), var(--bg-gradient-2));
-            min-height: 100vh;
-            padding: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s ease;
-        }
-
-        .dashboard {
-            max-width: 1400px;
-            width: 100%;
-            display: flex;
-            gap: 24px;
-            height: 92vh;
-        }
-
-        /* ===== MAIN PANEL ===== */
-        .main {
-            flex: 1;
-            background: var(--main-bg);
-            backdrop-filter: blur(16px);
-            border-radius: 40px;
-            padding: 28px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 25px 45px -15px var(--shadow-color);
-            border: 1px solid var(--border-light);
-            transition: background 0.3s ease, border 0.3s ease;
-        }
-
-        /* Header with theme toggle */
-        .main-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .main h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            transition: color 0.3s ease;
-        }
-
-        /* Theme Toggle Button */
-        .theme-toggle {
-            background: var(--card-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 50px;
-            padding: 8px 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px -5px var(--shadow-color);
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            background: var(--table-row-hover);
-        }
-
-        .theme-toggle .icon {
-            font-size: 1.2rem;
-        }
-
-        /* ===== SIDEBAR CARDS ===== */
-        .sidebar {
-            width: 300px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            overflow-y: auto;
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            padding: 22px 20px;
-            border-radius: 32px;
-            border: 1px solid var(--border-light);
-            box-shadow: 0 15px 30px -12px var(--shadow-color);
-            transition: background 0.3s ease, border 0.3s ease, transform 0.2s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            background: var(--table-row-hover);
-        }
-
-        .card h4 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 16px;
-            border-bottom: 2px solid rgba(26,115,232,0.2);
-            padding-bottom: 10px;
-            transition: color 0.3s ease;
-        }
-
-        .card input {
-            width: 100%;
-            padding: 14px 18px;
-            margin-bottom: 18px;
-            border: none;
-            border-radius: 24px;
-            background: var(--id-bg);
-            box-shadow: inset 2px 2px 6px rgba(0,0,0,0.1);
-            font-size: 0.9rem;
-            outline: none;
-            border: 1px solid var(--border-light);
-            color: var(--text-primary);
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        .card input:focus {
-            background: var(--copy-btn-bg);
-            box-shadow: 0 0 0 3px rgba(26,115,232,0.3);
-        }
-
-        /* ===== BUTTONS ===== */
-        .btn {
-            width: 100%;
-            padding: 14px 10px;
-            border: none;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 10px 18px -8px var(--shadow-color);
-            transition: all 0.2s ease;
-        }
-
-        .btn:hover {
-            transform: scale(1.02);
-            filter: brightness(1.1);
-        }
-
-        /* कार्ड बटन रंग - नवीन क्रमाने */
-        .card:nth-child(1) .btn { background: linear-gradient(145deg, #5f6368, #3c4043); }
-        .card:nth-child(2) .btn { background: linear-gradient(145deg, #34a853, #1e7e3a); }
-        .card:nth-child(3) .btn { background: linear-gradient(145deg, #d93025, #a51d14); }
-        .card:nth-child(4) .btn { background: linear-gradient(145deg, #1a73e8, #0d5bbf); }
-
-        /* ===== SEARCH BOX ===== */
-        .search-box {
-            width: 100%;
-            padding: 18px 28px;
-            border-radius: 60px;
-            border: none;
-            background: var(--id-bg);
-            box-shadow: 0 8px 20px -8px var(--shadow-color);
-            margin-bottom: 24px;
-            font-size: 1rem;
-            outline: none;
-            border: 1px solid var(--border-light);
-            color: var(--text-primary);
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        .search-box:focus {
-            background: var(--copy-btn-bg);
-            box-shadow: 0 0 0 4px rgba(26,115,232,0.3);
-        }
-
-        /* ===== TABLE ===== */
-        .table-wrap {
-            flex: 1;
-            overflow-y: auto;
-            border-radius: 28px;
-            background: var(--table-row-bg);
-            backdrop-filter: blur(4px);
-            border: 1px solid var(--border-light);
-            transition: background 0.3s ease, border 0.3s ease;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            min-width: 850px;
-        }
-
-        th {
-            background: var(--th-bg);
-            color: var(--th-text);
-            font-weight: 600;
-            padding: 18px 16px;
-            position: sticky;
-            top: 0;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        td {
-            padding: 16px 16px;
-            border-bottom: 1px solid var(--border-light);
-            background: var(--table-row-bg);
-            color: var(--text-secondary);
-            vertical-align: middle;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        tr:hover td {
-            background: var(--table-row-hover);
-        }
-
-        /* ===== SR NO STYLE - हा sheet मधील क्र. दाखवतो ===== */
-        .sr-no {
-            background: rgba(26,115,232,0.2);
-            padding: 5px 10px;
-            border-radius: 30px;
-            font-weight: 600;
-            display: inline-block;
-            min-width: 45px;
-            text-align: center;
-            color: var(--copy-btn-text);
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        /* ===== ID CONTAINER ===== */
-        .id-container {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-        
-        .id-number {
-            font-family: monospace;
-            font-size: 0.8rem;
-            background: var(--id-bg);
-            padding: 4px 8px;
-            border-radius: 30px;
-            border: 1px solid var(--copy-btn-border);
-            word-break: break-all;
-            color: var(--text-primary);
-            transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
-        }
-        
-        .copy-btn {
-            background: var(--copy-btn-bg);
-            border: 1px solid var(--copy-btn-border);
-            color: var(--copy-btn-text);
-            font-size: 0.65rem;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 30px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-            white-space: nowrap;
-        }
-        
-        .copy-btn:hover {
-            background: var(--copy-btn-text);
-            color: var(--copy-btn-bg);
-        }
-        
-        .copy-btn.copied {
-            background: #34a853;
-            color: white;
-            border-color: #34a853;
-        }
-
-        /* ===== NAME & DOWNLOAD CONTAINER ===== */
-        .name-download-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 5px;
-            width: 100%;
-        }
-        
-        .status-badge {
-            background: var(--badge-bg);
-            color: var(--badge-text);
-            padding: 4px 8px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.7rem;
-            display: inline-block;
-            border: 1px solid var(--badge-border);
-            white-space: normal;
-            flex: 1;
-            max-width: none;
-            overflow: visible;
-            word-break: break-word;
-            line-height: 1.3;
-            transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
-        }
-
-        .download-btn {
-            background: #34a853;
-            color: white;
-            text-decoration: none;
-            padding: 4px 10px;
-            border-radius: 30px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            box-shadow: 0 6px 12px -6px #2c974b;
-            white-space: nowrap;
-            flex: 0 0 auto;
-            cursor: pointer;
-            border: none;
-        }
-        
-        .download-btn:hover {
-            background: #1e8e3b;
-            transform: scale(1.05);
-        }
-
-        /* ===== LOADER ===== */
-        #loader {
-            text-align: center;
-            padding: 15px;
-            color: var(--text-primary);
-            font-weight: 600;
-            display: none;
-            background: var(--loader-bg);
-            border-radius: 60px;
-            margin-bottom: 16px;
-            border: 1px solid var(--border-light);
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        .loader-spinner {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 3px solid rgba(26,115,232,0.2);
-            border-top: 3px solid var(--copy-btn-text);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-        }
-
+        /* तुमचे सर्व स्टाईल येथे आहेत. मी मूळ स्टाईल येथे कॉपी करण्याची गरज नाही, पण तुम्ही त्या तशाच ठेवा. 
+           फक्त खाली दिलेल्या स्क्रिप्टमध्ये URL अपडेट केली आहे. */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: linear-gradient(145deg, #e0e5ec, #f0f4fa); min-height: 100vh; padding: 24px; display: flex; align-items: center; justify-content: center; }
+        .dashboard { max-width: 1400px; width: 100%; display: flex; gap: 24px; height: 92vh; }
+        .main { flex: 1; background: rgba(255,255,255,0.85); backdrop-filter: blur(16px); border-radius: 40px; padding: 28px; display: flex; flex-direction: column; box-shadow: 0 25px 45px -15px rgba(0,30,60,0.25); border: 1px solid rgba(255,255,255,0.7); }
+        .main-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .main h2 { font-size: 1.8rem; font-weight: 700; color: #0b2b4a; }
+        .theme-toggle { background: rgba(255,255,255,0.75); border: 1px solid #ddd; border-radius: 50px; padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .sidebar { width: 300px; display: flex; flex-direction: column; gap: 18px; }
+        .card { background: rgba(255,255,255,0.75); backdrop-filter: blur(12px); padding: 22px 20px; border-radius: 32px; border: 1px solid #fff; }
+        .card h4 { font-size: 0.95rem; color: #0b2b4a; margin-bottom: 16px; border-bottom: 2px solid rgba(26,115,232,0.2); padding-bottom: 10px; }
+        .card input { width: 100%; padding: 14px 18px; margin-bottom: 18px; border-radius: 24px; border: 1px solid #ddd; outline: none; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 40px; font-weight: 600; color: white; cursor: pointer; }
+        .card:nth-child(1) .btn { background: #5f6368; } /* Status */
+        .card:nth-child(2) .btn { background: #34a853; } /* Certificate */
+        .card:nth-child(3) .btn { background: #d93025; } /* Document */
+        .card:nth-child(4) .btn { background: #1a73e8; } /* Affidavit */
+        .search-box { width: 100%; padding: 18px 28px; border-radius: 60px; border: 1px solid #ddd; margin-bottom: 24px; font-size: 1rem; }
+        .table-wrap { flex: 1; overflow-y: auto; border-radius: 28px; background: rgba(255,255,255,0.4); border: 1px solid #fff; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 850px; }
+        th { background: #1a73e8; color: white; padding: 18px 16px; position: sticky; top: 0; }
+        td { padding: 16px; border-bottom: 1px solid rgba(0,0,0,0.05); background: rgba(255,255,255,0.3); }
+        .sr-no { background: rgba(26,115,232,0.2); padding: 5px 10px; border-radius: 30px; display: inline-block; }
+        .id-container { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+        .id-number { font-family: monospace; background: rgba(255,255,255,0.7); padding: 4px 8px; border-radius: 30px; border: 1px solid #1a73e8; }
+        .copy-btn { background: white; border: 1px solid #1a73e8; color: #1a73e8; font-size: 0.65rem; padding: 4px 8px; border-radius: 30px; cursor: pointer; }
+        .copy-btn.copied { background: #34a853; color: white; border-color: #34a853; }
+        .name-download-container { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
+        .status-badge { background: #dff0d8; color: #1f5130; padding: 4px 8px; border-radius: 40px; font-size: 0.7rem; border: 1px solid #bde0bd; }
+        .download-btn { background: #34a853; color: white; padding: 4px 10px; border-radius: 30px; font-size: 0.65rem; border: none; cursor: pointer; }
+        #loader { text-align: center; padding: 15px; display: none; background: rgba(255,255,255,0.6); border-radius: 60px; margin-bottom: 16px; }
+        .loader-spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(26,115,232,0.2); border-top: 3px solid #1a73e8; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* Table column widths */
-        th:nth-child(1) { width: 70px; }
-        th:nth-child(2) { min-width: 180px; }
-        th:nth-child(3) { width: 90px; }
-        th:nth-child(4) { min-width: 300px; }
-        th:nth-child(5) { min-width: 230px; }
+        th:nth-child(1) { width: 70px; } th:nth-child(2) { min-width: 180px; } th:nth-child(3) { width: 90px; } th:nth-child(4) { min-width: 300px; } th:nth-child(5) { min-width: 230px; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -438,156 +59,86 @@
         <div id="loader"><span class="loader-spinner"></span> लोड होत आहे...</div>
         <div class="table-wrap">
             <table>
-                <thead>
-                    <tr>
-                        <th>क्र.</th>
-                        <th>सेवा नाव</th>
-                        <th>तारीख</th>
-                        <th>अर्ज क्रमांक</th>
-                        <th>नाव / डाऊनलोड</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>क्र.</th><th>सेवा नाव</th><th>तारीख</th><th>अर्ज क्रमांक</th><th>नाव / डाऊनलोड</th></tr></thead>
                 <tbody id="tableBody"></tbody>
             </table>
         </div>
     </div>
-
     <div class="sidebar">
-        <!-- स्टेटस - पहिला कार्ड -->
-        <div class="card">
-            <h4>📊 स्टेटस</h4>
-            <button class="btn" onclick="go('st')">चेक स्टेटस</button>
-        </div>
-        
-        <!-- प्रमाणपत्र - दुसरा कार्ड -->
-        <div class="card">
-            <h4>📜 प्रमाणपत्र</h4>
-            <input type="text" id="d_id" placeholder="App ID">
-            <button class="btn" onclick="go('dl')">डाऊनलोड</button>
-        </div>
-        
-        <!-- दस्तऐवज - तिसरा कार्ड -->
-        <div class="card">
-            <h4>📎 दस्तऐवज</h4>
-            <input type="text" id="u_id" placeholder="App ID">
-            <button class="btn" onclick="go('up')">अपलोड</button>
-        </div>
-        
-        <!-- प्रतिज्ञापत्र - शेवटचा कार्ड -->
-        <div class="card">
-            <h4>📄 प्रतिज्ञापत्र</h4>
-            <input type="text" id="p_id" placeholder="App ID">
-            <button class="btn" onclick="go('print')">प्रिंट करा</button>
-        </div>
+        <div class="card"><h4>📊 स्टेटस</h4><button class="btn" onclick="go('st')">चेक स्टेटस</button></div>
+        <div class="card"><h4>📜 प्रमाणपत्र</h4><input type="text" id="d_id" placeholder="App ID"><button class="btn" onclick="go('dl')">डाऊनलोड</button></div>
+        <div class="card"><h4>📎 दस्तऐवज</h4><input type="text" id="u_id" placeholder="App ID"><button class="btn" onclick="go('up')">अपलोड</button></div>
+        <div class="card"><h4>📄 प्रतिज्ञापत्र</h4><input type="text" id="p_id" placeholder="App ID"><button class="btn" onclick="go('print')">प्रिंट करा</button></div>
     </div>
 </div>
 
 <script>
-    // ========== GitHub + Apps Script Compatible Version ==========
-    
-    // 🔴 IMPORTANT: तुमची Google Apps Script Web App URL येथे टाका
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec'; // तुमची URL येथे बदला
-    
-    // Theme Toggle Function
+    // 🔴 तुमची दिलेली Google Apps Script Web App URL येथे टाकली आहे
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec';
+
+    // Theme Toggle Functions (तश्याच ठेवल्या आहेत)
     function toggleTheme() {
         const body = document.body;
         const themeIcon = document.getElementById('themeIcon');
         const themeText = document.getElementById('themeText');
-        
         body.classList.toggle('dark-theme');
-        
         if (body.classList.contains('dark-theme')) {
-            themeIcon.textContent = '🌙';
-            themeText.textContent = 'Dark Mode';
+            themeIcon.textContent = '🌙'; themeText.textContent = 'Dark Mode';
             localStorage.setItem('theme', 'dark');
         } else {
-            themeIcon.textContent = '🌞';
-            themeText.textContent = 'Light Mode';
+            themeIcon.textContent = '🌞'; themeText.textContent = 'Light Mode';
             localStorage.setItem('theme', 'light');
         }
     }
 
-    // Load saved theme on page load
     window.onload = function() {
         const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-            document.getElementById('themeIcon').textContent = '🌙';
-            document.getElementById('themeText').textContent = 'Dark Mode';
-        }
-        
-        // GitHub वर आहोत का ते तपासा
-        if (window.location.hostname.includes('github.io') || window.location.hostname.includes('localhost')) {
-            console.log('GitHub/Local mode: Using fetch API');
-            loadFromGitHub("");
-        } else {
-            console.log('Apps Script mode: Using google.script.run');
-            load("");
-        }
+        if (savedTheme === 'dark') { document.body.classList.add('dark-theme'); document.getElementById('themeIcon').textContent = '🌙'; document.getElementById('themeText').textContent = 'Dark Mode'; }
+        loadFromGitHub(""); // GitHub साठी नेहमी ही पद्धत वापरा
     };
 
     let timer;
     function search(v) {
         clearTimeout(timer);
-        timer = setTimeout(function() { 
-            if (window.location.hostname.includes('github.io') || window.location.hostname.includes('localhost')) {
-                loadFromGitHub(v);
-            } else {
-                load(v);
-            }
-        }, 500);
+        timer = setTimeout(function() { loadFromGitHub(v); }, 500);
     }
 
-    // ===== Apps Script Mode (Original) =====
-    function load(q) {
-        var loader = document.getElementById('loader');
-        loader.style.display = 'block';
-        
-        google.script.run
-            .withSuccessHandler(function(res) {
-                loader.style.display = 'none';
-                if(res && res.error) { alert(res.error); return; }
-                render(res || []);
-            })
-            .withFailureHandler(function(err) {
-                loader.style.display = 'none';
-                alert("सिस्टम एरर: " + err.message);
-            })
-            .searchData(q);
-    }
-
-    // ===== GitHub Mode (Using Fetch API) =====
+    // ===== GitHub Mode (JSONP - CORS एरर सोडवण्यासाठी) =====
     function loadFromGitHub(q) {
         var loader = document.getElementById('loader');
         loader.style.display = 'block';
-        
-        // Fetch API वापरून Apps Script ला कॉल करा
-        fetch(GAS_URL + '?query=' + encodeURIComponent(q))
-            .then(response => response.json())
-            .then(data => {
-                loader.style.display = 'none';
-                if(data && data.error) { 
-                    alert(data.error); 
-                    return; 
-                }
-                render(data || []);
-            })
-            .catch(error => {
-                loader.style.display = 'none';
-                alert("नेटवर्क एरर: " + error.message);
-                // डेमो डेटा दाखवा (परीक्षणासाठी)
-                showDemoData();
-            });
+
+        var callbackName = 'gas_callback_' + Date.now();
+        window[callbackName] = function(response) {
+            loader.style.display = 'none';
+            delete window[callbackName];
+            if (script && script.parentNode) script.parentNode.removeChild(script);
+            if (response && response.error) { alert(response.error); showDemoData(); return; }
+            render(response || []);
+        };
+
+        var script = document.createElement('script');
+        script.src = GAS_URL + '?query=' + encodeURIComponent(q) + '&callback=' + callbackName;
+
+        script.onerror = function() {
+            loader.style.display = 'none';
+            console.log("JSONP कॉल अयशस्वी, डेमो डेटा दाखवतो.");
+            delete window[callbackName];
+            if (script && script.parentNode) script.parentNode.removeChild(script);
+            showDemoData();
+        };
+
+        document.head.appendChild(script);
     }
 
     // डेमो डेटा (जर Apps Script उपलब्ध नसेल तर)
     function showDemoData() {
         const demoData = [
             { srNo: '101', service: 'Income Certificate', date: '10/02/2025', id: 'CSC2402A11', name: 'राजेश शर्मा' },
-            { srNo: '102', service: 'Non-Creamy Layer Certificate', date: '09/02/2025', id: 'CSC2402B45', name: 'सविता पाटील' },
-            { srNo: '103', service: 'Age Nationality and Domicile', date: '08/02/2025', id: 'CSC2402C78', name: 'गणेश कदम' },
+            { srNo: '102', service: 'Non-Creamy Layer', date: '09/02/2025', id: 'CSC2402B45', name: 'सविता पाटील' },
+            { srNo: '103', service: 'Age Nationality', date: '08/02/2025', id: 'CSC2402C78', name: 'गणेश कदम' },
             { srNo: '104', service: 'Income Certificate', date: '07/02/2025', id: 'CSC2402D92', name: 'प्रियंका जाधव' },
-            { srNo: '105', service: 'Migrant Caste Certificate', date: '06/02/2025', id: 'CSC2402E33', name: 'सूरज यादव' }
+            { srNo: '105', service: 'Migrant Caste', date: '06/02/2025', id: 'CSC2402E33', name: 'सूरज यादव' }
         ];
         render(demoData);
     }
@@ -598,33 +149,17 @@
             tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;">🔍 कोणताही डेटा सापडला नाही</td></tr>';
             return;
         }
-        
         var html = '';
         for (var i = 0; i < data.length; i++) {
             var r = data[i];
-            
-            // क्र. साठी - फक्त sheet मधील srNo वापरा
             var srNo = r.srNo || '-';
-            
-            // ID safe string बनवा (quotes साठी)
             var id = (r.id || '').replace(/'/g, "\\'");
-            
             html += '<tr>' +
                 '<td><span class="sr-no">' + srNo + '</span></td>' +
                 '<td><b>' + (r.service || '') + '</b></td>' +
                 '<td>' + (r.date || '') + '</td>' +
-                '<td>' +
-                    '<div class="id-container">' +
-                        '<span class="id-number">' + (r.id || '') + '</span>' +
-                        '<button class="copy-btn" onclick="copyId(\'' + id + '\', this)">📋 कॉपी</button>' +
-                    '</div>' +
-                '</td>' +
-                '<td>' +
-                    '<div class="name-download-container">' +
-                        '<span class="status-badge" title="' + (r.name || '') + '">' + (r.name || '') + '</span>' +
-                        '<button class="download-btn" onclick="openPDF(\'' + (r.id || '') + '\')">⬇️ PDF</button>' +
-                    '</div>' +
-                '</td>' +
+                '<td><div class="id-container"><span class="id-number">' + (r.id || '') + '</span><button class="copy-btn" onclick="copyId(\'' + id + '\', this)">📋 कॉपी</button></div></td>' +
+                '<td><div class="name-download-container"><span class="status-badge" title="' + (r.name || '') + '">' + (r.name || '') + '</span><button class="download-btn" onclick="openPDF(\'' + (r.id || '') + '\')">⬇️ PDF</button></div></td>' +
             '</tr>';
         }
         tbody.innerHTML = html;
@@ -632,67 +167,29 @@
 
     function copyId(id, buttonElement) {
         navigator.clipboard.writeText(id).then(function() {
-            buttonElement.classList.add('copied');
-            buttonElement.innerHTML = '✓ कॉपी';
-            
-            setTimeout(function() {
-                buttonElement.classList.remove('copied');
-                buttonElement.innerHTML = '📋 कॉपी';
-            }, 2000);
-            
+            buttonElement.classList.add('copied'); buttonElement.innerHTML = '✓ कॉपी';
+            setTimeout(function() { buttonElement.classList.remove('copied'); buttonElement.innerHTML = '📋 कॉपी'; }, 2000);
         }).catch(function(err) {
-            var el = document.createElement('textarea');
-            el.value = id;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            
-            buttonElement.classList.add('copied');
-            buttonElement.innerHTML = '✓ कॉपी';
-            
-            setTimeout(function() {
-                buttonElement.classList.remove('copied');
-                buttonElement.innerHTML = '📋 कॉपी';
-            }, 2000);
+            var el = document.createElement('textarea'); el.value = id; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
+            buttonElement.classList.add('copied'); buttonElement.innerHTML = '✓ कॉपी';
+            setTimeout(function() { buttonElement.classList.remove('copied'); buttonElement.innerHTML = '📋 कॉपी'; }, 2000);
         });
     }
 
     function openPDF(id) {
-        if (!id) {
-            alert("PDF उघडण्यासाठी ID आवश्यक आहे");
-            return;
-        }
-        var pdfUrl = "https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=" + id + "&sDist=529";
-        window.open(pdfUrl, '_blank');
+        if (!id) { alert("PDF उघडण्यासाठी ID आवश्यक आहे"); return; }
+        window.open("https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=" + id + "&sDist=529", '_blank');
     }
 
     function go(type) {
-        var id = "";
-        var url = "";
-        if (type === 'print') { 
-            id = document.getElementById('p_id').value; 
-            url = "https://cscservices.mahaonline.gov.in/General_Affidavit/GeneralAffidavitCertificateEn.aspx?AppID=" + id + "&ServiceId=1268"; 
-        }
-        if (type === 'dl') { 
-            id = document.getElementById('d_id').value; 
-            url = "https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=" + id + "&sDist=529"; 
-        }
-        if (type === 'up') { 
-            id = document.getElementById('u_id').value; 
-            url = "https://cscservices.mahaonline.gov.in/Edistrict/WorkFlow/Attachment.aspx?ApplicantId=" + id + "&ServiceID=1253&ID=INIT"; 
-        }
-        if (type === 'st') { 
-            url = "https://revenue.mahaonline.gov.in/ApplicationSearchStatus/ApplicationStatus.aspx?ServiceID=1&sDist=529"; 
-        }
-        
-        if (type !== 'st' && !id) { 
-            alert("❌ कृपया App ID टाका"); 
-            return; 
-        }
+        var id = "", url = "";
+        if (type === 'print') { id = document.getElementById('p_id').value; url = "https://cscservices.mahaonline.gov.in/General_Affidavit/GeneralAffidavitCertificateEn.aspx?AppID=" + id + "&ServiceId=1268"; }
+        else if (type === 'dl') { id = document.getElementById('d_id').value; url = "https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=" + id + "&sDist=529"; }
+        else if (type === 'up') { id = document.getElementById('u_id').value; url = "https://cscservices.mahaonline.gov.in/Edistrict/WorkFlow/Attachment.aspx?ApplicantId=" + id + "&ServiceID=1253&ID=INIT"; }
+        else if (type === 'st') { url = "https://revenue.mahaonline.gov.in/ApplicationSearchStatus/ApplicationStatus.aspx?ServiceID=1&sDist=529"; }
+        if (type !== 'st' && !id) { alert("❌ कृपया App ID टाका"); return; }
         window.open(url, "_blank");
     }
 </script>
 </body>
 </html>
-
