@@ -293,10 +293,6 @@
         }
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        #gas-iframe {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -351,13 +347,11 @@
     </div>
 </div>
 
-<iframe id="gas-iframe" name="gas-iframe"></iframe>
-
 <script>
-    // 🔴 तुमची Apps Script URL येथे टाका
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec';
+    // 🔴 येथे तुमची Google Sheet ची URL टाका (पायरी 2 मधील)
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSJYD8WoQCixMu3zKw75gtszSB-afRR2sFWEc8N862atbprHVKklvoVgMBvE96bLhn37fI6bxoCAYna/gviz/tq?tqx=out:json';
     
-    let currentCallback = null;
+    let allData = [];
 
     function toggleTheme() {
         document.body.classList.toggle('dark-theme');
@@ -373,64 +367,63 @@
             document.getElementById('themeIcon').textContent = '🌙';
             document.getElementById('themeText').textContent = 'Dark Mode';
         }
-        
-        // पहिला डेटा लोड करा
-        loadData("");
+        loadSheetData();
     };
 
     let timer;
     function search(v) {
         clearTimeout(timer);
-        timer = setTimeout(() => loadData(v), 500);
+        timer = setTimeout(() => {
+            const filtered = allData.filter(row => 
+                (row.name && row.name.toLowerCase().includes(v.toLowerCase())) ||
+                (row.id && row.id.toLowerCase().includes(v.toLowerCase()))
+            );
+            render(filtered);
+        }, 500);
     }
 
-    // ===== IFrame API पद्धत - १००% काम करेल =====
-    function loadData(query) {
+    function loadSheetData() {
         const loader = document.getElementById('loader');
         loader.style.display = 'block';
 
-        // युनिक कॉलबॅक नाव
-        const callbackId = 'callback_' + Date.now();
-        currentCallback = callbackId;
-
-        // कॉलबॅक फंक्शन तयार करा
-        window[callbackId] = function(response) {
-            loader.style.display = 'none';
-            delete window[callbackId];
-            
-            if (response && !response.error) {
-                render(response);
-            } else {
-                console.error('Error:', response?.error);
+        fetch(SHEET_URL)
+            .then(response => response.text())
+            .then(data => {
+                // JSONP response parse करा
+                const jsonData = JSON.parse(data.substring(47).slice(0, -2));
+                const rows = jsonData.table.rows;
+                
+                allData = rows.map((row, index) => {
+                    const cells = row.c;
+                    return {
+                        srNo: cells[0]?.v || (index + 1),
+                        service: cells[1]?.v || '-',
+                        date: cells[2]?.v || '-',
+                        id: cells[3]?.v || '-',
+                        name: cells[4]?.v || '-'
+                    };
+                });
+                
+                loader.style.display = 'none';
+                render(allData);
+            })
+            .catch(error => {
+                loader.style.display = 'none';
+                console.error('Error:', error);
                 // डेमो डेटा दाखवा
                 showDemoData();
-            }
-        };
-
-        // IFrame तयार करा
-        const iframe = document.getElementById('gas-iframe');
-        iframe.src = GAS_URL + '?query=' + encodeURIComponent(query) + '&callback=' + callbackId;
-        
-        // टाइमआउट
-        setTimeout(() => {
-            if (window[callbackId]) {
-                loader.style.display = 'none';
-                delete window[callbackId];
-                showDemoData();
-            }
-        }, 10000);
+            });
     }
 
-    // डेमो डेटा (जर API उपलब्ध नसेल तर)
     function showDemoData() {
-        const demoData = [
+        allData = [
             { srNo: '101', service: 'Income Certificate', date: '10/02/2025', id: 'CSC2402A11', name: 'राजेश शर्मा' },
             { srNo: '102', service: 'Non-Creamy Layer', date: '09/02/2025', id: 'CSC2402B45', name: 'सविता पाटील' },
             { srNo: '103', service: 'Age Nationality', date: '08/02/2025', id: 'CSC2402C78', name: 'गणेश कदम' },
             { srNo: '104', service: 'Income Certificate', date: '07/02/2025', id: 'CSC2402D92', name: 'प्रियंका जाधव' },
             { srNo: '105', service: 'Migrant Caste', date: '06/02/2025', id: 'CSC2402E33', name: 'सूरज यादव' }
         ];
-        render(demoData);
+        render(allData);
     }
 
     function render(data) {
