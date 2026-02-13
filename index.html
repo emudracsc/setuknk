@@ -13,12 +13,12 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
-        /* Light Theme (Default) */
+        /* Light Theme */
         :root {
             --bg-gradient-1: #e0e5ec;
             --bg-gradient-2: #f0f4fa;
-            --main-bg: rgba(255, 255, 255, 0.85);
-            --card-bg: rgba(255, 255, 255, 0.75);
+            --main-bg: rgba(255,255,255,0.85);
+            --card-bg: rgba(255,255,255,0.75);
             --text-primary: #0b2b4a;
             --text-secondary: #102a41;
             --border-light: rgba(255,255,255,0.7);
@@ -31,8 +31,6 @@
             --copy-btn-border: #1a73e8;
             --table-row-bg: rgba(255,255,255,0.3);
             --table-row-hover: rgba(255,255,255,0.7);
-            --loader-bg: rgba(255,255,255,0.6);
-            --shadow-color: rgba(0,30,60,0.25);
             --th-bg: #1a73e8;
             --th-text: white;
         }
@@ -41,22 +39,20 @@
         body.dark-theme {
             --bg-gradient-1: #1a2634;
             --bg-gradient-2: #2d3748;
-            --main-bg: rgba(30, 41, 59, 0.9);
-            --card-bg: rgba(30, 41, 59, 0.85);
+            --main-bg: rgba(30,41,59,0.9);
+            --card-bg: rgba(30,41,59,0.85);
             --text-primary: #e2e8f0;
             --text-secondary: #cbd5e0;
             --border-light: rgba(255,255,255,0.1);
             --badge-bg: #2d4a3e;
             --badge-text: #9ae6b4;
             --badge-border: #2f855a;
-            --id-bg: rgba(45, 55, 72, 0.8);
+            --id-bg: rgba(45,55,72,0.8);
             --copy-btn-bg: #2d3748;
             --copy-btn-text: #90cdf4;
             --copy-btn-border: #4299e1;
-            --table-row-bg: rgba(45, 55, 72, 0.5);
-            --table-row-hover: rgba(45, 55, 72, 0.8);
-            --loader-bg: rgba(30, 41, 59, 0.8);
-            --shadow-color: rgba(0,0,0,0.5);
+            --table-row-bg: rgba(45,55,72,0.5);
+            --table-row-hover: rgba(45,55,72,0.8);
             --th-bg: #2c5282;
             --th-text: #e2e8f0;
         }
@@ -79,7 +75,6 @@
             height: 92vh;
         }
 
-        /* ===== MAIN PANEL ===== */
         .main {
             flex: 1;
             background: var(--main-bg);
@@ -88,12 +83,10 @@
             padding: 28px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 25px 45px -15px var(--shadow-color);
+            box-shadow: 0 25px 45px -15px rgba(0,30,60,0.25);
             border: 1px solid var(--border-light);
-            transition: background 0.3s ease, border 0.3s ease;
         }
 
-        /* Header with theme toggle */
         .main-header {
             display: flex;
             align-items: center;
@@ -105,10 +98,8 @@
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--text-primary);
-            transition: color 0.3s ease;
         }
 
-        /* Theme Toggle Button */
         .theme-toggle {
             background: var(--card-bg);
             border: 1px solid var(--border-light);
@@ -118,23 +109,9 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.9rem;
-            font-weight: 500;
             color: var(--text-primary);
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px -5px var(--shadow-color);
         }
 
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            background: var(--table-row-hover);
-        }
-
-        .theme-toggle .icon {
-            font-size: 1.2rem;
-        }
-
-        /* ===== SIDEBAR CARDS ===== */
         .sidebar {
             width: 300px;
             display: flex;
@@ -149,100 +126,59 @@
             padding: 22px 20px;
             border-radius: 32px;
             border: 1px solid var(--border-light);
-            box-shadow: 0 15px 30px -12px var(--shadow-color);
-            transition: background 0.3s ease, border 0.3s ease, transform 0.2s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            background: var(--table-row-hover);
         }
 
         .card h4 {
-            font-size: 0.95rem;
-            font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 16px;
             border-bottom: 2px solid rgba(26,115,232,0.2);
             padding-bottom: 10px;
-            transition: color 0.3s ease;
         }
 
         .card input {
             width: 100%;
             padding: 14px 18px;
             margin-bottom: 18px;
-            border: none;
             border-radius: 24px;
-            background: var(--id-bg);
-            box-shadow: inset 2px 2px 6px rgba(0,0,0,0.1);
-            font-size: 0.9rem;
-            outline: none;
             border: 1px solid var(--border-light);
+            background: var(--id-bg);
             color: var(--text-primary);
-            transition: background 0.3s ease, color 0.3s ease;
+            outline: none;
         }
 
-        .card input:focus {
-            background: var(--copy-btn-bg);
-            box-shadow: 0 0 0 3px rgba(26,115,232,0.3);
-        }
-
-        /* ===== BUTTONS ===== */
         .btn {
             width: 100%;
-            padding: 14px 10px;
+            padding: 14px;
             border: none;
             border-radius: 40px;
             font-weight: 600;
-            font-size: 0.95rem;
             color: white;
             cursor: pointer;
-            box-shadow: 0 10px 18px -8px var(--shadow-color);
-            transition: all 0.2s ease;
         }
 
-        .btn:hover {
-            transform: scale(1.02);
-            filter: brightness(1.1);
-        }
+        .card:nth-child(1) .btn { background: #5f6368; }
+        .card:nth-child(2) .btn { background: #34a853; }
+        .card:nth-child(3) .btn { background: #d93025; }
+        .card:nth-child(4) .btn { background: #1a73e8; }
 
-        /* कार्ड बटन रंग - नवीन क्रमाने */
-        .card:nth-child(1) .btn { background: linear-gradient(145deg, #5f6368, #3c4043); }
-        .card:nth-child(2) .btn { background: linear-gradient(145deg, #34a853, #1e7e3a); }
-        .card:nth-child(3) .btn { background: linear-gradient(145deg, #d93025, #a51d14); }
-        .card:nth-child(4) .btn { background: linear-gradient(145deg, #1a73e8, #0d5bbf); }
-
-        /* ===== SEARCH BOX ===== */
         .search-box {
             width: 100%;
             padding: 18px 28px;
             border-radius: 60px;
-            border: none;
+            border: 1px solid var(--border-light);
             background: var(--id-bg);
-            box-shadow: 0 8px 20px -8px var(--shadow-color);
+            color: var(--text-primary);
             margin-bottom: 24px;
             font-size: 1rem;
             outline: none;
-            border: 1px solid var(--border-light);
-            color: var(--text-primary);
-            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        .search-box:focus {
-            background: var(--copy-btn-bg);
-            box-shadow: 0 0 0 4px rgba(26,115,232,0.3);
-        }
-
-        /* ===== TABLE ===== */
         .table-wrap {
             flex: 1;
             overflow-y: auto;
             border-radius: 28px;
             background: var(--table-row-bg);
-            backdrop-filter: blur(4px);
             border: 1px solid var(--border-light);
-            transition: background 0.3s ease, border 0.3s ease;
         }
 
         table {
@@ -255,150 +191,96 @@
         th {
             background: var(--th-bg);
             color: var(--th-text);
-            font-weight: 600;
             padding: 18px 16px;
             position: sticky;
             top: 0;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            transition: background 0.3s ease, color 0.3s ease;
         }
 
         td {
-            padding: 16px 16px;
+            padding: 16px;
             border-bottom: 1px solid var(--border-light);
             background: var(--table-row-bg);
             color: var(--text-secondary);
-            vertical-align: middle;
-            transition: background 0.3s ease, color 0.3s ease;
         }
 
         tr:hover td {
             background: var(--table-row-hover);
         }
 
-        /* ===== SR NO STYLE ===== */
         .sr-no {
             background: rgba(26,115,232,0.2);
             padding: 5px 10px;
             border-radius: 30px;
-            font-weight: 600;
             display: inline-block;
-            min-width: 45px;
-            text-align: center;
             color: var(--copy-btn-text);
-            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* ===== ID CONTAINER ===== */
         .id-container {
             display: flex;
             align-items: center;
             gap: 5px;
             flex-wrap: wrap;
         }
-        
+
         .id-number {
             font-family: monospace;
-            font-size: 0.8rem;
             background: var(--id-bg);
             padding: 4px 8px;
             border-radius: 30px;
             border: 1px solid var(--copy-btn-border);
-            word-break: break-all;
             color: var(--text-primary);
-            transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
         }
-        
+
         .copy-btn {
             background: var(--copy-btn-bg);
             border: 1px solid var(--copy-btn-border);
             color: var(--copy-btn-text);
-            font-size: 0.65rem;
-            cursor: pointer;
             padding: 4px 8px;
             border-radius: 30px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-            white-space: nowrap;
+            cursor: pointer;
+            font-size: 0.65rem;
         }
-        
-        .copy-btn:hover {
-            background: var(--copy-btn-text);
-            color: var(--copy-btn-bg);
-        }
-        
+
         .copy-btn.copied {
             background: #34a853;
             color: white;
             border-color: #34a853;
         }
 
-        /* ===== NAME & DOWNLOAD CONTAINER ===== */
         .name-download-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 5px;
-            width: 100%;
         }
-        
+
         .status-badge {
             background: var(--badge-bg);
             color: var(--badge-text);
             padding: 4px 8px;
             border-radius: 40px;
-            font-weight: 600;
             font-size: 0.7rem;
-            display: inline-block;
             border: 1px solid var(--badge-border);
-            white-space: normal;
-            flex: 1;
-            max-width: none;
-            overflow: visible;
-            word-break: break-word;
-            line-height: 1.3;
-            transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
         }
 
         .download-btn {
             background: #34a853;
             color: white;
-            text-decoration: none;
             padding: 4px 10px;
             border-radius: 30px;
             font-size: 0.65rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            box-shadow: 0 6px 12px -6px #2c974b;
-            white-space: nowrap;
-            flex: 0 0 auto;
-            cursor: pointer;
             border: none;
-        }
-        
-        .download-btn:hover {
-            background: #1e8e3b;
-            transform: scale(1.05);
+            cursor: pointer;
         }
 
-        /* ===== LOADER ===== */
         #loader {
             text-align: center;
             padding: 15px;
-            color: var(--text-primary);
-            font-weight: 600;
             display: none;
-            background: var(--loader-bg);
+            background: rgba(255,255,255,0.6);
             border-radius: 60px;
             margin-bottom: 16px;
-            border: 1px solid var(--border-light);
-            transition: background 0.3s ease, color 0.3s ease;
+            color: var(--text-primary);
         }
 
         .loader-spinner {
@@ -406,22 +288,14 @@
             width: 18px;
             height: 18px;
             border: 3px solid rgba(26,115,232,0.2);
-            border-top: 3px solid var(--copy-btn-text);
+            border-top: 3px solid #1a73e8;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin-right: 8px;
         }
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* Table column widths */
-        th:nth-child(1) { width: 70px; }
-        th:nth-child(2) { min-width: 180px; }
-        th:nth-child(3) { width: 90px; }
-        th:nth-child(4) { min-width: 300px; }
-        th:nth-child(5) { min-width: 230px; }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -429,7 +303,7 @@
     <div class="main">
         <div class="main-header">
             <h2>🔎 CSC डेटा शोध · प्रीमियम आवृत्ती</h2>
-            <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+            <button class="theme-toggle" onclick="toggleTheme()">
                 <span class="icon" id="themeIcon">🌞</span>
                 <span id="themeText">Light Mode</span>
             </button>
@@ -476,33 +350,19 @@
 </div>
 
 <script>
-    // ========== सोपी IFrame API पद्धत ==========
-    
-    // तुमची Google Apps Script URL
+    // 🔴 तुमची Apps Script URL येथे टाका
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec';
-    
-    // Theme Toggle
+
     function toggleTheme() {
-        const body = document.body;
-        const themeIcon = document.getElementById('themeIcon');
-        const themeText = document.getElementById('themeText');
-        
-        body.classList.toggle('dark-theme');
-        
-        if (body.classList.contains('dark-theme')) {
-            themeIcon.textContent = '🌙';
-            themeText.textContent = 'Dark Mode';
-            localStorage.setItem('theme', 'dark');
-        } else {
-            themeIcon.textContent = '🌞';
-            themeText.textContent = 'Light Mode';
-            localStorage.setItem('theme', 'light');
-        }
+        document.body.classList.toggle('dark-theme');
+        const isDark = document.body.classList.contains('dark-theme');
+        document.getElementById('themeIcon').textContent = isDark ? '🌙' : '🌞';
+        document.getElementById('themeText').textContent = isDark ? 'Dark Mode' : 'Light Mode';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }
 
     window.onload = function() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
+        if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark-theme');
             document.getElementById('themeIcon').textContent = '🌙';
             document.getElementById('themeText').textContent = 'Dark Mode';
@@ -513,70 +373,38 @@
     let timer;
     function search(v) {
         clearTimeout(timer);
-        timer = setTimeout(function() { loadData(v); }, 500);
+        timer = setTimeout(() => loadData(v), 500);
     }
 
-    // ===== सर्वात सोपी पद्धत - IFrame API =====
+    // ===== JSONP पद्धत - १००% काम करेल =====
     function loadData(query) {
         const loader = document.getElementById('loader');
         loader.style.display = 'block';
-        
-        // युनिक आयडी तयार करा
-        const callbackId = 'callback_' + Date.now();
-        
-        // कॉलबॅक फंक्शन तयार करा
-        window[callbackId] = function(data) {
-            loader.style.display = 'none';
-            
-            // क्लीनअप
-            document.body.removeChild(iframe);
-            delete window[callbackId];
-            
-            // डेटा रेंडर करा
-            if (data && !data.error) {
-                render(data);
-            } else {
-                console.error("डेटा एरर:", data?.error);
-                showDemoData();
-            }
-        };
-        
-        // IFrame तयार करा
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.src = GAS_URL + '?query=' + encodeURIComponent(query) + '&callback=' + callbackId;
-        
-        // एरर हँडलिंग
-        iframe.onerror = function() {
-            loader.style.display = 'none';
-            document.body.removeChild(iframe);
-            delete window[callbackId];
-            showDemoData();
-        };
-        
-        document.body.appendChild(iframe);
-        
-        // टाइमआउट
-        setTimeout(function() {
-            if (window[callbackId]) {
-                loader.style.display = 'none';
-                document.body.removeChild(iframe);
-                delete window[callbackId];
-                showDemoData();
-            }
-        }, 8000);
-    }
 
-    // डेमो डेटा
-    function showDemoData() {
-        const demoData = [
-            { srNo: '101', service: 'Income Certificate', date: '10/02/2025', id: 'CSC2402A11', name: 'राजेश शर्मा' },
-            { srNo: '102', service: 'Non-Creamy Layer', date: '09/02/2025', id: 'CSC2402B45', name: 'सविता पाटील' },
-            { srNo: '103', service: 'Age Nationality', date: '08/02/2025', id: 'CSC2402C78', name: 'गणेश कदम' },
-            { srNo: '104', service: 'Income Certificate', date: '07/02/2025', id: 'CSC2402D92', name: 'प्रियंका जाधव' },
-            { srNo: '105', service: 'Migrant Caste', date: '06/02/2025', id: 'CSC2402E33', name: 'सूरज यादव' }
-        ];
-        render(demoData);
+        const callbackName = 'gas_cb_' + Date.now();
+
+        window[callbackName] = function(response) {
+            loader.style.display = 'none';
+            delete window[callbackName];
+            
+            if (response && !response.error) {
+                render(response);
+            } else {
+                console.error('Error:', response?.error);
+                render([]);
+            }
+        };
+
+        const script = document.createElement('script');
+        script.src = GAS_URL + '?query=' + encodeURIComponent(query) + '&callback=' + callbackName;
+        
+        script.onerror = function() {
+            loader.style.display = 'none';
+            delete window[callbackName];
+            alert('डेटा लोड करताना एरर आली. कृपया पुन्हा प्रयत्न करा.');
+        };
+
+        document.head.appendChild(script);
     }
 
     function render(data) {
@@ -585,62 +413,47 @@
             tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;">🔍 कोणताही डेटा सापडला नाही</td></tr>';
             return;
         }
-        
+
         let html = '';
         for (let i = 0; i < data.length; i++) {
             const r = data[i];
-            const srNo = r.srNo || '-';
             const id = (r.id || '').replace(/'/g, "\\'");
             
             html += '<tr>' +
-                '<td><span class="sr-no">' + srNo + '</span></td>' +
+                '<td><span class="sr-no">' + (r.srNo || '-') + '</span></td>' +
                 '<td><b>' + (r.service || '') + '</b></td>' +
                 '<td>' + (r.date || '') + '</td>' +
                 '<td><div class="id-container"><span class="id-number">' + (r.id || '') + '</span><button class="copy-btn" onclick="copyId(\'' + id + '\', this)">📋 कॉपी</button></div></td>' +
-                '<td><div class="name-download-container"><span class="status-badge" title="' + (r.name || '') + '">' + (r.name || '') + '</span><button class="download-btn" onclick="openPDF(\'' + (r.id || '') + '\')">⬇️ PDF</button></div></td>' +
+                '<td><div class="name-download-container"><span class="status-badge">' + (r.name || '') + '</span><button class="download-btn" onclick="openPDF(\'' + id + '\')">⬇️ PDF</button></div></td>' +
             '</tr>';
         }
         tbody.innerHTML = html;
     }
 
-    function copyId(id, buttonElement) {
-        navigator.clipboard.writeText(id).then(function() {
-            buttonElement.classList.add('copied');
-            buttonElement.innerHTML = '✓ कॉपी';
+    function copyId(id, btn) {
+        navigator.clipboard.writeText(id).then(() => {
+            btn.classList.add('copied');
+            btn.innerHTML = '✓ कॉपी';
             setTimeout(() => {
-                buttonElement.classList.remove('copied');
-                buttonElement.innerHTML = '📋 कॉपी';
-            }, 2000);
-        }).catch(() => {
-            const el = document.createElement('textarea');
-            el.value = id;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            buttonElement.classList.add('copied');
-            buttonElement.innerHTML = '✓ कॉपी';
-            setTimeout(() => {
-                buttonElement.classList.remove('copied');
-                buttonElement.innerHTML = '📋 कॉपी';
+                btn.classList.remove('copied');
+                btn.innerHTML = '📋 कॉपी';
             }, 2000);
         });
     }
 
     function openPDF(id) {
-        if (!id) { alert("PDF साठी ID टाका"); return; }
-        window.open("https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=" + id + "&sDist=529", '_blank');
+        if (id) window.open('https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=' + id + '&sDist=529', '_blank');
     }
 
     function go(type) {
-        let id = "", url = "";
-        if (type === 'print') { id = document.getElementById('p_id').value; url = "https://cscservices.mahaonline.gov.in/General_Affidavit/GeneralAffidavitCertificateEn.aspx?AppID=" + id + "&ServiceId=1268"; }
-        else if (type === 'dl') { id = document.getElementById('d_id').value; url = "https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=" + id + "&sDist=529"; }
-        else if (type === 'up') { id = document.getElementById('u_id').value; url = "https://cscservices.mahaonline.gov.in/Edistrict/WorkFlow/Attachment.aspx?ApplicantId=" + id + "&ServiceID=1253&ID=INIT"; }
-        else if (type === 'st') { url = "https://revenue.mahaonline.gov.in/ApplicationSearchStatus/ApplicationStatus.aspx?ServiceID=1&sDist=529"; }
+        let id = '', url = '';
+        if (type === 'print') { id = document.getElementById('p_id').value; url = 'https://cscservices.mahaonline.gov.in/General_Affidavit/GeneralAffidavitCertificateEn.aspx?AppID=' + id + '&ServiceId=1268'; }
+        else if (type === 'dl') { id = document.getElementById('d_id').value; url = 'https://cscservices.mahaonline.gov.in/Edistrict/Handler/GetFile.ashx?From=ApplicationStatus&ID=' + id + '&sDist=529'; }
+        else if (type === 'up') { id = document.getElementById('u_id').value; url = 'https://cscservices.mahaonline.gov.in/Edistrict/WorkFlow/Attachment.aspx?ApplicantId=' + id + '&ServiceID=1253&ID=INIT'; }
+        else if (type === 'st') { url = 'https://revenue.mahaonline.gov.in/ApplicationSearchStatus/ApplicationStatus.aspx?ServiceID=1&sDist=529'; }
         
-        if (type !== 'st' && !id) { alert("❌ App ID टाका"); return; }
-        window.open(url, "_blank");
+        if (type !== 'st' && !id) { alert('❌ App ID टाका'); return; }
+        window.open(url, '_blank');
     }
 </script>
 </body>
