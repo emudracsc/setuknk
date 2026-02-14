@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSC प्रीमियम · ग्राफिक्स डॅशबोर्ड</title>
+    <title>CSC प्रीमियम · 3D सेंटर डॅशबोर्ड</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,7 @@
             overflow-x: hidden;
         }
 
-        /* ===== ADVANCED GRAPHICS BACKGROUND ===== */
+        /* Advanced graphics background */
         .orb {
             position: fixed;
             border-radius: 50%;
@@ -61,7 +61,6 @@
             100% { transform: translate(-90px, 40px) scale(1.2); }
         }
 
-        /* subtle grid overlay */
         .grid-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -73,7 +72,7 @@
             pointer-events: none;
         }
 
-        /* ===== MAIN GLASS CARD ===== */
+        /* Main glass card */
         .dashboard {
             max-width: 1100px;
             width: 100%;
@@ -85,12 +84,13 @@
             padding: 3rem 2.5rem;
             box-shadow: 0 35px 75px -15px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.06);
             transition: border-color 0.3s;
+            text-align: center; /* Everything center aligned */
         }
         .dashboard:hover {
             border-color: rgba(168, 85, 247, 0.5);
         }
 
-        /* ===== 3D ICON SECTION ===== */
+        /* 3D icon section */
         .icon-3d {
             width: 95px;
             height: 95px;
@@ -114,7 +114,7 @@
             box-shadow: 0 35px 55px -8px #4f46e5, 0 0 0 4px rgba(255,255,255,0.2) inset;
         }
 
-        /* ===== TYPOGRAPHY ===== */
+        /* Center aligned heading */
         h1 {
             font-size: clamp(2.4rem, 7vw, 4rem);
             font-weight: 800;
@@ -126,6 +126,7 @@
             line-height: 1.1;
             text-shadow: 0 2px 10px rgba(255,255,255,0.1);
             margin-bottom: 6px;
+            text-align: center; /* Explicit center */
         }
 
         .chip {
@@ -149,10 +150,11 @@
             box-shadow: 0 0 15px #22c55e;
         }
 
-        /* ===== CTA BUTTON - 3D style ===== */
-        .btn-shiny {
+        /* ===== 3D BUTTON WITH ZOOM ON HOVER ===== */
+        .btn-3d-zoom {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 14px;
             background: linear-gradient(145deg, #ffffff, #f0f2f8);
             color: #0f172a;
@@ -163,25 +165,32 @@
             text-decoration: none;
             margin: 35px 0 45px;
             border: 1px solid rgba(255,255,255,0.5);
-            box-shadow: 0 20px 35px -7px #00000080, 0 0 0 2px rgba(255,255,255,0.2) inset, 0 -2px 5px rgba(0,0,0,0.2) inset;
+            box-shadow: 0 20px 35px -7px #00000080, 
+                        0 0 0 2px rgba(255,255,255,0.2) inset, 
+                        0 -2px 5px rgba(0,0,0,0.2) inset;
             transition: all 0.25s ease;
             letter-spacing: 0.3px;
+            transform: perspective(800px) rotateX(0deg) rotateY(0deg) scale(1);
+            /* 3D feel */
+            transform-style: preserve-3d;
         }
-        .btn-shiny:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 30px 45px -7px #000, 0 0 0 3px rgba(255,255,255,0.4) inset;
+        .btn-3d-zoom:hover {
+            transform: perspective(800px) rotateX(2deg) rotateY(2deg) scale(1.15);  /* ZOOM + 3D rotation */
+            box-shadow: 0 35px 50px -7px #000, 
+                        0 0 0 3px rgba(255,255,255,0.5) inset,
+                        0 15px 20px -10px #4f46e5;
             background: white;
             gap: 18px;
         }
-        .btn-shiny svg {
+        .btn-3d-zoom svg {
             stroke: #0f172a;
             transition: transform 0.2s;
         }
-        .btn-shiny:hover svg {
+        .btn-3d-zoom:hover svg {
             transform: translateX(6px);
         }
 
-        /* ===== CARDS WITH GLASS + GRAPHICS ===== */
+        /* Feature cards */
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -236,7 +245,7 @@
             font-weight: 400;
         }
 
-        /* ===== INSTRUCTION STRIP ===== */
+        /* Tutorial strip */
         .tutorial {
             background: rgba(0, 0, 0, 0.35);
             border-radius: 60px;
@@ -266,12 +275,12 @@
             font-weight: 800;
             font-size: 1.3rem;
             color: white;
-            box-shadow: 0 0 20px #6366f1aa, 0 6px 10px black inset? no;
+            box-shadow: 0 0 20px #6366f1aa;
             border: 2px solid rgba(255,255,255,0.4);
         }
         .step p { font-weight: 500; color: #ccd6f0; font-size: 1rem; }
 
-        /* ===== FOOTER WITH GRAPHIC ===== */
+        /* Footer */
         .footer-panel {
             display: flex;
             justify-content: space-between;
@@ -322,14 +331,14 @@
     </style>
 </head>
 <body>
-    <!-- floating orbs / advanced background -->
+    <!-- floating orbs / background graphics -->
     <div class="orb orb1"></div>
     <div class="orb orb2"></div>
     <div class="orb orb3"></div>
     <div class="grid-overlay"></div>
 
     <main class="dashboard">
-        <!-- 3D icon with more depth -->
+        <!-- 3D icon -->
         <div class="icon-3d">
             <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="2" width="8" height="8" rx="1.5" fill="white" fill-opacity="0.2" />
@@ -345,16 +354,17 @@
             <span></span> प्रीमियम ग्राफिक्स अपडेट 2026
         </div>
 
+        <!-- CENTERED HEADING (already centered by parent .dashboard text-align:center) -->
         <h1>CSC ग्राफिक्स<br>डेटा डॅशबोर्ड</h1>
-        <p style="color: #a7b2cf; font-size: 1.15rem; max-width: 550px; margin: 0 auto;">एकाच क्लिकवर सर्व CSC माहिती, आता आकर्षक ग्राफिक्स आणि सुपरफास्ट कंट्रोल्ससह</p>
+        <p style="color: #a7b2cf; font-size: 1.15rem; max-width: 550px; margin: 0 auto 0 auto;">एकाच क्लिकवर सर्व CSC माहिती, आता आकर्षक ग्राफिक्स आणि सुपरफास्ट कंट्रोल्ससह</p>
 
-        <!-- 3D styled CTA button with shine -->
-        <a href="https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec" class="btn-shiny">
+        <!-- 3D BUTTON WITH ZOOM ON HOVER + NET STYLE (exactly as requested: mouse hover var button zoom) -->
+        <a href="https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec" class="btn-3d-zoom">
             डॅशबोर्ड लाँच करा
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
 
-        <!-- feature grid with emoji graphics + micro info -->
+        <!-- feature grid -->
         <div class="feature-grid">
             <div class="feature-card">
                 <div class="feature-icon">🔍</div>
@@ -378,7 +388,7 @@
             </div>
         </div>
 
-        <!-- attractive step-by-step instruction with circle graphics -->
+        <!-- step-by-step instruction -->
         <div class="tutorial">
             <div class="step-row">
                 <div class="step">
@@ -400,7 +410,7 @@
             </div>
         </div>
 
-        <!-- footer with extra design / refresh / support -->
+        <!-- footer -->
         <div class="footer-panel">
             <div>© 2026 CSC PREMIUM · ग्राफिक्स एडिशन</div>
             <div class="footer-links">
