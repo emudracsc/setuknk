@@ -128,8 +128,8 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -1px;  /* देवनागरी साठी थोडा कमी केलेला अक्षर अंतर */
-            line-height: 1.3;        /* उंची थोडी वाढवली जेणेकरून मराठी स्पष्ट */
+            letter-spacing: -1px;
+            line-height: 1.3;
             text-shadow: 0 2px 10px rgba(255,255,255,0.1);
             margin-bottom: 6px;
             text-align: center;
@@ -195,7 +195,7 @@
             transform: translateX(6px);
         }
 
-        /* नवीन गूगल शीट बटन - फक्त हा भाग add केला आहे */
+        /* नवीन गूगल शीट बटन */
         .sheet-btn {
             display: inline-flex;
             align-items: center;
@@ -230,7 +230,7 @@
             transform: translateX(5px);
         }
 
-        /* Feature cards */
+        /* Feature cards - आता लिंक करता येण्यासाठी */
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -238,6 +238,8 @@
             margin-bottom: 45px;
         }
         .feature-card {
+            display: block;
+            text-decoration: none;
             background: rgba(15, 23, 42, 0.5);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 28px;
@@ -247,6 +249,7 @@
             box-shadow: 0 20px 30px -20px black;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
         .feature-card::after {
             content: '';
@@ -255,6 +258,7 @@
             background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.1), transparent 70%);
             opacity: 0;
             transition: opacity 0.3s;
+            pointer-events: none;
         }
         .feature-card:hover {
             transform: scale(1.02) translateY(-6px);
@@ -265,10 +269,14 @@
         .feature-card:hover::after {
             opacity: 1;
         }
+        .feature-card:active {
+            transform: scale(0.98) translateY(-2px);
+        }
         .feature-icon {
             font-size: 2.4rem;
             margin-bottom: 15px;
             filter: drop-shadow(0 8px 12px #00000050);
+            display: block;
         }
         .feature-card h4 {
             font-size: 1.1rem;
@@ -322,7 +330,6 @@
             font-weight: 500; 
             color: #ccd6f0; 
             font-size: 1rem; 
-            /* मराठी साठी फॉन्ट वजन व्यवस्थित */
         }
 
         /* Footer */
@@ -399,17 +406,17 @@
             <span></span> प्रीमियम ग्राफिक्स अपडेट 2026
         </div>
 
-        <!-- CENTERED HEADING - मराठी आता मुक्त फॉन्टमध्ये -->
+        <!-- CENTERED HEADING -->
         <h1>सेतू सुविधा केंद्र कणकवली</h1>
         <p style="color: #a7b2cf; font-size: 1.15rem; max-width: 550px; margin: 0 auto 0 auto;">एकाच क्लिकवर सर्व CSC माहिती, आता आकर्षक ग्राफिक्स आणि सुपरफास्ट कंट्रोल्ससह</p>
 
-        <!-- 3D BUTTON WITH ZOOM ON HOVER - CSC Dashboard -->
+        <!-- 3D BUTTON - CSC Dashboard -->
         <a href="https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec" class="btn-3d-zoom">
             डॅशबोर्ड लाँच करा
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
 
-        <!-- नवीन गूगल शीट बटन - फक्त हा भाग add केला आहे -->
+        <!-- Google Sheet Button -->
         <a href="https://docs.google.com/spreadsheets/d/1eEu6Cy4JhtEQiAfgjUiPsm_HdqlK9LyFR-EF882YYnA/edit?usp=sharing" class="sheet-btn" target="_blank">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <rect x="2" y="2" width="20" height="20" rx="3" />
@@ -422,28 +429,28 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
 
-        <!-- feature grid -->
+        <!-- feature grid with demo links - प्रत्येक बॉक्सला वेगळी डेमो लिंक -->
         <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🔍</div>
+            <a href="https://www.google.com" class="feature-card" target="_blank">
+                <span class="feature-icon">🔍</span>
                 <h4>स्मार्ट सर्च</h4>
                 <p>नाव किंवा CSC ID त्वरित शोध</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
+            </a>
+            <a href="https://www.youtube.com" class="feature-card" target="_blank">
+                <span class="feature-icon">⚡</span>
                 <h4>फास्ट कॉपी</h4>
                 <p>एका क्लिकवर ID कॉपी करा</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📄</div>
+            </a>
+            <a href="https://www.github.com" class="feature-card" target="_blank">
+                <span class="feature-icon">📄</span>
                 <h4>PDF एक्सपोर्ट</h4>
                 <p>प्रिंट-रेडी डाउनलोड</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
+            </a>
+            <a href="https://www.stackoverflow.com" class="feature-card" target="_blank">
+                <span class="feature-icon">📱</span>
                 <h4>रिस्पॉन्सिव्ह</h4>
                 <p>मोबाईल, टॅबलेट फ्रेंडली</p>
-            </div>
+            </a>
         </div>
 
         <!-- step-by-step instruction -->
