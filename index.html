@@ -2,165 +2,634 @@
 <html lang="mr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setu Suvidha Kendra | All In One Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Setu Suvidha Kendra | Glassmorphism All-In-One Services</title>
+    <!-- Google Fonts: Poppins + Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        :root {
-            --primary-bg: #0f172a;
-            --card-bg: rgba(255, 255, 255, 0.1);
-            --text-color: #ffffff;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
             min-height: 100vh;
+            background: radial-gradient(ellipse at 30% 40%, #0a0f2c, #030617);
+            font-family: 'Poppins', sans-serif;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            position: relative;
             overflow-x: hidden;
         }
 
-        .container {
-            text-align: center;
-            width: 90%;
-            max-width: 800px;
-            padding: 40px;
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 1.5s ease-out;
+        /* animated floating particles / grain effect */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255,255,240,0.06) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 20%, rgba(56, 189, 248, 0.12), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* main glass panel with frosted premium look */
+        .glass-panel {
+            position: relative;
+            z-index: 10;
+            max-width: 880px;
+            width: 100%;
+            background: rgba(15, 25, 45, 0.5);
+            backdrop-filter: blur(18px);
+            border-radius: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+            padding: 2rem 2rem 2.8rem;
+            transition: all 0.4s ease;
+        }
+
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(20, 30, 55, 0.6) 0%, rgba(8, 18, 38, 0.5) 100%);
+        }
+
+        .glass-panel:hover {
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,240,0.2) inset;
+        }
+
+        /* header section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.2);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #7dd3fc;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            font-family: 'Poppins', sans-serif;
         }
 
         h1 {
-            font-size: 2.5rem;
-            color: #fff;
-            margin-bottom: 10px;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            letter-spacing: 1px;
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF 0%, #B9E6FF 40%, #7AC7F4 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.3rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .marathi-sub {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #cbd5e6;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(2px);
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
         }
 
         .subtitle {
-            font-size: 1.2rem;
-            color: #38bdf8;
-            font-weight: 600;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            display: block;
-        }
-
-        /* 3D Button Grid */
-        .button-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            perspective: 1000px; /* For 3D Effect */
-        }
-
-        .btn-3d {
-            position: relative;
-            padding: 18px 30px;
             font-size: 1.1rem;
-            font-weight: 700;
-            color: white;
-            text-decoration: none;
-            background: linear-gradient(145deg, #3b82f6, #2563eb);
-            border-radius: 15px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            transform-style: preserve-3d;
-            box-shadow: 0 8px 0 #1d4ed8, 0 15px 20px rgba(0,0,0,0.3);
+            font-weight: 500;
+            color: #94a3b8;
+            margin-top: 0.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-family: 'Poppins', sans-serif;
         }
 
-        /* Hover Animation */
-        .btn-3d:hover {
-            transform: translateY(-3px) rotateX(10deg);
-            background: linear-gradient(145deg, #60a5fa, #3b82f6);
-            box-shadow: 0 10px 0 #1d4ed8, 0 20px 25px rgba(0,0,0,0.4);
+        .subtitle i {
+            color: #38bdf8;
+            font-size: 1.2rem;
         }
 
-        .btn-3d:active {
-            transform: translateY(5px);
-            box-shadow: 0 2px 0 #1d4ed8, 0 5px 10px rgba(0,0,0,0.3);
+        /* BUTTON GRID - GLASS EFFECT + 3D + HOVER MAGIC */
+        .button-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.35rem;
+            margin-top: 1rem;
         }
 
-        /* Different Colors for Each Button */
-        .btn-1 { background: linear-gradient(145deg, #ef4444, #dc2626); box-shadow: 0 8px 0 #991b1b; } /* Red */
-        .btn-1:hover { box-shadow: 0 10px 0 #991b1b, 0 20px 25px rgba(0,0,0,0.3); }
+        /* GLASS BUTTON CORE - EVERY BUTTON HAS FROSTED GLASS + 3D SHADOW */
+        .btn-glass {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1.8rem;
+            border-radius: 1.8rem;
+            font-weight: 600;
+            font-size: 1.05rem;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 0 0.5px rgba(255, 255, 255, 0.1) inset;
+            overflow: hidden;
+            z-index: 1;
+        }
 
-        .btn-2 { background: linear-gradient(145deg, #10b981, #059669); box-shadow: 0 8px 0 #065f46; } /* Green */
-        .btn-2:hover { box-shadow: 0 10px 0 #065f46, 0 20px 25px rgba(0,0,0,0.3); }
+        /* unique vibrant glass gradients for each button (semi-transparent to retain glass effect) */
+        .btn-glass.btn-csc {
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.75), rgba(42, 82, 152, 0.7));
+            border-bottom: 2px solid rgba(56, 189, 248, 0.6);
+        }
+        .btn-glass.btn-main {
+            background: linear-gradient(135deg, rgba(192, 57, 43, 0.75), rgba(231, 76, 60, 0.7));
+            border-bottom: 2px solid rgba(255, 100, 100, 0.6);
+        }
+        .btn-glass.btn-server1 {
+            background: linear-gradient(135deg, rgba(15, 92, 75, 0.75), rgba(10, 108, 94, 0.7));
+            border-bottom: 2px solid rgba(52, 211, 153, 0.6);
+        }
+        .btn-glass.btn-server2 {
+            background: linear-gradient(135deg, rgba(230, 126, 34, 0.75), rgba(211, 84, 0, 0.7));
+            border-bottom: 2px solid rgba(251, 191, 36, 0.6);
+        }
+        .btn-glass.btn-server3 {
+            background: linear-gradient(135deg, rgba(108, 52, 131, 0.75), rgba(142, 68, 173, 0.7));
+            border-bottom: 2px solid rgba(192, 132, 252, 0.6);
+        }
+        .btn-glass.btn-affidavit {
+            background: linear-gradient(135deg, rgba(194, 24, 91, 0.75), rgba(173, 20, 87, 0.7));
+            border-bottom: 2px solid rgba(244, 114, 182, 0.6);
+        }
 
-        .btn-3 { background: linear-gradient(145deg, #f59e0b, #d97706); box-shadow: 0 8px 0 #92400e; } /* Orange */
-        .btn-3:hover { box-shadow: 0 10px 0 #92400e, 0 20px 25px rgba(0,0,0,0.3); }
+        /* left icon container */
+        .btn-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-        .btn-4 { background: linear-gradient(145deg, #8b5cf6, #7c3aed); box-shadow: 0 8px 0 #5b21b6; } /* Purple */
-        .btn-4:hover { box-shadow: 0 10px 0 #5b21b6, 0 20px 25px rgba(0,0,0,0.3); }
+        .btn-icon {
+            font-size: 1.7rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            transition: transform 0.25s ease;
+        }
 
-        .btn-5 { background: linear-gradient(145deg, #ec4899, #db2777); box-shadow: 0 8px 0 #9d174d; } /* Pink */
-        .btn-5:hover { box-shadow: 0 10px 0 #9d174d, 0 20px 25px rgba(0,0,0,0.3); }
+        .btn-text {
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            font-family: 'Poppins', sans-serif;
+        }
 
-        .icon { font-size: 1.5rem; }
+        .btn-arrow {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* ========== HOVER EFFECTS: Glass intensifies, lift, shine, glow ========== */
+        .btn-glass:hover {
+            transform: translateY(-5px) scale(1.01);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(16px);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.3) inset;
+        }
+
+        /* enhance glass background on hover for each unique button */
+        .btn-glass.btn-csc:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(37, 99, 235, 0.4));
+        }
+        .btn-glass.btn-main:hover {
+            background: linear-gradient(135deg, rgba(248, 113, 113, 0.4), rgba(220, 38, 38, 0.45));
+        }
+        .btn-glass.btn-server1:hover {
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.35), rgba(16, 185, 129, 0.4));
+        }
+        .btn-glass.btn-server2:hover {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(245, 158, 11, 0.45));
+        }
+        .btn-glass.btn-server3:hover {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.4), rgba(139, 92, 246, 0.45));
+        }
+        .btn-glass.btn-affidavit:hover {
+            background: linear-gradient(135deg, rgba(244, 114, 182, 0.4), rgba(219, 39, 119, 0.45));
+        }
+
+        .btn-glass:hover .btn-icon {
+            transform: scale(1.12) rotate(2deg);
+        }
+
+        .btn-glass:hover .btn-arrow {
+            background: rgba(255,255,255,0.45);
+            transform: translateX(5px);
+            border-color: rgba(255,255,255,0.7);
+        }
+
+        .btn-glass:active {
+            transform: translateY(2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            transition: 0.05s linear;
+        }
+
+        /* Shine slide animation on hover (Glass shine) */
+        .btn-glass::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            transition: left 0.6s ease;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .btn-glass:hover::after {
+            left: 120%;
+        }
+
+        /* additional glassmorphic reflection on border */
+        .btn-glass::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 1.8rem;
+            padding: 1px;
+            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.4), transparent 80%);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.4;
+            transition: opacity 0.3s;
+        }
+
+        .btn-glass:hover::before {
+            opacity: 0.8;
+        }
+
+        /* floating background shapes */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            background: radial-gradient(circle, rgba(56,189,248,0.2), transparent);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: float 20s infinite alternate ease-in-out;
+        }
+
+        .shape1 { width: 300px; height: 300px; top: -100px; left: -80px; background: #3b82f6; opacity: 0.2; }
+        .shape2 { width: 400px; height: 400px; bottom: -150px; right: -120px; background: #a855f7; opacity: 0.2; animation-duration: 25s; }
+        .shape3 { width: 220px; height: 220px; top: 40%; left: 75%; background: #f97316; opacity: 0.18; filter: blur(70px); animation-duration: 18s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        /* footer info */
+        .footer-info {
+            margin-top: 2.2rem;
+            text-align: center;
+            color: #8b9ac0;
+            font-size: 0.75rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            border-top: 1px dashed rgba(255,255,255,0.15);
+            padding-top: 1.5rem;
+            backdrop-filter: blur(2px);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .footer-info span i {
+            margin-right: 6px;
+            font-size: 0.7rem;
+            color: #38bdf8;
+        }
+
+        /* Ripple effect */
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255,255,245,0.5);
+            transform: scale(0);
+            animation: rippleAnim 0.5s linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes rippleAnim {
+            0% { transform: scale(0); opacity: 0.7; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+
+        .btn-glass {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .glass-panel {
+                padding: 1.6rem;
+                border-radius: 2rem;
+            }
+            h1 {
+                font-size: 1.9rem;
+            }
+            .btn-glass {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            .btn-icon {
+                font-size: 1.3rem;
+            }
+            .btn-text {
+                font-size: 0.85rem;
+            }
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            .btn-arrow {
+                width: 28px;
+                height: 28px;
+            }
+            .badge {
+                font-size: 0.7rem;
+            }
+        }
 
         @media (max-width: 480px) {
-            h1 { font-size: 1.8rem; }
-            .container { padding: 20px; }
+            .btn-glass {
+                justify-content: space-between;
+            }
+            .btn-left {
+                gap: 8px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>सेतु सुविधा केंद्र कणकवली</h1>
-        <span class="subtitle">All In One Services</span>
+<div class="floating-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+</div>
 
-        <div class="button-grid">
-		
-			<!-- Button 0 -->
-            <a href="https://cscservices.mahaonline.gov.in" class="btn-3d btn-4" target="_blank">
-                <span class="icon">💳</span> CSC SERVICES LOGIN
-            </a>
-			
-            <!-- Button 1 -->
-            <a href="https://script.google.com/macros/s/AKfycbzuX5jHIVLw5uHThJ3vGmZvPV7rldexEtgx1XsQGdNO-_l2w1cxTG9sK1FlkdLrm9Ma/exec" class="btn-3d btn-1" target="_blank">
-                <span class="icon">📄</span> Main Server 
-            </a>
-
-            <!-- Button 2 -->
-            <a href="https://script.google.com/macros/s/AKfycbyVylLtMIbyYXOo6f-wQ2rLxevmjcg6ves2r5wTFBBR0298OxqEwdIuUDAh-GIB-gDi/exec" class="btn-3d btn-2" target="_blank">
-                <span class="icon">🏠</span>Server No 1 
-            </a>
-
-            <!-- Button 3 -->
-            <a href="https://script.google.com/macros/s/AKfycbyPpb-vynbLGvnBgQ_4ChH8Gw3YFJhaEijrZWobd0TOrQ3BOQEMQSZWyJAt85Ewe4s/exec" class="btn-3d btn-3" target="_blank">
-                <span class="icon">📜</span> Server No 2
-            </a>
-
-            <!-- Button 4 -->
-            <a href="https://script.google.com/macros/s/AKfycbzaaJ56jkTAealuWGLpsbIsGcIPQ3LJbfIrC2eXQcghjrPhCLjcCYJ0e0FOfXZ1hLso/exec" class="btn-3d btn-4" target="_blank">
-                <span class="icon">💳</span> Server No 3
-            </a>
-
-            <!-- Button 5 -->
-            <a href="DEMO_LINK_5" class="btn-3d btn-5" target="_blank">
-                <span class="icon">🎓</span> Affidivate Print
-            </a>
+<div class="glass-panel">
+    <div class="hero-section">
+        <div class="badge">
+            <i class="fas fa-shield-alt"></i> विश्वसनीय सेवा केंद्र
+        </div>
+        <h1>सेतु सुविधा केंद्र<br><span style="font-size: 1.4rem;">कणकवली</span></h1>
+        <div class="subtitle">
+            <i class="fas fa-crown"></i> 
+            <span>All In One Services • जिल्हा प्रशासन मान्यताप्राप्त</span>
+            <i class="fas fa-certificate"></i>
+        </div>
+        <div class="marathi-sub">
+            <i class="fas fa-handshake"></i> त्वरित, सुरक्षित, डिजिटल सेवा
         </div>
     </div>
 
+    <div class="button-grid">
+        <!-- CSC SERVICES LOGIN - Glass button 0 -->
+        <a href="https://cscservices.mahaonline.gov.in" class="btn-glass btn-csc" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-credit-card btn-icon"></i>
+                <span class="btn-text">CSC SERVICES LOGIN</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- Main Server -->
+        <a href="https://script.google.com/macros/s/AKfycbzuX5jHIVLw5uHThJ3vGmZvPV7rldexEtgx1XsQGdNO-_l2w1cxTG9sK1FlkdLrm9Ma/exec" class="btn-glass btn-main" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-database btn-icon"></i>
+                <span class="btn-text">📄 Main Server</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- Server No 1 -->
+        <a href="https://script.google.com/macros/s/AKfycbyVylLtMIbyYXOo6f-wQ2rLxevmjcg6ves2r5wTFBBR0298OxqEwdIuUDAh-GIB-gDi/exec" class="btn-glass btn-server1" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-server btn-icon"></i>
+                <span class="btn-text">🏠 Server No 1</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- Server No 2 -->
+        <a href="https://script.google.com/macros/s/AKfycbyPpb-vynbLGvnBgQ_4ChH8Gw3YFJhaEijrZWobd0TOrQ3BOQEMQSZWyJAt85Ewe4s/exec" class="btn-glass btn-server2" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-cloud-upload-alt btn-icon"></i>
+                <span class="btn-text">📜 Server No 2</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- Server No 3 -->
+        <a href="https://script.google.com/macros/s/AKfycbzaaJ56jkTAealuWGLpsbIsGcIPQ3LJbfIrC2eXQcghjrPhCLjcCYJ0e0FOfXZ1hLso/exec" class="btn-glass btn-server3" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-chart-line btn-icon"></i>
+                <span class="btn-text">💳 Server No 3</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- Affidavit Print with Glass Effect - enhanced demo interaction -->
+        <a href="#" class="btn-glass btn-affidavit" id="affidavitGlassBtn" target="_blank">
+            <div class="btn-left">
+                <i class="fas fa-file-signature btn-icon"></i>
+                <span class="btn-text">🎓 अ‍ॅफिडेव्हीट प्रिंट / Affidavit Print</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+    </div>
+    
+    <div class="footer-info">
+        <span><i class="fas fa-clock"></i> २४×७ सुविधा</span>
+        <span><i class="fas fa-laptop-code"></i> डिजिटल सेवा केंद्र</span>
+        <span><i class="fas fa-shield-alt"></i> सुरक्षित & एनक्रिप्टेड</span>
+        <span><i class="fas fa-glass-cheers"></i> Glass UI</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // affidavit button modern glass effect with non-intrusive notification and info page
+        const affidavitBtn = document.getElementById('affidavitGlassBtn');
+        if (affidavitBtn) {
+            affidavitBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // toast glass notification
+                const toast = document.createElement('div');
+                toast.innerHTML = '<i class="fas fa-print" style="margin-right: 8px;"></i> 📄 अ‍ॅफिडेव्हीट सेवा उपलब्ध | कृपया केंद्राशी संपर्क साधा | Affidavit printing available';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '25px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.backgroundColor = 'rgba(15, 23, 42, 0.85)';
+                toast.style.backdropFilter = 'blur(16px)';
+                toast.style.color = '#f1f5f9';
+                toast.style.padding = '12px 28px';
+                toast.style.borderRadius = '50px';
+                toast.style.fontWeight = '500';
+                toast.style.fontSize = '0.9rem';
+                toast.style.zIndex = '1000';
+                toast.style.border = '1px solid rgba(56, 189, 248, 0.6)';
+                toast.style.boxShadow = '0 15px 35px rgba(0,0,0,0.4)';
+                toast.style.fontFamily = 'Poppins, sans-serif';
+                toast.style.letterSpacing = '0.2px';
+                toast.style.backdropFilter = 'blur(12px)';
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 500);
+                }, 3200);
+                
+                // open new tab with affidavit service information (glass themed)
+                const infoWindow = window.open();
+                if (infoWindow) {
+                    infoWindow.document.write(`
+                        <!DOCTYPE html>
+                        <html>
+                        <head><title>Setu Suvidha - Affidavit Service (Glass Effect)</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+                        <style>
+                            *{ margin:0; padding:0; box-sizing:border-box; }
+                            body { background: radial-gradient(circle at 20% 30%, #0f172a, #020617); min-height:100vh; display:flex; align-items:center; justify-content:center; font-family:'Poppins', sans-serif; padding:1.5rem; }
+                            .glass-card { max-width:520px; background: rgba(255,255,255,0.08); backdrop-filter: blur(16px); border-radius: 2.5rem; padding: 2rem; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 25px 45px rgba(0,0,0,0.4); text-align:center; transition:0.3s; }
+                            .glass-card h2 { color:#bae6fd; margin:1rem 0 0.8rem; font-weight:700; font-family:'Poppins',sans-serif; }
+                            .glass-card p { color:#cbd5e6; margin:0.5rem 0; line-height:1.5; font-family:'Poppins',sans-serif; }
+                            .icon-big { font-size: 3.5rem; color:#f97316; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+                            .btn-glow-glass { background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.3); padding: 10px 24px; border-radius: 40px; font-weight:600; color:white; margin-top:20px; cursor:pointer; transition:0.2s; display:inline-flex; align-items:center; gap:8px; font-family:'Poppins',sans-serif; }
+                            .btn-glow-glass:hover { background: rgba(56,189,248,0.5); transform: scale(1.02); border-color: #38bdf8; }
+                            hr { margin: 1rem 0; border-color: rgba(255,255,255,0.1); }
+                        </style>
+                        </head>
+                        <body>
+                        <div class="glass-card">
+                            <i class="fas fa-gavel icon-big"></i>
+                            <h2>📜 अ‍ॅफिडेव्हीट प्रिंट सेवा</h2>
+                            <p>सेतु सुविधा केंद्र, कणकवली येथे <strong>नोटरी / शपथपत्र मुद्रण</strong> त्वरित उपलब्ध.</p>
+                            <p>⭐ दैनंदिन दस्तऐवज प्रमाणीकरण<br>⭐ शुल्क ₹२० ते ₹५० (प्रमाणित)</p>
+                            <hr>
+                            <p><i class="fas fa-map-marker-alt"></i> मुख्य सेवा केंद्र, कणकवली बाजारपेठ संपर्क: ९०२१******</p>
+                            <button class="btn-glow-glass" onclick="window.close()"><i class="fas fa-times-circle"></i> विंडो बंद करा</button>
+                        </div>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"><\/script>
+                        </body>
+                        </html>
+                    `);
+                    infoWindow.document.close();
+                } else {
+                    // fallback
+                }
+            });
+        }
+
+        // Ripple effect for all glass buttons
+        const btns = document.querySelectorAll('.btn-glass');
+        btns.forEach(btn => {
+            btn.addEventListener('mousedown', (e) => {
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple-effect';
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size/2;
+                const y = e.clientY - rect.top - size/2;
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 500);
+            });
+        });
+
+        // Ensure all external links have safe attributes
+        const allExtLinks = document.querySelectorAll('.btn-glass[href]');
+        allExtLinks.forEach(link => {
+            if (link.getAttribute('href') && link.getAttribute('href') !== '#' && link.id !== 'affidavitGlassBtn') {
+                link.setAttribute('rel', 'noopener noreferrer');
+            }
+        });
+    })();
+</script>
 </body>
 </html>
