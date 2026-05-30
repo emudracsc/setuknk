@@ -50,6 +50,41 @@
             z-index: 0;
         }
 
+        /* 🟢 जाहिरातींसाठी CSS (Ads Container) */
+        .ad-banner {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 160px; 
+            height: 600px; 
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            text-align: center;
+            z-index: 5;
+            padding: 1rem;
+        }
+
+        .ad-banner i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .left-ad { left: 20px; }
+        .right-ad { right: 20px; }
+
+        @media (max-width: 1350px) {
+            .ad-banner { display: none; }
+        }
+
         .glass-panel {
             position: relative;
             z-index: 10;
@@ -75,21 +110,6 @@
             position: relative;
         }
 
-        .badge {
-            display: inline-block;
-            background: rgba(56, 189, 248, 0.2);
-            backdrop-filter: blur(4px);
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: #7dd3fc;
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-        }
-
         h1 {
             font-size: 2.5rem;
             font-weight: 800;
@@ -100,37 +120,8 @@
             letter-spacing: -0.02em;
             margin-bottom: 0.3rem;
             text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            line-height: 1.5; /* वाढवली जेणेकरून फॉन्ट कट होणार नाही */
-            padding-top: 10px; /* वरच्या मात्रांना जागा मिळण्यासाठी पॅडिंग दिले */
-        }
-
-        .marathi-sub {
-            font-size: 1rem;
-            font-weight: 500;
-            color: #cbd5e6;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(2px);
-            display: inline-block;
-            padding: 0.3rem 1.2rem;
-            border-radius: 30px;
-            margin-top: 0.8rem;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #94a3b8;
-            margin-top: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .subtitle i {
-            color: #38bdf8;
-            font-size: 1.2rem;
+            line-height: 1.5; 
+            padding-top: 10px; 
         }
 
         /* 🟢 ३-३ च्या २ कॉलम्सची (Table) डिझाईन */
@@ -164,175 +155,72 @@
             outline: none;
         }
 
-        .btn-glass.btn-csc {
-            background: linear-gradient(135deg, rgba(30, 60, 114, 0.75), rgba(42, 82, 152, 0.7));
-            border-bottom: 2px solid rgba(56, 189, 248, 0.6);
-        }
-        .btn-glass.btn-main {
-            background: linear-gradient(135deg, rgba(192, 57, 43, 0.75), rgba(231, 76, 60, 0.7));
-            border-bottom: 2px solid rgba(255, 100, 100, 0.6);
-        }
-        .btn-glass.btn-server1 {
-            background: linear-gradient(135deg, rgba(15, 92, 75, 0.75), rgba(10, 108, 94, 0.7));
-            border-bottom: 2px solid rgba(52, 211, 153, 0.6);
-        }
-        .btn-glass.btn-server2 {
-            background: linear-gradient(135deg, rgba(230, 126, 34, 0.75), rgba(211, 84, 0, 0.7));
-            border-bottom: 2px solid rgba(251, 191, 36, 0.6);
-        }
-        .btn-glass.btn-server3 {
-            background: linear-gradient(135deg, rgba(108, 52, 131, 0.75), rgba(142, 68, 173, 0.7));
-            border-bottom: 2px solid rgba(192, 132, 252, 0.6);
-        }
-        .btn-glass.btn-token {
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-            border-bottom: 2px solid rgba(52, 211, 153, 0.6);
-        }
+        /* बटणांचे रंग */
+        .btn-glass.btn-csc { background: linear-gradient(135deg, rgba(30, 60, 114, 0.75), rgba(42, 82, 152, 0.7)); border-bottom: 2px solid rgba(56, 189, 248, 0.6); }
+        .btn-glass.btn-main { background: linear-gradient(135deg, rgba(192, 57, 43, 0.75), rgba(231, 76, 60, 0.7)); border-bottom: 2px solid rgba(255, 100, 100, 0.6); }
+        .btn-glass.btn-server1 { background: linear-gradient(135deg, rgba(15, 92, 75, 0.75), rgba(10, 108, 94, 0.7)); border-bottom: 2px solid rgba(52, 211, 153, 0.6); }
+        .btn-glass.btn-server2 { background: linear-gradient(135deg, rgba(230, 126, 34, 0.75), rgba(211, 84, 0, 0.7)); border-bottom: 2px solid rgba(251, 191, 36, 0.6); }
+        .btn-glass.btn-server3 { background: linear-gradient(135deg, rgba(108, 52, 131, 0.75), rgba(142, 68, 173, 0.7)); border-bottom: 2px solid rgba(192, 132, 252, 0.6); }
+        .btn-glass.btn-token { background: linear-gradient(135deg, #11998e, #38ef7d); border-bottom: 2px solid rgba(52, 211, 153, 0.6); }
+        
+        /* 🎨 नवीन रिझर्व्ह बटणांचे रंग */
+        .btn-glass.btn-reserve1 { background: linear-gradient(135deg, rgba(236, 72, 153, 0.75), rgba(219, 39, 119, 0.7)); border-bottom: 2px solid rgba(244, 114, 182, 0.6); }
+        .btn-glass.btn-reserve2 { background: linear-gradient(135deg, rgba(6, 182, 212, 0.75), rgba(8, 145, 178, 0.7)); border-bottom: 2px solid rgba(103, 232, 249, 0.6); }
 
-        .btn-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .btn-icon {
-            font-size: 1.6rem;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-            transition: transform 0.25s ease;
-            width: 30px;
-            text-align: center;
-        }
-
-        .btn-text {
-            font-weight: 600;
-            letter-spacing: -0.2px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-
+        .btn-left { display: flex; align-items: center; gap: 14px; }
+        .btn-icon { font-size: 1.6rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); transition: transform 0.25s ease; width: 30px; text-align: center; }
+        .btn-text { font-weight: 600; letter-spacing: -0.2px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        
         .btn-arrow {
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(4px);
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 1rem;
-            transition: all 0.3s;
-            border: 1px solid rgba(255,255,255,0.3);
-            flex-shrink: 0;
+            background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            font-size: 1rem; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.3); flex-shrink: 0;
         }
 
-        /* Hover states */
         .btn-glass:hover, .btn-glass:focus-visible {
-            transform: translateY(-4px) scale(1.01);
-            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-4px) scale(1.01); border-color: rgba(255, 255, 255, 0.5);
             box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.3) inset;
         }
 
+        /* Hover states for colors */
         .btn-glass.btn-csc:hover { background: linear-gradient(135deg, rgba(56, 189, 248, 0.45), rgba(37, 99, 235, 0.5)); }
         .btn-glass.btn-main:hover { background: linear-gradient(135deg, rgba(248, 113, 113, 0.5), rgba(220, 38, 38, 0.55)); }
         .btn-glass.btn-server1:hover { background: linear-gradient(135deg, rgba(52, 211, 153, 0.45), rgba(16, 185, 129, 0.5)); }
         .btn-glass.btn-server2:hover { background: linear-gradient(135deg, rgba(251, 191, 36, 0.5), rgba(245, 158, 11, 0.55)); }
         .btn-glass.btn-server3:hover { background: linear-gradient(135deg, rgba(167, 139, 250, 0.45), rgba(139, 92, 246, 0.5)); }
         .btn-glass.btn-token:hover { background: linear-gradient(135deg, #0f8f84, #34de74); }
+        .btn-glass.btn-reserve1:hover { background: linear-gradient(135deg, rgba(244, 114, 182, 0.45), rgba(219, 39, 119, 0.55)); }
+        .btn-glass.btn-reserve2:hover { background: linear-gradient(135deg, rgba(103, 232, 249, 0.45), rgba(8, 145, 178, 0.55)); }
 
-        .btn-glass:hover .btn-icon, .btn-glass:focus-visible .btn-icon {
-            transform: scale(1.15) rotate(2deg);
-        }
-
-        .btn-glass:hover .btn-arrow, .btn-glass:focus-visible .btn-arrow {
-            background: rgba(255,255,255,0.45);
-            transform: translateX(5px);
-            border-color: rgba(255,255,255,0.7);
-        }
-
-        .btn-glass:active {
-            transform: translateY(1px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-        }
+        .btn-glass:hover .btn-icon, .btn-glass:focus-visible .btn-icon { transform: scale(1.15) rotate(2deg); }
+        .btn-glass:hover .btn-arrow, .btn-glass:focus-visible .btn-arrow { background: rgba(255,255,255,0.45); transform: translateX(5px); border-color: rgba(255,255,255,0.7); }
+        .btn-glass:active { transform: translateY(1px); box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); }
 
         .btn-glass::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 80%;
-            height: 100%;
+            content: ""; position: absolute; top: 0; left: -100%; width: 80%; height: 100%;
             background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg);
-            transition: left 0.6s ease;
-            z-index: -1;
-            pointer-events: none;
+            transform: skewX(-25deg); transition: left 0.6s ease; z-index: -1; pointer-events: none;
         }
 
-        .btn-glass:hover::after {
-            left: 120%;
-        }
+        .btn-glass:hover::after { left: 120%; }
 
-        /* Floating background shapes */
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            animation: float 20s infinite alternate ease-in-out;
-        }
-
+        .floating-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 1; }
+        .shape { position: absolute; border-radius: 50%; filter: blur(60px); animation: float 20s infinite alternate ease-in-out; }
         .shape1 { width: 300px; height: 300px; top: -100px; left: -80px; background: #3b82f6; opacity: 0.15; }
         .shape2 { width: 400px; height: 400px; bottom: -150px; right: -120px; background: #a855f7; opacity: 0.15; animation-duration: 25s; }
         .shape3 { width: 220px; height: 220px; top: 40%; left: 75%; background: #f97316; opacity: 0.12; filter: blur(70px); animation-duration: 18s; }
 
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, -30px) scale(1.1); }
-        }
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, -30px) scale(1.1); } }
 
         .footer-info {
-            margin-top: 2.2rem;
-            text-align: center;
-            color: #8b9ac0;
-            font-size: 0.8rem;
-            display: flex;
-            justify-content: center;
-            gap: 1.2rem;
-            flex-wrap: wrap;
-            border-top: 1px dashed rgba(255,255,255,0.15);
-            padding-top: 1.5rem;
+            margin-top: 2.2rem; text-align: center; color: #8b9ac0; font-size: 0.8rem;
+            display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 1.5rem;
         }
+        .footer-info span i { margin-right: 6px; font-size: 0.75rem; color: #38bdf8; }
 
-        .footer-info span i {
-            margin-right: 6px;
-            font-size: 0.75rem;
-            color: #38bdf8;
-        }
+        .ripple-effect { position: absolute; border-radius: 50%; background-color: rgba(255,255,255,0.4); transform: scale(0); animation: rippleAnim 0.5s linear forwards; pointer-events: none; }
+        @keyframes rippleAnim { 0% { transform: scale(0); opacity: 0.6; } 100% { transform: scale(4); opacity: 0; } }
 
-        .ripple-effect {
-            position: absolute;
-            border-radius: 50%;
-            background-color: rgba(255,255,255,0.4);
-            transform: scale(0);
-            animation: rippleAnim 0.5s linear forwards;
-            pointer-events: none;
-        }
-
-        @keyframes rippleAnim {
-            0% { transform: scale(0); opacity: 0.6; }
-            100% { transform: scale(4); opacity: 0; }
-        }
-
-        /* मोबाईलवर सिंगल कॉलम (१ रांग) */
         @media (max-width: 768px) {
             .button-grid { grid-template-columns: 1fr; gap: 1.2rem; }
             .glass-panel { padding: 1.8rem 1.5rem 2.2rem; border-radius: 2rem; }
@@ -341,12 +229,21 @@
             .btn-glass { padding: 1rem 1.3rem; border-radius: 1.4rem; }
             .btn-icon { font-size: 1.4rem; width: 24px; }
             .btn-text { font-size: 0.9rem; }
-            .subtitle { font-size: 0.95rem; }
             .btn-arrow { width: 30px; height: 30px; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
+
+<div class="ad-banner left-ad">
+    <i class="fas fa-bullhorn"></i>
+    <p>Ad Space<br>(160x600)</p>
+</div>
+
+<div class="ad-banner right-ad">
+    <i class="fas fa-bullhorn"></i>
+    <p>Ad Space<br>(160x600)</p>
+</div>
 
 <div class="floating-shapes">
     <div class="shape shape1"></div>
@@ -358,6 +255,7 @@
     <div class="hero-section">
         <h1>सेतु सुविधा केंद्र तहसील कार्यालय कणकवली<br><span style="font-size: 1.6rem; font-weight: 500; color:#bae6fd;"></span></h1>
     </div>
+    
     <div class="button-grid">
         <a href="https://cscservices.mahaonline.gov.in" class="btn-glass btn-csc" target="_blank" rel="noopener noreferrer">
             <div class="btn-left">
@@ -418,21 +316,21 @@
                 <i class="fas fa-arrow-right"></i>
             </div>
         </a>
-		
-		<a href="#" class="btn-glass btn-token" id="openTokenGeneratorBtn">
+        
+        <a href="#" class="btn-glass btn-reserve1">
             <div class="btn-left">
-                <i class="fas fa-ticket-alt btn-icon"></i>
-                <span class="btn-text">🎟️ Reserve btn 1 </span>
+                <i class="fas fa-star btn-icon"></i>
+                <span class="btn-text">⭐ Reserve btn 1 </span>
             </div>
             <div class="btn-arrow">
                 <i class="fas fa-arrow-right"></i>
             </div>
         </a>
-		
-		<a href="#" class="btn-glass btn-token" id="openTokenGeneratorBtn">
+        
+        <a href="#" class="btn-glass btn-reserve2">
             <div class="btn-left">
-                <i class="fas fa-ticket-alt btn-icon"></i>
-                <span class="btn-text">🎟️ Reserve btn 2</span>
+                <i class="fas fa-gem btn-icon"></i>
+                <span class="btn-text">💎 Reserve btn 2</span>
             </div>
             <div class="btn-arrow">
                 <i class="fas fa-arrow-right"></i>
@@ -450,7 +348,6 @@
 
 <script>
     (function() {
-        // 🎟️ टोकन जनरेटरचा तुमचा मूळ कोड 
         const tokenHtmlCode = `<!DOCTYPE html>
 <html lang="mr">
 <head>
@@ -517,7 +414,6 @@
 </body>
 </html>`;
 
-        // बटणावर क्लिक केल्यावर तुमचा कोड नवीन टॅब मध्ये उघडेल
         const tokenBtn = document.getElementById('openTokenGeneratorBtn');
         if (tokenBtn) {
             tokenBtn.addEventListener('click', (e) => {
@@ -532,11 +428,10 @@
             });
         }
 
-        // Click Ripple Effect
         const btns = document.querySelectorAll('.btn-glass');
         btns.forEach(btn => {
             btn.addEventListener('mousedown', (e) => {
-                if (btn.id === 'openTokenGeneratorBtn') return; // नवीन पेज उघडताना रिपल त्रास देऊ नये म्हणून
+                if (btn.id === 'openTokenGeneratorBtn') return;
                 
                 const ripple = document.createElement('span');
                 ripple.className = 'ripple-effect';
