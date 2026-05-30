@@ -3,510 +3,567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>CSC डेटा डॅशबोर्ड · लाँच पेज | सेतु सुविधा केंद्र</title>
+    <title>Setu Suvidha Kendra | Glassmorphism All-In-One Services</title>
+    <!-- Google Fonts: Poppins + Noto Sans Devanagari -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            background: radial-gradient(ellipse at 30% 40%, #0a0f2c, #030617);
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 2rem 1.5rem;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Animated Background Overlay */
         body::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: rgba(255,255,255,0.08);
-            transform: rotate(35deg);
-            animation: shine 12s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes shine {
-            0% { transform: rotate(35deg) translateY(-100%) translateX(-30%); }
-            100% { transform: rotate(35deg) translateY(100%) translateX(30%); }
-        }
-
-        /* floating shapes for extra depth */
-        body::after {
-            content: '';
-            position: absolute;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
-            bottom: -100px;
-            right: -80px;
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .container {
-            max-width: 700px;
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.97);
-            backdrop-filter: blur(8px);
-            border-radius: 40px;
-            padding: 50px 40px;
-            box-shadow: 0 35px 70px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.3) inset;
-            text-align: center;
+            height: 100%;
+            background-image: radial-gradient(rgba(255,255,240,0.06) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 20%, rgba(56, 189, 248, 0.12), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glass-panel {
             position: relative;
             z-index: 10;
-            animation: fadeInUp 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            transition: transform 0.2s;
+            max-width: 950px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(20, 30, 55, 0.6) 0%, rgba(8, 18, 38, 0.5) 100%);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+            padding: 2.5rem 2.5rem 3rem;
+            transition: all 0.4s ease;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .glass-panel:hover {
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,240,0.2) inset;
         }
 
-        .icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(145deg, #5f7bef, #7b54b0);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 25px;
-            box-shadow: 0 20px 30px rgba(102, 126, 234, 0.4);
-            transition: transform 0.3s ease;
+        .hero-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
         }
 
-        .icon:hover {
-            transform: scale(1.02);
-        }
-
-        .icon svg {
-            width: 52px;
-            height: 52px;
-            fill: white;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.2);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #7dd3fc;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
         }
 
         h1 {
-            font-size: 2.3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #4f46e5, #9333ea);
-            -webkit-background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 800	;
+            background: linear-gradient(135deg, #FFFFFF 0%, #B9E6FF 40%, #7AC7F4 100%);
             background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
-            letter-spacing: -0.3px;
-            line-height: 1.3;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.3rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            line-height: 1.2;
+        }
+
+        .marathi-sub {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #cbd5e6;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(2px);
+            display: inline-block;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            margin-top: 0.8rem;
         }
 
         .subtitle {
             font-size: 1.1rem;
-            color: #2d3a4e;
-            margin-bottom: 35px;
-            line-height: 1.5;
             font-weight: 500;
-            border-bottom: 1px dashed #e2e8f0;
-            display: inline-block;
-            padding-bottom: 6px;
-        }
-
-        /* BUTTON GROUP - Flex layout for two primary buttons */
-        .button-group {
+            color: #94a3b8;
+            margin-top: 0.5rem;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 35px;
-        }
-
-        .dashboard-link {
-            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            padding: 16px 32px;
-            border-radius: 60px;
+            flex-wrap: wrap;
+        }
+
+        .subtitle i {
+            color: #38bdf8;
             font-size: 1.2rem;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
-            transition: all 0.25s ease;
-            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* 🟢 ३-३ च्या २ कॉलम्सची (Table) डिझाईन */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-glass {
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.1rem 1.8rem;
+            border-radius: 1.8rem;
+            font-weight: 600;
+            font-size: 1.05rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
             overflow: hidden;
-            flex: 0 1 auto;
-            min-width: 240px;
+            z-index: 1;
+            outline: none;
         }
 
-        /* secondary button style variation */
-        .dashboard-link.secondary {
-            background: linear-gradient(135deg, #2b3b6e, #1e293b);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255,255,255,0.2);
+        .btn-glass.btn-csc {
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.75), rgba(42, 82, 152, 0.7));
+            border-bottom: 2px solid rgba(56, 189, 248, 0.6);
+        }
+        .btn-glass.btn-main {
+            background: linear-gradient(135deg, rgba(192, 57, 43, 0.75), rgba(231, 76, 60, 0.7));
+            border-bottom: 2px solid rgba(255, 100, 100, 0.6);
+        }
+        .btn-glass.btn-server1 {
+            background: linear-gradient(135deg, rgba(15, 92, 75, 0.75), rgba(10, 108, 94, 0.7));
+            border-bottom: 2px solid rgba(52, 211, 153, 0.6);
+        }
+        .btn-glass.btn-server2 {
+            background: linear-gradient(135deg, rgba(230, 126, 34, 0.75), rgba(211, 84, 0, 0.7));
+            border-bottom: 2px solid rgba(251, 191, 36, 0.6);
+        }
+        .btn-glass.btn-server3 {
+            background: linear-gradient(135deg, rgba(108, 52, 131, 0.75), rgba(142, 68, 173, 0.7));
+            border-bottom: 2px solid rgba(192, 132, 252, 0.6);
+        }
+        .btn-glass.btn-token {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            border-bottom: 2px solid rgba(52, 211, 153, 0.6);
         }
 
-        .dashboard-link.secondary:hover {
-            background: linear-gradient(135deg, #1e2a4a, #0f172a);
-            transform: translateY(-3px);
-            box-shadow: 0 20px 32px rgba(0, 0, 0, 0.3);
+        .btn-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        .dashboard-link::before {
-            content: '';
+        .btn-icon {
+            font-size: 1.6rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            transition: transform 0.25s ease;
+            width: 30px;
+            text-align: center;
+        }
+
+        .btn-text {
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .btn-arrow {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.3);
+            flex-shrink: 0;
+        }
+
+        /* Hover states */
+        .btn-glass:hover, .btn-glass:focus-visible {
+            transform: translateY(-4px) scale(1.01);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.3) inset;
+        }
+
+        .btn-glass.btn-csc:hover { background: linear-gradient(135deg, rgba(56, 189, 248, 0.45), rgba(37, 99, 235, 0.5)); }
+        .btn-glass.btn-main:hover { background: linear-gradient(135deg, rgba(248, 113, 113, 0.5), rgba(220, 38, 38, 0.55)); }
+        .btn-glass.btn-server1:hover { background: linear-gradient(135deg, rgba(52, 211, 153, 0.45), rgba(16, 185, 129, 0.5)); }
+        .btn-glass.btn-server2:hover { background: linear-gradient(135deg, rgba(251, 191, 36, 0.5), rgba(245, 158, 11, 0.55)); }
+        .btn-glass.btn-server3:hover { background: linear-gradient(135deg, rgba(167, 139, 250, 0.45), rgba(139, 92, 246, 0.5)); }
+        .btn-glass.btn-token:hover { background: linear-gradient(135deg, #0f8f84, #34de74); }
+
+        .btn-glass:hover .btn-icon, .btn-glass:focus-visible .btn-icon {
+            transform: scale(1.15) rotate(2deg);
+        }
+
+        .btn-glass:hover .btn-arrow, .btn-glass:focus-visible .btn-arrow {
+            background: rgba(255,255,255,0.45);
+            transform: translateX(5px);
+            border-color: rgba(255,255,255,0.7);
+        }
+
+        .btn-glass:active {
+            transform: translateY(1px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-glass::after {
+            content: "";
             position: absolute;
             top: 0;
             left: -100%;
+            width: 80%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            transition: left 0.6s ease;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .btn-glass:hover::after {
+            left: 120%;
+        }
+
+        /* Floating background shapes */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-            transition: left 0.5s ease;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .dashboard-link:hover::before {
-            left: 100%;
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: float 20s infinite alternate ease-in-out;
         }
 
-        .dashboard-link:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 22px 35px rgba(102, 126, 234, 0.55);
+        .shape1 { width: 300px; height: 300px; top: -100px; left: -80px; background: #3b82f6; opacity: 0.15; }
+        .shape2 { width: 400px; height: 400px; bottom: -150px; right: -120px; background: #a855f7; opacity: 0.15; animation-duration: 25s; }
+        .shape3 { width: 220px; height: 220px; top: 40%; left: 75%; background: #f97316; opacity: 0.12; filter: blur(70px); animation-duration: 18s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -30px) scale(1.1); }
         }
 
-        .dashboard-link:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        .emoji-icon {
-            font-size: 1.4rem;
-            filter: drop-shadow(0 0 2px rgba(0,0,0,0.2));
-        }
-
-        .features {
+        .footer-info {
+            margin-top: 2.2rem;
+            text-align: center;
+            color: #8b9ac0;
+            font-size: 0.8rem;
             display: flex;
             justify-content: center;
-            gap: 28px;
-            margin: 30px 0 30px;
+            gap: 1.2rem;
             flex-wrap: wrap;
-            background: #f8fafe;
-            padding: 15px 15px;
-            border-radius: 48px;
+            border-top: 1px dashed rgba(255,255,255,0.15);
+            padding-top: 1.5rem;
         }
 
-        .feature {
-            text-align: center;
-            flex: 1;
-            min-width: 90px;
+        .footer-info span i {
+            margin-right: 6px;
+            font-size: 0.75rem;
+            color: #38bdf8;
         }
 
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-            display: block;
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.4);
+            transform: scale(0);
+            animation: rippleAnim 0.5s linear forwards;
+            pointer-events: none;
         }
 
-        .feature-text {
-            font-size: 0.85rem;
-            color: #2c3e66;
-            font-weight: 600;
+        @keyframes rippleAnim {
+            0% { transform: scale(0); opacity: 0.6; }
+            100% { transform: scale(4); opacity: 0; }
         }
 
-        .instructions {
-            background: #f1f5f9;
-            border-radius: 28px;
-            padding: 28px;
-            text-align: left;
-            border: 1px solid #e0e7ff;
-            transition: all 0.2s;
-        }
-
-        .instructions h3 {
-            color: #1e293b;
-            font-size: 1.25rem;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-        }
-
-        .instructions h3::before {
-            content: '📋';
-            font-size: 1.4rem;
-        }
-
-        .instructions ol {
-            padding-left: 26px;
-            color: #334155;
-        }
-
-        .instructions li {
-            margin-bottom: 12px;
-            line-height: 1.5;
-            font-weight: 500;
-        }
-
-        .instructions li::marker {
-            color: #667eea;
-            font-weight: 800;
-        }
-
-        .note {
-            margin-top: 24px;
-            padding: 16px 18px;
-            background: #eef2ff;
-            border-radius: 20px;
-            border-left: 5px solid #6366f1;
-            color: #1e3a8a;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .note::before {
-            content: '⚠️';
-            font-size: 1.3rem;
-        }
-
-        .footer {
-            margin-top: 32px;
-            color: #5b6e8c;
-            font-size: 0.85rem;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 22px;
-        }
-
-        .footer a {
-            color: #4f46e5;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-            color: #7c3aed;
-        }
-
-        /* Responsive fine-tuning */
-        @media (max-width: 680px) {
-            .container {
-                padding: 35px 22px;
-            }
-            h1 {
-                font-size: 1.9rem;
-            }
-            .button-group {
-                gap: 18px;
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .dashboard-link {
-                padding: 14px 20px;
-                font-size: 1rem;
-                min-width: auto;
-                justify-content: center;
-            }
-            .features {
-                gap: 15px;
-            }
-            .feature-text {
-                font-size: 0.75rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.55rem;
-            }
-            .subtitle {
-                font-size: 0.95rem;
-            }
-            .icon {
-                width: 80px;
-                height: 80px;
-            }
-            .icon svg {
-                width: 40px;
-                height: 40px;
-            }
-        }
-        
-        /* small hover card effect */
-        .dashboard-link .btn-text {
-            display: inline-block;
+        /* मोबाईलवर सिंगल कॉलम (१ रांग) */
+        @media (max-width: 768px) {
+            .button-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+            .glass-panel { padding: 1.8rem 1.5rem 2.2rem; border-radius: 2rem; }
+            h1 { font-size: 2rem; }
+            h1 span { font-size: 1.2rem !important; }
+            .btn-glass { padding: 1rem 1.3rem; border-radius: 1.4rem; }
+            .btn-icon { font-size: 1.4rem; width: 24px; }
+            .btn-text { font-size: 0.9rem; }
+            .subtitle { font-size: 0.95rem; }
+            .btn-arrow { width: 30px; height: 30px; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Premium Icon (dashboard styled) -->
-        <div class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" fill="currentColor"/>
-                <circle cx="12" cy="18" r="1.5" fill="white"/>
-                <path d="M12 4C7.58 4 4 7.58 4 12s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" fill="white" opacity="0.9"/>
-            </svg>
-        </div>
 
-        <!-- Title (official name) -->
-        <h1>सेतु सुविधा केंद्र तहसील कार्यालय कणकवली</h1>
-        
-        <!-- Tagline -->
-        <div class="subtitle">
-            🌟 प्रीमियम CSC डेटा डॅशबोर्ड — वास्तविक वेळात माहिती आणि विश्लेषण
-        </div>
+<div class="floating-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+</div>
 
-        <!-- ========== TWO BUTTONS SECTION ========== -->
-        <div class="button-group">
-            <!-- Primary Original Button (Main Dashboard) -->
-            <a href="https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec" 
-               class="dashboard-link" 
-               target="_blank"
-               rel="noopener noreferrer">
-                <span class="emoji-icon">📊</span>
-                <span class="btn-text">मुख्य डॅशबोर्ड उघडा</span>
-            </a>
-            
-            <!-- ADDITIONAL NEW LINK BUTTON: Second Access / Mirror Dashboard Link 
-                 (Providing same secure endpoint but can be used as alternative entry or backup link) 
-                 We keep the same powerful URL but different visual style and extra tooltip-like value. 
-                 Also ensures users have a second clickable area for convenience -->
-            <a href="https://script.google.com/macros/s/AKfycbxtBNJFybIYE-SHSxqD8JdWAMr_XUNtUK9tmbeMWvl-2oVT392tpMpYmjP2XYygPr99/exec" 
-               class="dashboard-link secondary" 
-               target="_blank"
-               rel="noopener noreferrer">
-                <span class="emoji-icon">🚀</span>
-                <span class="btn-text">प्रगत डेटा डॅशबोर्ड</span>
-            </a>
+<div class="glass-panel">
+    <div class="hero-section">
+        <div class="badge">
+            <i class="fas fa-shield-alt"></i> विश्वसनीय सेवा केंद्र
+			
         </div>
-
-        <!-- Feature Highlights (same quality) -->
-        <div class="features">
-            <div class="feature">
-                <span class="feature-icon">🌗</span>
-                <span class="feature-text">डार्क/लाइट मोड</span>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">⚡</span>
-                <span class="feature-text">रिअल-टाइम शोध</span>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">🆔</span>
-                <span class="feature-text">कॉपी ID वैशिष्ट्य</span>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">📄</span>
-                <span class="feature-text">PDF डाउनलोड</span>
-            </div>
-        </div>
-
-        <!-- Instructions (user friendly) -->
-        <div class="instructions">
-            <h3>वापर सूचना — सोप्या पद्धतीने डॅशबोर्ड वापरा</h3>
-            <ol>
-                <li><strong>कोणतेही बटण दाबा</strong> (मुख्य किंवा प्रगत डॅशबोर्ड) — दोन्ही समान सुरक्षित पृष्ठास नेतील.</li>
-                <li>Apps Script ला परवानगी द्या (पहिल्यांदाच उघडत असाल तर Allow / परवानगी क्लिक करा).</li>
-                <li>डॅशबोर्ड उघडल्यानंतर तुम्हाला सर्व CSC डेटा दिसेल — नाव, ID, सेवा तपशील.</li>
-                <li><strong>शोध बॉक्स</strong> वापरून नाव किंवा ID ने रेकॉर्ड शोधा.</li>
-                <li>प्रत्येक रेकॉर्डसमोर <strong>PDF डाउनलोड</strong> बटण वापरून अहवाल जतन करा किंवा शेअर करा.</li>
-            </ol>
-        </div>
-
-        <!-- Important note: permissions and first time access -->
-        <div class="note">
-            <span>📌 पहिल्यांदा उघडताना Google Apps Script परवानगी आवश्यक आहे. Allow / परवानगी द्या — यामुळे डेटा डॅशबोर्ड योग्यरित्या कार्य करतो. आपली माहिती सुरक्षित आहे.</span>
-        </div>
-
-        <!-- Extra tip / alternative text: both buttons lead to same advanced dashboard but give redundancy -->
-        <div style="margin: 18px 0 0; background: #fef9e3; border-radius: 28px; padding: 10px 16px; font-size: 0.8rem; color: #92400e; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;">
-            <span>💡</span> <strong>टीप:</strong> दोन्ही बटन्स एकाच प्रगत डॅशबोर्डशी जोडलेली आहेत. दुसरा बटण बॅकअप / सोयीसाठी देण्यात आला आहे.
-        </div>
-
-        <!-- Footer (professional references) -->
-        <div class="footer">
-            <p>⚡ प्रीमियम CSC डेटा डॅशबोर्ड — सेतु सुविधा केंद्र कणकवली ⚡</p>
-            <p style="margin-top: 12px; font-size: 0.8rem; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;">
-                <a href="#" onclick="window.location.reload();return false;">⟳ रिफ्रेश पेज</a>
-                <a href="https://support.google.com/docs/answer/9071663?hl=mr" target="_blank">मदत / मार्गदर्शन</a>
-                <a href="#" id="copyLinkBtn" style="cursor: pointer;">📋 डॅशबोर्ड लिंक कॉपी करा</a>
-            </p>
-        </div>
+        <h1>सेतु सुविधा केंद्र तहसील कार्यालय कणकवली<br><span style="font-size: 1.6rem; font-weight: 500; color:#bae6fd;"></span></h1>
     </div>
+    <!-- 🟢 ६ बटणे २ कॉलम्स मध्ये (३ डावीकडे - ३ उजवीकडे) -->
+    <div class="button-grid">
+        <!-- CSC SERVICES LOGIN -->
+        <a href="https://cscservices.mahaonline.gov.in" class="btn-glass btn-csc" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-user-check btn-icon"></i>
+                <span class="btn-text">CSC SERVICES LOGIN</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
 
-    <!-- Simple JavaScript to add "copy link to clipboard" functionality for user convenience -->
-    <script>
-        (function() {
-            // Get the dashboard master URL (same as both buttons)
-            const dashboardUrl = "https://script.google.com/macros/s/AKfycbycukyycNmaplKec5L9ou5JWnpfWZ4dfepBevzkD2ot4FxrK_xv1Bh0KE-Iw3j4BVYj/exec";
-            
-            // Copy link button functionality
-            const copyBtn = document.getElementById('copyLinkBtn');
-            if (copyBtn) {
-                copyBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    navigator.clipboard.writeText(dashboardUrl).then(() => {
-                        // Temporary visual feedback
-                        const originalText = copyBtn.innerHTML;
-                        copyBtn.innerHTML = '✅ कॉपी झाली!';
-                        setTimeout(() => {
-                            copyBtn.innerHTML = originalText;
-                        }, 2000);
-                    }).catch(() => {
-                        alert("लिंक कॉपी करण्यात अडचण, मॅन्युअली कॉपी करा.");
-                    });
-                });
-            }
-            
-            // Optional: Add smooth ripple effect on external link clicks (just for enhacement)
-            const allLinks = document.querySelectorAll('.dashboard-link');
-            allLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // just ensure no extra conflict, but allow navigation
-                    // small animation marker (optional)
-                    let ripple = document.createElement('span');
-                    ripple.style.position = 'absolute';
-                    ripple.style.borderRadius = '50%';
-                    ripple.style.backgroundColor = 'rgba(255,255,255,0.5)';
-                    ripple.style.width = '100px';
-                    ripple.style.height = '100px';
-                    ripple.style.transform = 'translate(-50%, -50%) scale(0)';
-                    ripple.style.transition = 'transform 0.4s ease-out';
-                    ripple.style.pointerEvents = 'none';
-                    ripple.style.left = e.clientX - link.getBoundingClientRect().left + 'px';
-                    ripple.style.top = e.clientY - link.getBoundingClientRect().top + 'px';
-                    link.style.position = 'relative';
-                    link.style.overflow = 'hidden';
-                    link.appendChild(ripple);
-                    setTimeout(() => {
-                        ripple.style.transform = 'translate(-50%, -50%) scale(4)';
-                        setTimeout(() => ripple.remove(), 400);
-                    }, 10);
-                });
+        <!-- Main Server -->
+        <a href="https://script.google.com/macros/s/AKfycbzuX5jHIVLw5uHThJ3vGmZvPV7rldexEtgx1XsQGdNO-_l2w1cxTG9sK1FlkdLrm9Ma/exec" class="btn-glass btn-main" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-database btn-icon"></i>
+                <span class="btn-text">📄 Main Server</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- Server No 1 -->
+        <a href="https://revenue.mahaonline.gov.in/ApplicationSearchStatus/ApplicationStatus.aspx?str=8E143B55D5A032490B7BB9C10244D7274045B48F1BF2DDD9" class="btn-glass btn-server1" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-server btn-icon"></i>
+                <span class="btn-text">🏠 Application Stutas check</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- Server No 2 -->
+        <a href="https://aaplesarkar.mahaonline.gov.in/" class="btn-glass btn-server2" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-cloud-upload-alt btn-icon"></i>
+                <span class="btn-text">📜Track Application</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- Server No 3 -->
+        <a href="https://script.google.com/macros/s/AKfycbzaaJ56jkTAealuWGLpsbIsGcIPQ3LJbfIrC2eXQcghjrPhCLjcCYJ0e0FOfXZ1hLso/exec" class="btn-glass btn-server3" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-chart-line btn-icon"></i>
+                <span class="btn-text">💳 Server No 3</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+
+        <!-- Token Generator (मूळ कोडसह) -->
+        <a href="#" class="btn-glass btn-token" id="openTokenGeneratorBtn">
+            <div class="btn-left">
+                <i class="fas fa-ticket-alt btn-icon"></i>
+                <span class="btn-text">🎟️ प्रतिज्ञा पत्र टोकन जनरेटर</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+		
+		<a href="#" class="btn-glass btn-token" id="openTokenGeneratorBtn">
+            <div class="btn-left">
+                <i class="fas fa-ticket-alt btn-icon"></i>
+                <span class="btn-text">🎟️ Reserve btn 1 </span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+		
+		<a href="#" class="btn-glass btn-token" id="openTokenGeneratorBtn">
+            <div class="btn-left">
+                <i class="fas fa-ticket-alt btn-icon"></i>
+                <span class="btn-text">🎟️ Reserve btn 2</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+    </div>
+    
+    <div class="footer-info">
+        <span><i class="fas fa-clock"></i> २४×७ सुविधा</span>
+        <span><i class="fas fa-desktop"></i> डिजिटल सेवा केंद्र</span>
+        <span><i class="fas fa-shield-alt"></i> सुरक्षित & एनक्रिप्टेड</span>
+        <span><i class="fas fa-layer-group"></i> प्रिमियम Glass UI</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // 🎟️ टोकन जनरेटरचा तुमचा मूळ कोड 
+        const tokenHtmlCode = `<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <title>Printable Round Lunch Tokens | सेतु सुविधा केंद्र</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        @page { size: A4; margin: 15mm; }
+        body { font-family: 'Poppins', Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .control-panel { background-color: #ffffff; padding: 15px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .control-group { display: inline-block; margin: 0 10px; }
+        .control-panel label { font-size: 15px; font-weight: 600; margin-right: 8px; }
+        .control-panel input { font-family: 'Poppins', sans-serif; padding: 6px; font-size: 15px; border: 1px solid #ccc; border-radius: 4px; }
+        .control-panel input[type="number"] { width: 80px; }
+        .control-panel input[type="text"] { width: 140px; }
+        .btn-generate { font-family: 'Poppins', sans-serif; padding: 7px 15px; font-size: 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+        .btn-generate:hover { background-color: #218838; }
+        .print-container { background-color: #fff; }
+        .page { width: 180mm; height: 260mm; page-break-after: always; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(5, 1fr); gap: 15mm; justify-items: center; align-items: center; box-sizing: border-box; background: #fff; margin: 0 auto; }
+        .page:last-child { page-break-after: avoid; }
+        .token { width: 35mm; height: 35mm; border: 2px solid #000000; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #fff; box-shadow: 0 0 0 1px #ccc; box-sizing: border-box; padding: 2px; }
+        .heading-display { font-size: 11pt; font-weight: 600; color: #000; text-transform: uppercase; margin-bottom: -2px; }
+        .number { font-size: 32pt; font-weight: 900; color: #000; line-height: 0.95; margin-bottom: 2px; letter-spacing: -1px; }
+        .date-display { font-size: 10pt; font-weight: 600; color: #222; }
+        @media print { .control-panel { display: none; } body { background-color: #fff; } .page { margin: 0; } }
+    </style>
+</head>
+<body>
+<div class="control-panel">
+    <div class="control-group"><label>टोकन नाव:</label><input type="text" id="tokenHeading" value="प्रतिज्ञा पत्र"></div>
+    <div class="control-group"><label>तारीख:</label><input type="date" id="tokenDate"></div>
+    <div class="control-group"><label>पासून:</label><input type="number" id="startRange" value="1"></div>
+    <div class="control-group"><label>पर्यंत:</label><input type="number" id="endRange" value="100"></div>
+    <button class="btn-generate" onclick="generateTokens()">टोकन जनरेट करा</button>
+</div>
+<div class="print-container" id="tokenContainer"></div>
+<script>
+    let today = new Date();
+    document.getElementById('tokenDate').value = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+    generateTokens();
+    
+    function generateTokens() {
+        let headingValue = document.getElementById('tokenHeading').value || "टोकन";
+        let start = parseInt(document.getElementById('startRange').value) || 1;
+        let end = parseInt(document.getElementById('endRange').value) || 100;
+        let dateValue = document.getElementById('tokenDate').value;
+        let formattedDate = "";
+        if (dateValue) { let d = dateValue.split('-'); formattedDate = d[2]+'/'+d[1]+'/'+d[0]; }
+        let container = document.getElementById('tokenContainer'); container.innerHTML = "";
+        let tokensPerPage = 20, currentCount = 0, pageDiv = null;
+        for (let j = start; j <= end; j++) {
+            if (currentCount % tokensPerPage === 0) { pageDiv = document.createElement('div'); pageDiv.className = 'page'; container.appendChild(pageDiv); }
+            let tokenDiv = document.createElement('div'); tokenDiv.className = 'token';
+            let headDiv = document.createElement('div'); headDiv.className = 'heading-display'; headDiv.innerText = headingValue;
+            let numDiv = document.createElement('div'); numDiv.className = 'number'; numDiv.innerText = j;
+            let dateDiv = document.createElement('div'); dateDiv.className = 'date-display'; dateDiv.innerText = formattedDate;
+            tokenDiv.appendChild(headDiv); tokenDiv.appendChild(numDiv); tokenDiv.appendChild(dateDiv); pageDiv.appendChild(tokenDiv);
+            currentCount++;
+        }
+    }
+<\/script>
+</body>
+</html>`;
+
+        // बटणावर क्लिक केल्यावर तुमचा कोड नवीन टॅब मध्ये उघडेल
+        const tokenBtn = document.getElementById('openTokenGeneratorBtn');
+        if (tokenBtn) {
+            tokenBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const win = window.open('', '_blank');
+                if(win) {
+                    win.document.write(tokenHtmlCode);
+                    win.document.close();
+                } else {
+                    alert("कृपया तुमच्या ब्राउझरचे Pop-up ब्लॉकर बंद करा, जेणेकरून टोकन जनरेटर उघडता येईल.");
+                }
             });
-            
-            // Console log for developer information
-            console.log("CSC लाँच पेज - दोन बटन्स (मुख्य + प्रगत) यशस्वीरित्या लोड झाले. डॅशबोर्ड URL सुरक्षित आहे.");
-        })();
-    </script>
+        }
+
+        // Click Ripple Effect
+        const btns = document.querySelectorAll('.btn-glass');
+        btns.forEach(btn => {
+            btn.addEventListener('mousedown', (e) => {
+                if (btn.id === 'openTokenGeneratorBtn') return; // नवीन पेज उघडताना रिपल त्रास देऊ नये म्हणून
+                
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple-effect';
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size/2;
+                const y = e.clientY - rect.top - size/2;
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 500);
+            });
+        });
+    })();
+</script>
 </body>
 </html>
