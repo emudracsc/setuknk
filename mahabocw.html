@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <title>स्वघोषणापत्र - फॉर्म नं. ४</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --input-bg: #0f172a;
+            --border-color: #334155;
+        }
+
+        body {
+            font-family: 'Mukta', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 900px;
+            background: var(--card-bg);
+            padding: 30px;
+            margin: auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 
+                        0 8px 10px -6px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+        }
+
+        h3 {
+            text-align: right;
+            margin-bottom: 10px;
+            color: #94a3b8;
+        }
+
+        h2 {
+            text-align: center;
+            text-decoration: underline;
+            margin-bottom: 25px;
+            color: #818cf8;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        input[type="text"], input[type="number"], input[type="date"] {
+            font-family: 'Mukta', Arial, sans-serif;
+            padding: 9px 12px;
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--input-bg);
+            color: var(--text-color);
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        table, th, td {
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #334155;
+            color: #f1f5f9;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .date-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            font-family: 'Mukta', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .blank-btn {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+        }
+
+        .add-row-btn {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            padding: 6px 14px;
+            font-size: 13px;
+        }
+
+        .remove-btn {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        /* मॉडेल / प्रीव्ह्यू विंडो */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.8); 
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            color: #1f2937;
+            margin: 3% auto; 
+            padding: 30px;
+            width: 85%; 
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            color: #aaa;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .preview-actions {
+            text-align: center;
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .action-btn-print {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            color: white;
+        }
+
+        .action-btn-pdf {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+            color: white;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin-top: 20mm;
+                margin-bottom: 20mm;
+                margin-left: 25mm;
+                margin-right: 15mm;
+            }
+            body {
+                background-color: #fff;
+                margin: 0;
+                padding: 0;
+            }
+            .container, .modal-header, .preview-actions, .close-btn, .input-form {
+                display: none !important;
+            }
+            .modal {
+                display: block !important;
+                position: static;
+                background: none;
+                backdrop-filter: none;
+                overflow: visible;
+            }
+            .modal-content {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                max-width: 100%;
+                max-height: none;
+                overflow: visible;
+                color: #000;
+            }
+            .print-output {
+                display: block !important;
+                font-size: 15px;
+                line-height: 2.1;
+                width: 100%;
+            }
+        }
+
+        .print-output {
+            display: block;
+            font-size: 15px;
+            line-height: 2.1;
+        }
+
+        .indent-para {
+            text-align: justify;
+            text-indent: 40px; 
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="input-form">
+        <h3>फॉर्म नं. ४</h3>
+        <h2>स्वघोषणापत्र भरण्याचा अर्ज</h2>
+        
+        <form id="declarationForm" oninput="saveFormData()">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>अर्जदाराचे नाव:</label>
+                    <input type="text" id="applicantName" required>
+                </div>
+                <div class="form-group">
+                    <label>वडिलांचे नाव:</label>
+                    <input type="text" id="fatherName" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>आधार क्रमांक (Aadhaar No):</label>
+                    <input type="text" id="aadhaarNo" maxlength="12" placeholder="[Aadhaar Redacted]" required>
+                </div>
+                <div class="form-group">
+                    <label>जन्मतारीख [DD/MM/YYYY]:</label>
+                    <input type="date" id="dob" onchange="calculateAgeFromDOB(); saveFormData();" required>
+                </div>
+                <div class="form-group">
+                    <label>वय (वर्षे):</label>
+                    <input type="number" id="age" required readonly style="background: #334155; color: #f8fafc;">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>रा. राहणारे (गाव):</label>
+                    <input type="text" id="village" required>
+                </div>
+                <div class="form-group">
+                    <label>तालुका:</label>
+                    <input type="text" id="taluka" value="कणकवली" required>
+                </div>
+                <div class="form-group">
+                    <label>जिल्हा:</label>
+                    <input type="text" id="district" value="सिंधुदुर्ग" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>कामाचा प्रकार:</label>
+                    <input type="text" id="workType" value="बांधकाम कामगार" required>
+                </div>
+            </div>
+
+            <h4 style="margin-top: 20px; color: #818cf8;">तपशील (मालकाकडे काम केल्याचा):</h4>
+            <table id="inputTable">
+                <tr>
+                    <th style="width: 8%;">अ.क्र</th>
+                    <th style="width: 32%;">मालकाचे नाव</th>
+                    <th style="width: 38%;">काम केल्याचा कालावधी (पासून - पर्यंत) [DD/MM/YYYY]</th>
+                    <th style="width: 14%;">एकूण दिवस</th>
+                    <th style="width: 8%;">कृती</th>
+                </tr>
+                <tr>
+                    <td>१.</td>
+                    <td><input type="text" class="ownerName" style="width: 90%;" oninput="saveFormData()"></td>
+                    <td>
+                        <div class="date-inputs">
+                            <input type="date" class="fromDate" onchange="calculateDays(this); saveFormData();" style="width: 48%;"> ते 
+                            <input type="date" class="toDate" onchange="calculateDays(this); saveFormData();" style="width: 48%;">
+                        </div>
+                    </td>
+                    <td><input type="text" class="totalDays" style="width: 85%; text-align: center;" readonly></td>
+                    <td><button type="button" class="add-row-btn" onclick="addRow()">+</button></td>
+                </tr>
+            </table>
+
+            <div class="form-row" style="margin-top: 20px;">
+                <div class="form-group">
+                    <label>स्थळ:</label>
+                    <input type="text" id="place" required>
+                </div>
+                <div class="form-group">
+                    <label>दिनांक [DD/MM/YYYY]:</label>
+                    <input type="date" id="date" required>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button type="button" onclick="openPreview()">प्रिंट प्रीव्ह्यू पहा</button>
+                <button type="button" class="blank-btn" onclick="openBlankPreview()">कोरा फॉर्म डाउनलोड करा</button>
+                <button type="button" class="reset-btn" onclick="clearFormData()">माहिती रिसेट करा</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- प्रीव्ह्यू मॉडेल विंडो -->
+<div id="previewModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closePreview()">&times;</span>
+        
+        <div class="print-output" id="printSection">
+            <div style="text-align: right; font-weight: bold; margin-bottom: 10px;">फॉर्म नं. ४</div>
+            <h2 style="text-align: center; text-decoration: underline; margin: 10px 0 25px 0; color: #000;">स्वघोषणापत्र</h2>
+            
+            <p class="indent-para">
+                मी श्री. <span id="p_applicantName" style="font-weight: bold; padding: 0 15px; min-width: 220px; display: inline-block; text-align: center;"></span> श्री. <span id="p_fatherName" style="font-weight: bold; padding: 0 15px; min-width: 220px; display: inline-block; text-align: center;"></span> यांचा मुलगा वय <span id="p_age" style="font-weight: bold; padding: 0 5px; min-width: 45px; display: inline-block; text-align: center;"></span> वर्षे रा. <span id="p_village" style="font-weight: bold; padding: 0 10px; min-width: 130px; display: inline-block; text-align: center;"></span> ता. <span id="p_taluka" style="font-weight: bold; padding: 0 10px; min-width: 100px; display: inline-block; text-align: center;"></span> जि. <span id="p_district" style="font-weight: bold; padding: 0 10px; min-width: 100px; display: inline-block; text-align: center;"></span> स्वघोषणापत्र लिहून देतो की,
+            </p>
+
+            <p class="indent-para">
+                मी श्री. <span id="p_applicantName2" style="font-weight: bold; padding: 0 15px; min-width: 220px; display: inline-block; text-align: center;"></span> रा. <span id="p_village2" style="font-weight: bold; padding: 0 10px; min-width: 130px; display: inline-block; text-align: center;"></span> या गावाचा रहिवासी असून मी <span id="p_workType" style="font-weight: bold; padding: 0 10px; min-width: 150px; display: inline-block; text-align: center;"></span> हे काम करतो. मी <span id="p_workType2" style="font-weight: bold; padding: 0 10px; min-width: 150px; display: inline-block; text-align: center;"></span> असून मी सन <span id="p_workYear" style="font-weight: bold; padding: 0 10px; min-width: 100px; display: inline-block; text-align: center;"></span> या वर्षात खालील प्रमाणे मालकांकडे <span id="p_workType3" style="font-weight: bold; padding: 0 10px; min-width: 150px; display: inline-block; text-align: center;"></span> म्हणून काम केलेले आहे. त्याचा तपशील पुढील प्रमाणे आहे.
+            </p>
+
+            <table id="printTable" style="border: 1px solid #999; width: 100%; border-collapse: collapse; margin: 20px 0;">
+                <tr>
+                    <th style="width: 10%; border: 1px solid #999; background: #eee; color:#000; padding: 8px;">अ.क्र</th>
+                    <th style="width: 40%; border: 1px solid #999; background: #eee; color:#000; padding: 8px;">मालकाचे नाव</th>
+                    <th style="width: 35%; border: 1px solid #999; background: #eee; color:#000; padding: 8px;">काम केल्याचा कालावधी<br>(दिनांक पासुन - पर्यंत) [DD/MM/YYYY]</th>
+                    <th style="width: 15%; border: 1px solid #999; background: #eee; color:#000; padding: 8px;">कामाचे एकुण दिवस</th>
+                </tr>
+            </table>
+
+            <p class="indent-para">
+                वरील प्रमाणे मालकांकडे सुरु असलेल्या कामापैकी मी <span id="p_workType4" style="font-weight: bold; padding: 0 10px; min-width: 150px; display: inline-block; text-align: center;"></span> म्हणून काम केलेले आहे. हे अगदी सत्य व बरोबर आहे. सदरचे स्वघोषणापत्र मी ग्रामपंचायतीकडून बांधकाम कामगार असल्याबाबतचे प्रमाणपत्र मिळवूनकामी सादर करीत असून त्यात दिलेली माहिती ही सत्य व बरोबर आहे.
+            </p>
+
+            <p class="indent-para">
+                वर नमूद केलेली माहिती खोटी किंवा लबाडीची आढळल्यास मी भारतीय दंड संहिता कलम १९९ व २०० अन्वये होणाऱ्या शिक्षेस मी पात्र राहीन म्हणून मनावर कोणतेही दपण किंवा दबाव नसताना लिहून दिले स्वघोषणापत्र.
+            </p>
+
+            <table style="border: none; width: 100%; margin-top: 50px;">
+                <tr style="border: none;">
+                    <td style="border: none; text-align: left; vertical-align: bottom; width: 50%;">
+                        स्थळ:- <span id="p_place" style="font-weight: bold; padding: 0 10px; min-width: 130px; display: inline-block; text-align: center;"></span><br><br>
+                        दिनांक:- <span id="p_date" style="font-weight: bold; padding: 0 10px; min-width: 130px; display: inline-block; text-align: center;"></span>
+                    </td>
+                    <td style="border: none; text-align: center; vertical-align: bottom; width: 50%;">
+                        सही/-<br><br><br>
+                        <span id="p_applicantName3" style="font-weight: bold; font-size: 16px;"></span><br>
+                        <span id="p_aadhaarNo" style="font-weight: bold;"></span><br>
+                        (स्वघोषणापत्र लिहून देणाऱ्याचे नाव व आधार क्रमांक)
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="preview-actions">
+            <button type="button" class="action-btn-print" onclick="triggerPrint()">प्रिंट काढा</button>
+            <button type="button" class="action-btn-pdf" onclick="triggerPDFDownload()">PDF डाउनलोड करा</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function saveFormData() {
+        let formData = {
+            applicantName: document.getElementById('applicantName').value,
+            fatherName: document.getElementById('fatherName').value,
+            aadhaarNo: document.getElementById('aadhaarNo').value,
+            dob: document.getElementById('dob').value,
+            age: document.getElementById('age').value,
+            village: document.getElementById('village').value,
+            taluka: document.getElementById('taluka').value,
+            district: document.getElementById('district').value,
+            workType: document.getElementById('workType').value,
+            place: document.getElementById('place').value,
+            date: document.getElementById('date').value
+        };
+        localStorage.setItem('declarationFormData', JSON.stringify(formData));
+    }
+
+    window.onload = function() {
+        let savedData = localStorage.getItem('declarationFormData');
+        if (savedData) {
+            let data = JSON.parse(savedData);
+            document.getElementById('applicantName').value = data.applicantName || '';
+            document.getElementById('fatherName').value = data.fatherName || '';
+            document.getElementById('aadhaarNo').value = data.aadhaarNo || '';
+            document.getElementById('dob').value = data.dob || '';
+            document.getElementById('age').value = data.age || '';
+            document.getElementById('village').value = data.village || '';
+            document.getElementById('taluka').value = data.taluka || 'कणकवली';
+            document.getElementById('district').value = data.district || 'सिंधुदुर्ग';
+            document.getElementById('workType').value = data.workType || 'बांधकाम कामगार';
+            document.getElementById('place').value = data.place || '';
+            document.getElementById('date').value = data.date || '';
+        }
+    }
+
+    function clearFormData() {
+        localStorage.removeItem('declarationFormData');
+        document.getElementById('declarationForm').reset();
+        document.getElementById('taluka').value = 'कणकवली';
+        document.getElementById('district').value = 'सिंधुदुर्ग';
+        document.getElementById('workType').value = 'बांधकाम कामगार';
+        alert('फॉर्ममधील माहिती रिसेट केली आहे.');
+    }
+
+    function calculateAgeFromDOB() {
+        let dobInput = document.getElementById('dob').value;
+        if (dobInput) {
+            let birthDate = new Date(dobInput);
+            let today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            let m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            document.getElementById('age').value = age >= 0 ? age : 0;
+        }
+    }
+
+    function formatDateToDDMMYYYY(dateStr) {
+        if (!dateStr) return "";
+        let parts = dateStr.split('-');
+        return parts[2] + '/' + parts[1] + '/' + parts[0];
+    }
+
+    function calculateDays(element) {
+        let row = element.closest('tr');
+        let fromDateInput = row.querySelector('.fromDate').value;
+        let toDateInput = row.querySelector('.toDate').value;
+        let totalDaysInput = row.querySelector('.totalDays');
+
+        if (fromDateInput && toDateInput) {
+            let start = new Date(fromDateInput);
+            let end = new Date(toDateInput);
+            
+            let diffTime = end - start;
+            let diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+            if (diffDays >= 0) {
+                totalDaysInput.value = diffDays;
+            } else {
+                totalDaysInput.value = "";
+                alert("शेवटची तारीख ही सुरुवातीच्या तारखेपेक्षा पुढची असणे आवश्यक आहे.");
+            }
+        }
+    }
+
+    function addRow() {
+        let table = document.getElementById("inputTable");
+        let rowCount = table.rows.length;
+        let row = table.insertRow(rowCount);
+        
+        let cell1 = row.insertCell(0);
+        let cell2 = row.insertCell(1);
+        let cell3 = row.insertCell(2);
+        let cell4 = row.insertCell(3);
+        let cell5 = row.insertCell(4);
+        
+        cell1.innerText = rowCount;
+        cell2.innerHTML = '<input type="text" class="ownerName" style="width: 90%;" oninput="saveFormData()">';
+        cell3.innerHTML = `<div class="date-inputs">
+                            <input type="date" class="fromDate" onchange="calculateDays(this); saveFormData();" style="width: 48%;"> ते 
+                            <input type="date" class="toDate" onchange="calculateDays(this); saveFormData();" style="width: 48%;">
+                           </div>`;
+        cell4.innerHTML = '<input type="text" class="totalDays" style="width: 85%; text-align: center;" readonly>';
+        cell5.innerHTML = '<button type="button" class="remove-btn" onclick="removeRow(this)">काढा</button>';
+        
+        updateButtons();
+    }
+
+    function removeRow(btn) {
+        let row = btn.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+        updateSerialNumbers();
+        updateButtons();
+    }
+
+    function updateSerialNumbers() {
+        let table = document.getElementById("inputTable");
+        for (let i = 1; i < table.rows.length; i++) {
+            table.rows[i].cells[0].innerText = i;
+        }
+    }
+
+    function updateButtons() {
+        let table = document.getElementById("inputTable");
+        let rows = table.rows;
+        for (let i = 1; i < rows.length; i++) {
+            let actionCell = rows[i].cells[4];
+            if (i === rows.length - 1) {
+                actionCell.innerHTML = '<button type="button" class="add-row-btn" onclick="addRow()">+</button>' + 
+                                       (rows.length > 2 ? ' <button type="button" class="remove-btn" onclick="removeRow(this)">काढा</button>' : '');
+            } else {
+                actionCell.innerHTML = '<button type="button" class="remove-btn" onclick="removeRow(this)">काढा</button>';
+            }
+        }
+    }
+
+    function openPreview() {
+        document.getElementById('p_applicantName').innerText = document.getElementById('applicantName').value;
+        document.getElementById('p_applicantName2').innerText = document.getElementById('applicantName').value;
+        document.getElementById('p_applicantName3').innerText = document.getElementById('applicantName').value;
+        
+        let rawAadhaar = document.getElementById('aadhaarNo').value;
+        document.getElementById('p_aadhaarNo').innerText = rawAadhaar ? 'आधार क्र: [Aadhaar Redacted]' : '';
+
+        document.getElementById('p_fatherName').innerText = document.getElementById('fatherName').value;
+        document.getElementById('p_age').innerText = document.getElementById('age').value;
+        document.getElementById('p_village').innerText = document.getElementById('village').value;
+        document.getElementById('p_village2').innerText = document.getElementById('village').value;
+        document.getElementById('p_taluka').innerText = document.getElementById('taluka').value;
+        document.getElementById('p_district').innerText = document.getElementById('district').value;
+        
+        let wType = document.getElementById('workType').value;
+        document.getElementById('p_workType').innerText = wType;
+        document.getElementById('p_workType2').innerText = wType;
+        document.getElementById('p_workType3').innerText = wType;
+        document.getElementById('p_workType4').innerText = wType;
+        
+        document.getElementById('p_workYear').innerText = '_________________';
+        
+        document.getElementById('p_place').innerText = document.getElementById('place').value;
+        document.getElementById('p_date').innerText = formatDateToDDMMYYYY(document.getElementById('date').value);
+
+        let printTable = document.getElementById('printTable');
+        let rowCount = printTable.rows.length;
+        for (let i = rowCount - 1; i > 0; i--) {
+            printTable.deleteRow(i);
+        }
+
+        let ownerNames = document.getElementsByClassName('ownerName');
+        let fromDates = document.getElementsByClassName('fromDate');
+        let toDates = document.getElementsByClassName('toDate');
+        let totalDays = document.getElementsByClassName('totalDays');
+
+        for (let i = 0; i < ownerNames.length; i++) {
+            let oName = ownerNames[i].value;
+            let fDate = formatDateToDDMMYYYY(fromDates[i].value);
+            let tDate = formatDateToDDMMYYYY(toDates[i].value);
+            let tDays = totalDays[i].value;
+
+            if (oName.trim() !== "" || (fDate && tDate)) {
+                let newRow = printTable.insertRow();
+                
+                let c1 = newRow.insertCell(0);
+                let c2 = newRow.insertCell(1);
+                let c3 = newRow.insertCell(2);
+                let c4 = newRow.insertCell(3);
+
+                c1.style.border = "1px solid #999";
+                c1.style.padding = "8px";
+                c2.style.border = "1px solid #999";
+                c2.style.padding = "8px";
+                c3.style.border = "1px solid #999";
+                c3.style.padding = "8px";
+                c4.style.border = "1px solid #999";
+                c4.style.padding = "8px";
+
+                c1.innerText = printTable.rows.length - 1;
+                c2.innerText = oName;
+                c3.innerText = fDate + ' ते ' + tDate;
+                c4.innerText = tDays;
+            }
+        }
+
+        document.getElementById('previewModal').style.display = "block";
+    }
+
+    function openBlankPreview() {
+        document.getElementById('p_applicantName').innerText = "________________________";
+        document.getElementById('p_applicantName2').innerText = "________________________";
+        document.getElementById('p_applicantName3').innerText = "";
+        document.getElementById('p_aadhaarNo').innerText = "";
+        
+        document.getElementById('p_fatherName').innerText = "________________________";
+        document.getElementById('p_age').innerText = "____";
+        document.getElementById('p_village').innerText = "________________";
+        document.getElementById('p_village2').innerText = "________________";
+        document.getElementById('p_taluka').innerText = "____________";
+        document.getElementById('p_district').innerText = "सिंधुदुर्ग";
+        
+        document.getElementById('p_workType').innerText = "______________";
+        document.getElementById('p_workType2').innerText = "______________";
+        document.getElementById('p_workType3').innerText = "______________";
+        document.getElementById('p_workType4').innerText = "______________";
+        
+        document.getElementById('p_workYear').innerText = "_________";
+        document.getElementById('p_place').innerText = "________________";
+        document.getElementById('p_date').innerText = "____/____/________";
+
+        let printTable = document.getElementById('printTable');
+        let rowCount = printTable.rows.length;
+        for (let i = rowCount - 1; i > 0; i--) {
+            printTable.deleteRow(i);
+        }
+
+        for (let i = 1; i <= 2; i++) {
+            let newRow = printTable.insertRow();
+            let c1 = newRow.insertCell(0);
+            let c2 = newRow.insertCell(1);
+            let c3 = newRow.insertCell(2);
+            let c4 = newRow.insertCell(3);
+
+            c1.style.border = "1px solid #999"; c1.style.padding = "12px"; c1.innerText = i;
+            c2.style.border = "1px solid #999"; c2.style.padding = "12px"; c2.innerText = "";
+            c3.style.border = "1px solid #999"; c3.style.padding = "12px"; c3.innerText = "";
+            c4.style.border = "1px solid #999"; c4.style.padding = "12px"; c4.innerText = "";
+        }
+
+        document.getElementById('previewModal').style.display = "block";
+    }
+
+    function closePreview() {
+        document.getElementById('previewModal').style.display = "none";
+    }
+
+    function triggerPrint() {
+        window.print();
+    }
+
+    function triggerPDFDownload() {
+        window.print();
+    }
+
+    window.onclick = function(event) {
+        let modal = document.getElementById('previewModal');
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>
