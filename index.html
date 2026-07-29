@@ -6,23 +6,11 @@
     <title>Setu Suvidha Kendra | Glassmorphism All-In-One Services</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
-
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-
-
-
-
-
-
-
-
-
-
         }
 
         body {
@@ -60,14 +48,6 @@
             background: radial-gradient(circle at 70% 20%, rgba(56, 189, 248, 0.12), transparent 70%);
             pointer-events: none;
             z-index: 0;
-
-
-
-
-
-
-
-
         }
 
         /* 🟢 जाहिरातींसाठी CSS (Ads Container) */
@@ -90,8 +70,6 @@
             text-align: center;
             z-index: 5;
             padding: 1rem;
-
-
         }
 
         .ad-banner i {
@@ -105,11 +83,6 @@
 
         @media (max-width: 1350px) {
             .ad-banner { display: none; }
-
-
-
-
-
         }
 
         .glass-panel {
@@ -129,19 +102,9 @@
 
         .glass-panel:hover {
             box-shadow: 0 35px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,240,0.2) inset;
-
-
-
-
-
         }
 
         .hero-section {
-
-
-
-
-
             text-align: center;
             margin-bottom: 2.5rem;
             position: relative;
@@ -241,7 +204,6 @@
 
         .btn-glass:hover::after { left: 120%; }
 
-
         .floating-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 1; }
         .shape { position: absolute; border-radius: 50%; filter: blur(60px); animation: float 20s infinite alternate ease-in-out; }
         .shape1 { width: 300px; height: 300px; top: -100px; left: -80px; background: #3b82f6; opacity: 0.15; }
@@ -249,7 +211,6 @@
         .shape3 { width: 220px; height: 220px; top: 40%; left: 75%; background: #f97316; opacity: 0.12; filter: blur(70px); animation-duration: 18s; }
 
         @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, -30px) scale(1.1); } }
-
 
         .footer-info {
             margin-top: 2.2rem; text-align: center; color: #8b9ac0; font-size: 0.8rem;
@@ -375,7 +336,7 @@
                 <i class="fas fa-arrow-right"></i>
             </div>
         </a>
-        <a href="Pikpera.html" class="btn-glass btn-reserve2">
+        <a href="#" class="btn-glass btn-reserve2" id="openPrintStudioBtn">
             <div class="btn-left">
                 <i class="fas fa-gem btn-icon"></i>
                 <span class="btn-text">💎  पीकपेरा खरीप </span>
@@ -388,15 +349,6 @@
             <div class="btn-left">
                 <i class="fas fa-gem btn-icon"></i>
                 <span class="btn-text">💎  बांधकाल कामगार संमत्तीपत्र </span>
-            </div>
-            <div class="btn-arrow">
-                <i class="fas fa-arrow-right"></i>
-            </div>
-        </a>
-        <a href="aero.html" class="btn-glass btn-reserve2">
-            <div class="btn-left">
-                <i class="fas fa-gem btn-icon"></i>
-                <span class="btn-text">💎 AERO REPORT GANERAT </span>
             </div>
             <div class="btn-arrow">
                 <i class="fas fa-arrow-right"></i>
@@ -564,7 +516,6 @@
 
         .control-panel h3 {
             font-size: 1.4rem;
-
             font-weight: 700;
             background: linear-gradient(135deg, #4b6cb7, #182848);
             background-clip: text;
@@ -584,7 +535,6 @@
             margin-bottom: 18px;
             font-weight: 500;
             text-align: center;
-
         }
 
         .input-group {
@@ -689,13 +639,6 @@
         }
 
         .center-actions {
-
-
-
-
-
-
-
             display: flex;
             justify-content: center;
             gap: 16px;
@@ -720,9 +663,6 @@
 
         button {
             border: none;
-
-
-
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -819,12 +759,6 @@
         .edit-btn, .delete-btn {
             width: 30px; height: 30px; border-radius: 10px; margin-left: 6px;
             font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center;
-
-
-
-
-
-
         }
         .edit-btn { background: #f59e0b; color: white; }
         .delete-btn { background: #ef4444; color: white; }
@@ -872,8 +806,6 @@
             font-family: 'Inter', sans-serif;
             margin-bottom: 20px;
             text-align: center;
-
-
         }
         
         .modal-content input:focus {
@@ -904,45 +836,18 @@
             margin-top: 10px;
         }
 
-
-
-
-
         @media print {
             @page { size: A4 portrait; margin-top: 25mm; margin-left: 20mm; margin-right: 12mm; margin-bottom: 114.3mm; }
             body { background: none; padding: 0; }
             .no-print { display: none !important; }
             #printArea { height: 157mm; box-shadow: none; border: none; }
             .photo-box { border: 2px solid #000; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
     </style>
 </head>
 <body>
 
 <button class="theme-toggle no-print" id="themeToggleBtn">🌙 Dark</button>
-
-
 
 <div class="control-panel no-print">
     <h3>✨संमती पत्र प्रिंट पोर्टल</h3>
@@ -957,18 +862,6 @@
         <label>🖼️ फोटो साइज:</label>
         <input type="range" id="photoSizeSlider" min="20" max="100" value="80">
         <span class="size-value" id="sizeDisplay">80%</span>
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
 
     <div class="action-row">
@@ -982,20 +875,6 @@
     <div class="center-actions">
         <button class="print-action-btn" onclick="window.print()">🖨️ प्रिंट काढा</button>
         <button class="clear-action-btn" onclick="clearAll()">🗑️ सर्व हटवा</button>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
 </div>
 
@@ -1009,50 +888,18 @@
             <button class="modal-btn-success" onclick="capturePhoto()">📸 फोटो काढा</button>
             <button class="modal-btn-danger" onclick="closeCamera()">❌ बंद करा</button>
         </div>
-
-
-
-
-
-
-
-
-
-
     </div>
 </div>
 
 <div id="cropModal" class="modal no-print">
-
     <div class="modal-content">
         <h3>✂️ फोटो क्रॉप करा</h3>
         <div class="img-container">
             <img id="imageToCrop" src="">
-
-
         </div>
         <div class="modal-buttons">
             <button class="modal-btn-success" onclick="cropAndSave()">✅ क्रॉप करा</button>
             <button class="modal-btn-secondary" onclick="closeCropModal()">❌ रद्द</button>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
     </div>
 </div>
@@ -1064,25 +911,6 @@
         <div class="modal-buttons">
             <button class="modal-btn-success" onclick="saveEditedName()">✅ सेव्ह करा</button>
             <button class="modal-btn-secondary" onclick="closeEditModal()">❌ रद्द</button>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
     </div>
 </div>
@@ -1092,13 +920,6 @@
 <script>
     let cropper, finalCroppedImage = null, videoStream = null;
     let currentEditNameDiv = null;
-
-
-
-
-
-
-
 
     // 🟢 फोटो साइज स्लाइडर फंक्शन
     const slider = document.getElementById('photoSizeSlider');
@@ -1148,117 +969,11 @@
             finalCroppedImage = cropper.getCroppedCanvas({width:350,height:450}).toDataURL('image/jpeg'); 
             document.getElementById('cropModal').style.display = 'none'; 
         } 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
     function closeCropModal(){ 
         document.getElementById('cropModal').style.display = 'none'; 
         document.getElementById('personPhoto').value = ''; 
         finalCroppedImage = null; 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
     
     // ========== EDIT FUNCTIONS ==========
@@ -1266,146 +981,6 @@
         currentEditNameDiv = nameDivElement;
         document.getElementById('editNameInput').value = nameDivElement.innerText;
         document.getElementById('editModal').style.display = 'flex';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
     
     function saveEditedName() {
@@ -1414,67 +989,6 @@
             currentEditNameDiv.innerText = newName;
         }
         closeEditModal();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
     
     function closeEditModal() {
@@ -1540,53 +1054,6 @@
     function clearAll(){ 
         if(confirm("सर्व हटवायचे?")) 
             document.getElementById('printArea').innerHTML=''; 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     // Dark/Light Mode
@@ -1630,25 +1097,6 @@
                     win.document.close();
                 } else {
                     alert("कृपया तुमच्या ब्राउझरचे Pop-up ब्लॉकर बंद करा, जेणेकरून Print Studio उघडता येईल.");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 }
             });
         }
@@ -1671,39 +1119,9 @@
                 ripple.style.top = `${y}px`;
                 btn.appendChild(ripple);
                 setTimeout(() => ripple.remove(), 500);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             });
         });
     })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
-
 </body>
 </html>
