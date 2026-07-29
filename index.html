@@ -2,1005 +2,1707 @@
 <html lang="mr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voter Digitization Report - GitHub Sync</title>
-    
-    <!-- SheetJS Library -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Setu Suvidha Kendra | Glassmorphism All-In-One Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+
     <style>
-        :root {
-            --primary-green: #1b5e20;
-            --primary-dark: #003300;
-            --accent-blue: #0288d1;
-            --accent-orange: #e65100;
-            --bg-canvas: #f8fafc;
-            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-            
-            /* Custom Border Thickness Variables */
-            --border-thin: 1px solid #cbd5e1;
-            --border-medium: 2px solid #64748b;
-            --border-thick: 3px solid #1e293b;
-            --border-subtotal: 2px solid #2e7d32;
-            --border-grandtotal: 3px double #b71c1c;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+
+
+
+
+
+
+
+
+
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-canvas);
-            color: #1e293b;
-            margin: 0;
-            padding: 30px 15px;
-        }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid #e2e8f0;
-        }
-
-        h2 { 
-            color: var(--primary-green); 
-            text-align: center; 
-            margin-top: 0;
-            margin-bottom: 6px; 
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-        
-        p.subtitle { 
-            text-align: center; 
-            color: #64748b; 
-            margin-bottom: 30px; 
-            font-size: 15px;
-        }
-
-        /* UPLOAD AREA STYLING */
-        .upload-card {
-            border: 2px dashed #81c784;
-            background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e9 100%);
-            padding: 30px;
-            text-align: center;
-            border-radius: 12px;
-            cursor: pointer;
-            margin-bottom: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .upload-card:hover {
-            border-color: var(--primary-green);
-            background: #e8f5e9;
-            transform: translateY(-2px);
-        }
-
-        .custom-file-upload {
-            background-color: var(--primary-green);
-            color: white;
-            padding: 12px 26px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-block;
-            box-shadow: 0 4px 12px rgba(27, 94, 32, 0.25);
-            transition: background 0.2s;
-        }
-
-        .custom-file-upload:hover { background-color: var(--primary-dark); }
-        input[type="file"] { display: none; }
-
-        /* DASHBOARD STATS CARDS */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-            display: none;
-        }
-
-        .stat-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-top: 5px solid var(--primary-green);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        }
-
-        .stat-card h4 { margin: 0; color: #64748b; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .stat-card .value { font-size: 28px; font-weight: 800; margin-top: 8px; }
-
-        /* BUTTONS */
-        .btn-group {
+            min-height: 100vh;
+            background: radial-gradient(ellipse at 30% 40%, #0a0f2c, #030617);
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
             display: flex;
-            gap: 12px;
+            align-items: center;
             justify-content: center;
-            margin: 25px 0;
-            flex-wrap: wrap;
+            padding: 2rem 1.5rem;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        .btn {
-            padding: 12px 22px;
-            font-size: 14px;
-            font-weight: 700;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            display: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .btn-area { background-color: #2e7d32; color: white; }
-        .btn-area:hover { background-color: #1b5e20; transform: translateY(-1px); }
-
-        .btn-popup { background-color: #e65100; color: white; }
-        .btn-popup:hover { background-color: #bf360c; transform: translateY(-1px); }
-
-        .btn-download { background-color: #0288d1; color: white; }
-        .btn-download:hover { background-color: #0277bd; transform: translateY(-1px); }
-
-        .btn-print { background-color: #475569; color: white; }
-        .btn-print:hover { background-color: #334155; transform: translateY(-1px); }
-
-        .btn-github { background-color: #24292e; color: white; }
-        .btn-github:hover { background-color: #0f1419; transform: translateY(-1px); }
-
-        /* TABLES WITH CUSTOM THICKNESS & STYLING */
-        .table-container {
-            overflow-x: auto;
-            margin-top: 25px;
-            display: none;
-            border-radius: 8px;
-            border: var(--border-thin);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #ffffff;
-        }
-
-        th, td {
-            border: var(--border-thin);
-            padding: 10px 12px;
-            text-align: center;
-            font-size: 13px;
-            white-space: nowrap;
-        }
-
-        th {
-            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-            color: #0f172a;
-            font-weight: 700;
-            border-bottom: var(--border-thick);
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.3px;
-        }
-
-        tr:hover { background-color: #f8fafc; }
-
-        .valign-center {
-            vertical-align: middle !important;
-            text-align: center !important;
-            font-weight: 700;
-            background-color: #ffffff;
-            border-right: var(--border-medium);
-        }
-
-        /* CUSTOM BORDER THICKNESS FOR ROW TOTALS */
-        .sup-subtotal {
-            background-color: #f0fdf4;
-            font-weight: 700;
-            color: #166534;
-            border-top: var(--border-subtotal);
-            border-bottom: var(--border-subtotal);
-        }
-
-        .ero-subtotal {
-            background-color: #dcfce7;
-            font-weight: 800;
-            color: #14532d;
-            border-top: var(--border-thick);
-            border-bottom: var(--border-thick);
-        }
-
-        .grand-total {
-            background-color: #fef9c3;
-            font-weight: 800;
-            color: #991b1b;
-            font-size: 14px;
-            border-top: var(--border-grandtotal);
-            border-bottom: var(--border-grandtotal);
-        }
-
-        /* POPUP MODAL STYLES */
-        .modal {
-            display: none;
+        body::before {
+            content: "";
             position: fixed;
-            z-index: 9999;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(4px);
+            background-image: radial-gradient(rgba(255,255,240,0.06) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        .modal-content {
-            background-color: #ffffff;
-            margin: 2% auto;
-            padding: 25px;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 1300px;
-            max-height: 90vh;
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 20%, rgba(56, 189, 248, 0.12), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+
+
+
+
+
+
+
+
+        }
+
+        /* 🟢 जाहिरातींसाठी CSS (Ads Container) */
+        .ad-banner {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 160px; 
+            height: 600px; 
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: var(--border-thin);
-        }
-
-        .close-btn {
-            color: #94a3b8;
-            float: right;
-            font-size: 32px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .close-btn:hover { color: #0f172a; }
-
-        .modal-scrollable {
-            overflow-y: auto;
-            max-height: 55vh;
-            margin-top: 15px;
-            border-radius: 8px;
-            border: var(--border-medium);
-        }
-
-        .summary-boxes {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 12px;
-            margin-top: 20px;
-            padding: 18px;
-            background-color: #f8fafc;
-            border-radius: 12px;
-            border: var(--border-thin);
-        }
-
-        .summary-box {
-            background: #ffffff;
-            padding: 12px;
-            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
             text-align: center;
-            border: var(--border-thin);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            z-index: 5;
+            padding: 1rem;
+
+
         }
 
-        .summary-box .title { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; }
-        .summary-box .count { font-size: 22px; font-weight: 800; margin-top: 4px; }
+        .ad-banner i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.3);
+        }
 
-        /* PRINT STYLING */
-        @media print {
-            @page { size: auto; margin: 5mm; }
-            body { background-color: #fff; padding: 0; margin: 0; }
-            
-            body.modal-open .container { display: none !important; }
-            body.modal-open .modal {
-                position: absolute !important; left: 0 !important; top: 0 !important;
-                width: 100% !important; height: auto !important; background-color: transparent !important;
-                display: block !important; overflow: visible !important;
-            }
-            body.modal-open .modal-content {
-                border: none !important; box-shadow: none !important; padding: 0 !important;
-                margin: 0 !important; width: 100% !important; max-width: 100% !important; max-height: none !important;
-            }
-            body.modal-open .modal-scrollable { overflow: visible !important; max-height: none !important; border: var(--border-thin) !important; }
-            body.modal-open .close-btn, body.modal-open .modal-print-btn { display: none !important; }
+        .left-ad { left: 20px; }
+        .right-ad { right: 20px; }
 
-            body:not(.modal-open) h2, body:not(.modal-open) p.subtitle, body:not(.modal-open) .upload-card, 
-            body:not(.modal-open) .btn-group, body:not(.modal-open) .stats-grid, body:not(.modal-open) .modal { display: none !important; }
+        @media (max-width: 1350px) {
+            .ad-banner { display: none; }
 
-            .container { max-width: 100% !important; width: 100% !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; border: none !important; }
-            .table-container { overflow: visible !important; display: block !important; width: 100% !important; margin-top: 0 !important; border: none !important; }
-            
-            table { width: 100% !important; border-collapse: collapse !important; }
-            th, td { font-size: 8pt !important; padding: 4px 6px !important; border: 1px solid #000 !important; }
-            tr { page-break-inside: avoid !important; }
-            thead { display: table-header-group; }
+
+
+
+
+        }
+
+        .glass-panel {
+            position: relative;
+            z-index: 10;
+            max-width: 950px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(20, 30, 55, 0.6) 0%, rgba(8, 18, 38, 0.5) 100%);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+            padding: 2.5rem 2.5rem 3rem;
+            transition: all 0.4s ease;
+        }
+
+        .glass-panel:hover {
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,240,0.2) inset;
+
+
+
+
+
+        }
+
+        .hero-section {
+
+
+
+
+
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF 0%, #B9E6FF 40%, #7AC7F4 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.3rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            line-height: 1.5; 
+            padding-top: 10px; 
+        }
+
+        /* 🟢 ३-३ च्या २ कॉलम्सची (Table) डिझाईन */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-glass {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.1rem 1.8rem;
+            border-radius: 1.8rem;
+            font-weight: 600;
+            font-size: 1.05rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            overflow: hidden;
+            z-index: 1;
+            outline: none;
+        }
+
+        /* बटणांचे रंग */
+        .btn-glass.btn-csc { background: linear-gradient(135deg, rgba(30, 60, 114, 0.75), rgba(42, 82, 152, 0.7)); border-bottom: 2px solid rgba(56, 189, 248, 0.6); }
+        .btn-glass.btn-main { background: linear-gradient(135deg, rgba(192, 57, 43, 0.75), rgba(231, 76, 60, 0.7)); border-bottom: 2px solid rgba(255, 100, 100, 0.6); }
+        .btn-glass.btn-server1 { background: linear-gradient(135deg, rgba(15, 92, 75, 0.75), rgba(10, 108, 94, 0.7)); border-bottom: 2px solid rgba(52, 211, 153, 0.6); }
+        .btn-glass.btn-server2 { background: linear-gradient(135deg, rgba(230, 126, 34, 0.75), rgba(211, 84, 0, 0.7)); border-bottom: 2px solid rgba(251, 191, 36, 0.6); }
+        .btn-glass.btn-server3 { background: linear-gradient(135deg, rgba(108, 52, 131, 0.75), rgba(142, 68, 173, 0.7)); border-bottom: 2px solid rgba(192, 132, 252, 0.6); }
+        .btn-glass.btn-token { background: linear-gradient(135deg, #11998e, #38ef7d); border-bottom: 2px solid rgba(52, 211, 153, 0.6); }
+        
+        /* 🎨 नवीन रिझर्व्ह बटणांचे रंग */
+        .btn-glass.btn-reserve1 { background: linear-gradient(135deg, rgba(236, 72, 153, 0.75), rgba(219, 39, 119, 0.7)); border-bottom: 2px solid rgba(244, 114, 182, 0.6); }
+        .btn-glass.btn-reserve2 { background: linear-gradient(135deg, rgba(6, 182, 212, 0.75), rgba(8, 145, 178, 0.7)); border-bottom: 2px solid rgba(103, 232, 249, 0.6); }
+
+        .btn-left { display: flex; align-items: center; gap: 14px; }
+        .btn-icon { font-size: 1.6rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); transition: transform 0.25s ease; width: 30px; text-align: center; }
+        .btn-text { font-weight: 600; letter-spacing: -0.2px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        
+        .btn-arrow {
+            background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            font-size: 1rem; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.3); flex-shrink: 0;
+        }
+
+        .btn-glass:hover, .btn-glass:focus-visible {
+            transform: translateY(-4px) scale(1.01); border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.3) inset;
+        }
+
+        /* Hover states for colors */
+        .btn-glass.btn-csc:hover { background: linear-gradient(135deg, rgba(56, 189, 248, 0.45), rgba(37, 99, 235, 0.5)); }
+        .btn-glass.btn-main:hover { background: linear-gradient(135deg, rgba(248, 113, 113, 0.5), rgba(220, 38, 38, 0.55)); }
+        .btn-glass.btn-server1:hover { background: linear-gradient(135deg, rgba(52, 211, 153, 0.45), rgba(16, 185, 129, 0.5)); }
+        .btn-glass.btn-server2:hover { background: linear-gradient(135deg, rgba(251, 191, 36, 0.5), rgba(245, 158, 11, 0.55)); }
+        .btn-glass.btn-server3:hover { background: linear-gradient(135deg, rgba(167, 139, 250, 0.45), rgba(139, 92, 246, 0.5)); }
+        .btn-glass.btn-token:hover { background: linear-gradient(135deg, #0f8f84, #34de74); }
+        .btn-glass.btn-reserve1:hover { background: linear-gradient(135deg, rgba(244, 114, 182, 0.45), rgba(219, 39, 119, 0.55)); }
+        .btn-glass.btn-reserve2:hover { background: linear-gradient(135deg, rgba(103, 232, 249, 0.45), rgba(8, 145, 178, 0.55)); }
+
+        .btn-glass:hover .btn-icon, .btn-glass:focus-visible .btn-icon { transform: scale(1.15) rotate(2deg); }
+        .btn-glass:hover .btn-arrow, .btn-glass:focus-visible .btn-arrow { background: rgba(255,255,255,0.45); transform: translateX(5px); border-color: rgba(255,255,255,0.7); }
+        .btn-glass:active { transform: translateY(1px); box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); }
+
+        .btn-glass::after {
+            content: ""; position: absolute; top: 0; left: -100%; width: 80%; height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); transition: left 0.6s ease; z-index: -1; pointer-events: none;
+        }
+
+        .btn-glass:hover::after { left: 120%; }
+
+
+        .floating-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 1; }
+        .shape { position: absolute; border-radius: 50%; filter: blur(60px); animation: float 20s infinite alternate ease-in-out; }
+        .shape1 { width: 300px; height: 300px; top: -100px; left: -80px; background: #3b82f6; opacity: 0.15; }
+        .shape2 { width: 400px; height: 400px; bottom: -150px; right: -120px; background: #a855f7; opacity: 0.15; animation-duration: 25s; }
+        .shape3 { width: 220px; height: 220px; top: 40%; left: 75%; background: #f97316; opacity: 0.12; filter: blur(70px); animation-duration: 18s; }
+
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, -30px) scale(1.1); } }
+
+
+        .footer-info {
+            margin-top: 2.2rem; text-align: center; color: #8b9ac0; font-size: 0.8rem;
+            display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 1.5rem;
+        }
+        .footer-info span i { margin-right: 6px; font-size: 0.75rem; color: #38bdf8; }
+
+        .ripple-effect { position: absolute; border-radius: 50%; background-color: rgba(255,255,255,0.4); transform: scale(0); animation: rippleAnim 0.5s linear forwards; pointer-events: none; }
+        @keyframes rippleAnim { 0% { transform: scale(0); opacity: 0.6; } 100% { transform: scale(4); opacity: 0; } }
+
+        @media (max-width: 768px) {
+            .button-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+            .glass-panel { padding: 1.8rem 1.5rem 2.2rem; border-radius: 2rem; }
+            h1 { font-size: 2rem; }
+            h1 span { font-size: 1.2rem !important; }
+            .btn-glass { padding: 1rem 1.3rem; border-radius: 1.4rem; }
+            .btn-icon { font-size: 1.4rem; width: 24px; }
+            .btn-text { font-size: 0.9rem; }
+            .btn-arrow { width: 30px; height: 30px; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Voter Digitization Report</h2>
-    <p class="subtitle">GitHub Direct Data Save Integration सह अद्ययावत रिपोर्ट</p>
-
-    <div class="upload-card" onclick="document.getElementById('excelFile').click()">
-        <p style="margin-bottom: 12px; font-weight: 600; font-size: 16px; color: #334155;">इथे क्लिक करून तुमची Excel फाईल निवडा</p>
-        <label class="custom-file-upload">Choose File</label>
-        <input type="file" id="excelFile" accept=".xlsx, .xls" onchange="handleFile(event)">
-        <p id="fileName" style="margin-top: 12px; font-weight: 700; color: var(--primary-green); margin-bottom: 0;"></p>
-    </div>
-
-    <div class="stats-grid" id="statsArea">
-        <div class="stat-card">
-            <h4>Total Elector</h4>
-            <div class="value" id="totalVoters">0</div>
-        </div>
-        <div class="stat-card" style="border-top-color: #2e7d32;">
-            <h4>Total EFs Digitized</h4>
-            <div class="value" id="totalDigitized" style="color: #2e7d32;">0</div>
-        </div>
-        <div class="stat-card" style="border-top-color: #c62828;">
-            <h4>Pending Digitized</h4>
-            <div class="value" id="pendingDigitized" style="color: #c62828;">0</div>
-        </div>
-        <div class="stat-card" style="border-top-color: #0288d1;">
-            <h4>Digitized % (EFs + UEF)</h4>
-            <div class="value" id="digitizedPercent" style="color: #0288d1;">0%</div>
-        </div>
-    </div>
-
-    <div class="btn-group">
-        <button class="btn btn-area" id="areaReportBtn" onclick="generateAreaWiseReport()">AERO-wise Summary Report</button>
-        <button class="btn btn-popup" id="bloPopupBtn" onclick="openBloModal()">सर्व BLO विश्लेषणात्मक पॉपअप</button>
-        <button class="btn btn-download" id="downloadBtn" onclick="downloadExcel()">Excel डाउनलोड</button>
-        <button class="btn btn-github" id="saveGithubBtn" onclick="saveDataToGitHub()">☁️ Save to GitHub</button>
-        <button class="btn btn-print" id="printBtn" onclick="window.print()">मुख्य रिपोर्ट प्रिंट करा</button>
-    </div>
-
-    <!-- Area-wise Summary Table -->
-    <div class="table-container" id="areaReportContainer">
-        <h3 style="color: var(--primary-green); text-align: center; margin: 15px 0;">AERO-wise Summary Report</h3>
-        <table id="areaReportTable">
-            <thead>
-                <tr>
-                    <th>SR. No</th>
-                    <th>AERO / ERO Name</th>
-                    <th>Total Elector</th>
-                    <th>Total EFs Digitized</th>
-                    <th>Total UEF</th>
-                    <th>Pending Digitized</th>
-                    <th>Digitized %</th>
-                </tr>
-            </thead>
-            <tbody id="areaTableBody"></tbody>
-        </table>
-    </div>
-
-    <!-- Main Detailed Table -->
-    <div class="table-container" id="tableArea">
-        <table id="reportTable">
-            <thead>
-                <tr>
-                    <th>SR. No</th>
-                    <th>ERO/AERO</th>
-                    <th>Supervisor Name</th>
-                    <th>Part No.</th>
-                    <th>Part Name</th>
-                    <th>Blo Name</th>
-                    <th>Total Elector</th>
-                    <th>Total EFs Digitized</th>
-                    <th>Total UEF</th>
-                    <th>Pending Digitized</th>
-                    <th>BLO Digitized %</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
-        </table>
-    </div>
+<div class="ad-banner left-ad">
+    <i class="fas fa-bullhorn"></i>
+    <p>Ad Space<br>(160x600)</p>
 </div>
 
-<!-- POPUP MODAL -->
-<div id="bloModal" class="modal">
-    <div class="modal-content">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <button class="modal-print-btn" onclick="window.print()" style="background-color: var(--primary-green); color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;">
-                🖨️ पॉपअप रिपोर्ट प्रिंट / PDF
-            </button>
-            <span class="close-btn" onclick="closeBloModal()">&times;</span>
-        </div>
+<div class="ad-banner right-ad">
+    <i class="fas fa-bullhorn"></i>
+    <p>Ad Space<br>(160x600)</p>
+</div>
 
-        <h3 style="color: var(--accent-orange); text-align: center; margin: 5px 0 15px 0; font-size: 20px;">
-            सर्व BLO ची विश्लेषणात्मक यादी (Descending Order By % )
-        </h3>
+<div class="floating-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+</div>
 
-        <div class="modal-scrollable">
-            <table>
-                <thead>
-                    <tr style="background-color: #e65100; color: white;">
-                        <th style="background: #e65100; color: white;">Rank</th>
-                        <th style="background: #e65100; color: white;">Part No.</th>
-                        <th style="background: #e65100; color: white;">Part / Village Name</th>
-                        <th style="background: #e65100; color: white;">BLO Name</th>
-                        <th style="background: #e65100; color: white;">Total Elector</th>
-                        <th style="background: #e65100; color: white;">Total EFs</th>
-                        <th style="background: #e65100; color: white;">Total UEF</th>
-                        <th style="background: #e65100; color: white;">Pending</th>
-                        <th style="background: #e65100; color: white;">Digitized %</th>
-                    </tr>
-                </thead>
-                <tbody id="bloModalTableBody"></tbody>
-            </table>
-        </div>
+<div class="glass-panel">
+    <div class="hero-section">
+        <h1>सेतु सुविधा केंद्र तहसील कार्यालय कणकवली<br><span style="font-size: 1.6rem; font-weight: 500; color:#bae6fd;"></span></h1>
+    </div>
+    
+    <div class="button-grid">
+        <a href="https://cscservices.mahaonline.gov.in" class="btn-glass btn-csc" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-user-check btn-icon"></i>
+                <span class="btn-text">CSC SERVICES LOGIN</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
 
-        <h4 style="margin: 20px 0 8px 0; color: var(--primary-green);">BLO टक्कावारीनुसार गोषवारा (Category-wise Count):</h4>
-        <div class="summary-boxes">
-            <div class="summary-box" style="border-top: 4px solid #d32f2f;">
-                <div class="title">Below 60%</div>
-                <div class="count" id="countBelow60" style="color: #d32f2f;">0</div>
+        <a href="https://script.google.com/macros/s/AKfycbxB1OZRgrwFzv626rfAH_5pRHyZ6n5t8fTZe7jId6dQUv-66ckJ1ewKvUAfa9GGH3yd/exec" class="btn-glass btn-main" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-database btn-icon"></i>
+                <span class="btn-text">📄 Main Server 2.0</span>
             </div>
-            <div class="summary-box" style="border-top: 4px solid #f57c00;">
-                <div class="title">61% - 70%</div>
-                <div class="count" id="count61to70" style="color: #f57c00;">0</div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
             </div>
-            <div class="summary-box" style="border-top: 4px solid #fbc02d;">
-                <div class="title">71% - 80%</div>
-                <div class="count" id="count71to80" style="color: #e65100;">0</div>
+        </a>
+
+        <a href="https://revenue.mahaonline.gov.in/ApplicationSearchStatus/ApplicationStatus.aspx?str=8E143B55D5A032490B7BB9C10244D7274045B48F1BF2DDD9" class="btn-glass btn-server1" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-server btn-icon"></i>
+                <span class="btn-text">🏠 Application Stutas check</span>
             </div>
-            <div class="summary-box" style="border-top: 4px solid #0288d1;">
-                <div class="title">81% - 90%</div>
-                <div class="count" id="count81to90" style="color: #0288d1;">0</div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
             </div>
-            <div class="summary-box" style="border-top: 4px solid #388e3c;">
-                <div class="title">91% - 99.99%</div>
-                <div class="count" id="count91to99" style="color: #388e3c;">0</div>
+        </a>
+
+        <a href="https://aaplesarkar.mahaonline.gov.in/" class="btn-glass btn-server2" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-cloud-upload-alt btn-icon"></i>
+                <span class="btn-text">📜Track Application</span>
             </div>
-            <div class="summary-box" style="border-top: 4px solid #1b5e20; background-color: #f0fdf4;">
-                <div class="title">100% Completed</div>
-                <div class="count" id="count100" style="color: #1b5e20;">0</div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
             </div>
-        </div>
+        </a>
+
+        <a href="https://script.google.com/macros/s/AKfycbzuX5jHIVLw5uHThJ3vGmZvPV7rldexEtgx1XsQGdNO-_l2w1cxTG9sK1FlkdLrm9Ma/exec" class="btn-glass btn-server3" target="_blank" rel="noopener noreferrer">
+            <div class="btn-left">
+                <i class="fas fa-chart-line btn-icon"></i>
+                <span class="btn-text">💳 Old Server</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+
+        <a href="#" class="btn-glass btn-token" id="openTokenGeneratorBtn">
+            <div class="btn-left">
+                <i class="fas fa-ticket-alt btn-icon"></i>
+                <span class="btn-text">🎟️ प्रतिज्ञा पत्र टोकन जनरेटर</span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+        
+        <a href="https://script.google.com/macros/s/AKfycbykZ6iBi1OkBpfoPI3wD4pbLgo057Tui8PpOqrOj8hfG3ErUO-J7XTpdnx2VLuBH0c1/exec" class="btn-glass btn-reserve1">
+            <div class="btn-left">
+                <i class="fas fa-star btn-icon"></i>
+                <span class="btn-text">⭐ Operator Report Collection </span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+        
+        <a href="#" class="btn-glass btn-reserve2" id="openPrintStudioBtn">
+            <div class="btn-left">
+                <i class="fas fa-gem btn-icon"></i>
+                <span class="btn-text">💎  संमतीपत्र Affidivate Print </span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+        <a href="Pikpera.html" class="btn-glass btn-reserve2">
+            <div class="btn-left">
+                <i class="fas fa-gem btn-icon"></i>
+                <span class="btn-text">💎  पीकपेरा खरीप </span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+        <a href="mahabocw.html" class="btn-glass btn-reserve2">
+            <div class="btn-left">
+                <i class="fas fa-gem btn-icon"></i>
+                <span class="btn-text">💎  बांधकाल कामगार संमत्तीपत्र </span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+        <a href="aero.html" class="btn-glass btn-reserve2">
+            <div class="btn-left">
+                <i class="fas fa-gem btn-icon"></i>
+                <span class="btn-text">💎 AERO REPORT GANERAT </span>
+            </div>
+            <div class="btn-arrow">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+    </div>
+    
+    <div class="footer-info">
+        <span><i class="fas fa-clock"></i> २४×७ सुविधा</span>
+        <span><i class="fas fa-desktop"></i> डिजिटल सेवा केंद्र</span>
+        <span><i class="fas fa-shield-alt"></i> सुरक्षित & एनक्रिप्टेड</span>
+        <span><i class="fas fa-layer-group"></i> प्रिमियम Glass UI</span>
     </div>
 </div>
 
 <script>
-    // ==========================================
-    // ⚙️ GITHUB CONFIGURATION (इथे तुमची माहिती बदला)
-    // ==========================================
-    const GITHUB_CONFIG = {
-        username: "emudracsc.github.io/setuknk", // उदा. "john-doe"
-        repo: "repo",           // उदा. "voter-report"
-        filePath: "data.json",            // Repository मधील फाईलचे नाव
-        token: "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" // ghp_... ने सुरू होणारे टोकन
+    (function() {
+        const tokenHtmlCode = `<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <title>Printable Round Lunch Tokens | सेतु सुविधा केंद्र</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        @page { size: A4; margin: 15mm; }
+        body { font-family: 'Poppins', Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .control-panel { background-color: #ffffff; padding: 15px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .control-group { display: inline-block; margin: 0 10px; }
+        .control-panel label { font-size: 15px; font-weight: 600; margin-right: 8px; }
+        .control-panel input { font-family: 'Poppins', sans-serif; padding: 6px; font-size: 15px; border: 1px solid #ccc; border-radius: 4px; }
+        .control-panel input[type="number"] { width: 80px; }
+        .control-panel input[type="text"] { width: 140px; }
+        .btn-generate { font-family: 'Poppins', sans-serif; padding: 7px 15px; font-size: 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+        .btn-generate:hover { background-color: #218838; }
+        .print-container { background-color: #fff; }
+        .page { width: 180mm; height: 260mm; page-break-after: always; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(5, 1fr); gap: 15mm; justify-items: center; align-items: center; box-sizing: border-box; background: #fff; margin: 0 auto; }
+        .page:last-child { page-break-after: avoid; }
+        .token { width: 35mm; height: 35mm; border: 2px solid #000000; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #fff; box-shadow: 0 0 0 1px #ccc; box-sizing: border-box; padding: 2px; }
+        .heading-display { font-size: 11pt; font-weight: 600; color: #000; text-transform: uppercase; margin-bottom: -2px; }
+        .number { font-size: 32pt; font-weight: 900; color: #000; line-height: 0.95; margin-bottom: 2px; letter-spacing: -1px; }
+        .date-display { font-size: 10pt; font-weight: 600; color: #222; }
+        @media print { .control-panel { display: none; } body { background-color: #fff; } .page { margin: 0; } }
+    </style>
+</head>
+<body>
+<div class="control-panel">
+    <div class="control-group"><label>टोकन नाव:</label><input type="text" id="tokenHeading" value="प्रतिज्ञा पत्र"></div>
+    <div class="control-group"><label>तारीख:</label><input type="date" id="tokenDate"></div>
+    <div class="control-group"><label>पासून:</label><input type="number" id="startRange" value="1"></div>
+    <div class="control-group"><label>पर्यंत:</label><input type="number" id="endRange" value="100"></div>
+    <button class="btn-generate" onclick="generateTokens()">टोकन जनरेट करा</button>
+</div>
+<div class="print-container" id="tokenContainer"></div>
+<script>
+    let today = new Date();
+    document.getElementById('tokenDate').value = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+    generateTokens();
+    
+    function generateTokens() {
+        let headingValue = document.getElementById('tokenHeading').value || "टोकन";
+        let start = parseInt(document.getElementById('startRange').value) || 1;
+        let end = parseInt(document.getElementById('endRange').value) || 100;
+        let dateValue = document.getElementById('tokenDate').value;
+        let formattedDate = "";
+        if (dateValue) { let d = dateValue.split('-'); formattedDate = d[2]+'/'+d[1]+'/'+d[0]; }
+        let container = document.getElementById('tokenContainer'); container.innerHTML = "";
+        let tokensPerPage = 20, currentCount = 0, pageDiv = null;
+        for (let j = start; j <= end; j++) {
+            if (currentCount % tokensPerPage === 0) { pageDiv = document.createElement('div'); pageDiv.className = 'page'; container.appendChild(pageDiv); }
+            let tokenDiv = document.createElement('div'); tokenDiv.className = 'token';
+            let headDiv = document.createElement('div'); headDiv.className = 'heading-display'; headDiv.innerText = headingValue;
+            let numDiv = document.createElement('div'); numDiv.className = 'number'; numDiv.innerText = j;
+            let dateDiv = document.createElement('div'); dateDiv.className = 'date-display'; dateDiv.innerText = formattedDate;
+            tokenDiv.appendChild(headDiv); tokenDiv.appendChild(numDiv); tokenDiv.appendChild(dateDiv); pageDiv.appendChild(tokenDiv);
+            currentCount++;
+        }
+    }
+<\/script>
+</body>
+</html>`;
+
+        // 🟢 Print Studio Pro WITH PHOTO SIZE SLIDER
+        const printStudioHtmlCode = `<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Print Studio Pro - Beautiful Edit Popup</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"><\/script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-gradient-start: #e0eafc;
+            --bg-gradient-end: #cfdef3;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-border: rgba(255, 255, 255, 0.18);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --input-bg: #ffffff;
+            --input-border: #cbd5e1;
+            --shadow-sm: 0 8px 32px rgba(31, 38, 135, 0.1);
+            --paper-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            --photo-border: #333;
+            --photo-bg: #f1f5f9;
+        }
+
+        body.dark {
+            --bg-gradient-start: #0f172a;
+            --bg-gradient-end: #1e293b;
+            --card-bg: rgba(30, 41, 59, 0.95);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --input-bg: #1e293b;
+            --input-border: #475569;
+            --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --paper-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            --photo-border: #94a3b8;
+            --photo-bg: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 999;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            color: var(--text-primary);
+        }
+
+        .control-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            max-width: 700px;
+            margin: 12px auto 20px auto;
+            padding: 18px 24px;
+            border-radius: 24px;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .control-panel h3 {
+            font-size: 1.4rem;
+
+            font-weight: 700;
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+        body.dark .control-panel h3 {
+            background: linear-gradient(135deg, #a5b4fc, #818cf8);
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            margin-bottom: 18px;
+            font-weight: 500;
+            text-align: center;
+
+        }
+
+        .input-group {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .input-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+        .input-group input[type="text"] {
+            width: 100%;
+            max-width: 350px;
+            padding: 8px 14px;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        /* 🟢 नवीन: फोटो साइज कंट्रोल स्लाइडर */
+        .size-control-group {
+            margin: 12px auto 16px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            background: var(--input-bg);
+            padding: 8px 18px;
+            border-radius: 60px;
+            border: 1px solid var(--input-border);
+            max-width: 400px;
+        }
+        .size-control-group label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .size-control-group input[type="range"] {
+            width: 160px;
+            accent-color: #4b6cb7;
+            cursor: pointer;
+        }
+        .size-control-group .size-value {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #4b6cb7;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .action-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .file-camera-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: var(--input-bg);
+            padding: 4px 12px;
+            border-radius: 60px;
+            border: 1px solid var(--input-border);
+        }
+        .file-camera-group input[type="file"] {
+            font-size: 0.75rem;
+            background: transparent;
+            border: none;
+            padding: 6px 0;
+            color: var(--text-primary);
+        }
+        .camera-icon-btn {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .add-record-btn {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .center-actions {
+
+
+
+
+
+
+
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        .print-action-btn {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .clear-action-btn {
+            background: linear-gradient(135deg, #cb2d3e, #ef473a);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        button {
+            border: none;
+
+
+
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        button:hover { transform: translateY(-2px); filter: brightness(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+        /* ========== MODAL BUTTONS ========== */
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin: 6px;
+            min-width: 120px;
+        }
+        .modal-btn-secondary {
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin: 6px;
+            min-width: 120px;
+        }
+        .modal-btn-danger {
+            background: linear-gradient(135deg, #cb2d3e, #ef473a);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin: 6px;
+            min-width: 120px;
+        }
+        .modal-btn-success {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin: 6px;
+            min-width: 120px;
+        }
+
+        /* Print Area */
+        #printArea {
+            width: 100%;
+            max-width: 800px;
+            height: 157mm;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: var(--paper-shadow);
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-end;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+        body.dark #printArea { background: #ffffff; }
+
+        .record-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 4px 0px 4px 10px;
+            width: 100%;
+        }
+        .record-row.half-width { width: 48%; justify-content: flex-end; }
+        .text-box { width: 210px; flex: none; padding-right: 12px; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+        .record-row.half-width .text-box { flex: 1; width: auto; }
+        .sign-space { flex: 1; }
+        .name-text { font-weight: 700; font-size: 0.95rem; padding-top: 25px; color: #000; }
+        
+        /* 🟢 फोटो बॉक्स - साइज स्लाइडरने बदलण्यासाठी dynamic class */
+        .photo-box { 
+            border: 2px solid var(--photo-border); 
+            border-radius: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: var(--photo-bg); 
+            overflow: hidden; 
+            flex-shrink: 0; 
+            height: 80%;  /* हे स्लाइडरने बदलेल */
+            aspect-ratio: 3.5/4.5; /* हे स्लाइडरने बदलेल */
+        }
+        .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .edit-btn, .delete-btn {
+            width: 30px; height: 30px; border-radius: 10px; margin-left: 6px;
+            font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center;
+
+
+
+
+
+
+        }
+        .edit-btn { background: #f59e0b; color: white; }
+        .delete-btn { background: #ef4444; color: white; }
+
+        /* ========== MODAL STYLES (Crop & Edit both) ========== */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; 
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.75); 
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            margin: auto;
+        }
+        
+        .modal-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        
+        .modal-content input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 2px solid var(--input-border);
+            border-radius: 60px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 20px;
+            text-align: center;
+
+
+        }
+        
+        .modal-content input:focus {
+            outline: none;
+            border-color: #4b6cb7;
+        }
+        
+        .img-container { 
+            width: 100%; 
+            max-height: 280px; 
+            overflow: hidden; 
+            border-radius: 16px; 
+            background: #1e293b; 
+            margin-bottom: 15px; 
+        }
+        
+        .img-container img, 
+        .img-container video { 
+            width: 100%; 
+            display: block; 
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+
+
+
+
+        @media print {
+            @page { size: A4 portrait; margin-top: 25mm; margin-left: 20mm; margin-right: 12mm; margin-bottom: 114.3mm; }
+            body { background: none; padding: 0; }
+            .no-print { display: none !important; }
+            #printArea { height: 157mm; box-shadow: none; border: none; }
+            .photo-box { border: 2px solid #000; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    </style>
+</head>
+<body>
+
+<button class="theme-toggle no-print" id="themeToggleBtn">🌙 Dark</button>
+
+
+
+<div class="control-panel no-print">
+    <h3>✨संमती पत्र प्रिंट पोर्टल</h3>
+   
+    <div class="input-group">
+        <label>👤 व्यक्तीचे नाव</label>
+        <input type="text" id="personName" placeholder="उदा. संजय पाटील">
+    </div>
+
+    <!-- 🟢 नवीन: फोटो साइज कंट्रोल स्लाइडर -->
+    <div class="size-control-group">
+        <label>🖼️ फोटो साइज:</label>
+        <input type="range" id="photoSizeSlider" min="20" max="100" value="80">
+        <span class="size-value" id="sizeDisplay">80%</span>
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    <div class="action-row">
+        <div class="file-camera-group">
+            <input type="file" id="personPhoto" accept="image/*">
+            <button type="button" class="camera-icon-btn" onclick="openCamera()">📷 कॅमेरा</button>
+        </div>
+        <button class="add-record-btn" onclick="addRecord()">➕ रेकॉर्ड जोडा</button>
+    </div>
+
+    <div class="center-actions">
+        <button class="print-action-btn" onclick="window.print()">🖨️ प्रिंट काढा</button>
+        <button class="clear-action-btn" onclick="clearAll()">🗑️ सर्व हटवा</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+<div id="cameraModal" class="modal no-print">
+    <div class="modal-content">
+        <h3>📷 Web Camera</h3>
+        <div class="img-container">
+            <video id="cameraStream" autoplay playsinline></video>
+        </div>
+        <div class="modal-buttons">
+            <button class="modal-btn-success" onclick="capturePhoto()">📸 फोटो काढा</button>
+            <button class="modal-btn-danger" onclick="closeCamera()">❌ बंद करा</button>
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+<div id="cropModal" class="modal no-print">
+
+    <div class="modal-content">
+        <h3>✂️ फोटो क्रॉप करा</h3>
+        <div class="img-container">
+            <img id="imageToCrop" src="">
+
+
+        </div>
+        <div class="modal-buttons">
+            <button class="modal-btn-success" onclick="cropAndSave()">✅ क्रॉप करा</button>
+            <button class="modal-btn-secondary" onclick="closeCropModal()">❌ रद्द</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<div id="editModal" class="modal no-print">
+    <div class="modal-content">
+        <h3>✏️ नाव बदला</h3>
+        <input type="text" id="editNameInput" placeholder="नवीन नाव टाका...">
+        <div class="modal-buttons">
+            <button class="modal-btn-success" onclick="saveEditedName()">✅ सेव्ह करा</button>
+            <button class="modal-btn-secondary" onclick="closeEditModal()">❌ रद्द</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<div id="printArea"></div>
+
+<script>
+    let cropper, finalCroppedImage = null, videoStream = null;
+    let currentEditNameDiv = null;
+
+
+
+
+
+
+
+
+    // 🟢 फोटो साइज स्लाइडर फंक्शन
+    const slider = document.getElementById('photoSizeSlider');
+    const sizeDisplay = document.getElementById('sizeDisplay');
+    
+    slider.addEventListener('input', function() {
+        const val = this.value;
+        sizeDisplay.textContent = val + '%';
+        // सर्व existing फोटो बॉक्सची साइज बदला
+        document.querySelectorAll('.photo-box').forEach(box => {
+            box.style.height = val + '%';
+        });
+    });
+
+    // Camera Functions
+    function openCamera() {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => { videoStream = stream; document.getElementById('cameraStream').srcObject = stream; document.getElementById('cameraModal').style.display = 'flex'; })
+            .catch(() => alert("कॅमेरा परवानगी आवश्यक"));
+    }
+    function closeCamera() { document.getElementById('cameraModal').style.display = 'none'; if(videoStream) videoStream.getTracks().forEach(t=>t.stop()); videoStream=null; }
+    function capturePhoto() {
+        let video = document.getElementById('cameraStream');
+        let canvas = document.createElement('canvas'); canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video,0,0);
+        closeCamera(); openCropper(canvas.toDataURL('image/jpeg'));
+    }
+    
+    // File Upload
+    document.getElementById('personPhoto').addEventListener('change', e=>{ if(e.target.files[0]){ let r=new FileReader(); r.onload=ev=>openCropper(ev.target.result); r.readAsDataURL(e.target.files[0]); } });
+    
+    // Cropper Functions
+    function openCropper(src){ 
+        let img=document.getElementById('imageToCrop'); 
+        img.src=src; 
+        document.getElementById('cropModal').style.display = 'flex'; 
+        if(cropper) cropper.destroy(); 
+        cropper = new Cropper(img, {
+            aspectRatio: 3.5/4.5,
+            viewMode: 1,
+            autoCropArea: 0.8, 
+            responsive: true
+        }); 
+    }
+    function cropAndSave(){ 
+        if(cropper){ 
+            finalCroppedImage = cropper.getCroppedCanvas({width:350,height:450}).toDataURL('image/jpeg'); 
+            document.getElementById('cropModal').style.display = 'none'; 
+        } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+    function closeCropModal(){ 
+        document.getElementById('cropModal').style.display = 'none'; 
+        document.getElementById('personPhoto').value = ''; 
+        finalCroppedImage = null; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+    
+    // ========== EDIT FUNCTIONS ==========
+    function openEditModal(nameDivElement) {
+        currentEditNameDiv = nameDivElement;
+        document.getElementById('editNameInput').value = nameDivElement.innerText;
+        document.getElementById('editModal').style.display = 'flex';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+    
+    function saveEditedName() {
+        let newName = document.getElementById('editNameInput').value.trim();
+        if (newName !== "" && currentEditNameDiv) {
+            currentEditNameDiv.innerText = newName;
+        }
+        closeEditModal();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+    
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+        currentEditNameDiv = null;
+    }
+    
+    // Add Record
+    function addRecord(){
+        let name=document.getElementById('personName').value;
+        if(!name && !finalCroppedImage) return alert("नाव व फोटो आवश्यक");
+        let row=document.createElement('div'); row.className='record-row';
+        let textDiv=document.createElement('div'); textDiv.className='text-box';
+        let sign=document.createElement('div'); sign.className='sign-space';
+        let nameDiv=document.createElement('div'); nameDiv.className='name-text'; nameDiv.innerText=name || "(नाव नाही)";
+        textDiv.appendChild(sign); textDiv.appendChild(nameDiv);
+        let photoDiv=document.createElement('div'); photoDiv.className='photo-box';
+        
+        // 🟢 स्लाइडरची current value apply करा
+        const currentSize = document.getElementById('photoSizeSlider').value;
+        photoDiv.style.height = currentSize + '%';
+        
+        if(finalCroppedImage){ let img=document.createElement('img'); img.src=finalCroppedImage; photoDiv.appendChild(img); }
+        else photoDiv.innerHTML="<span style='font-size:11px;color:gray'>फोटो नाही</span>";
+        
+        let editBtn=document.createElement('button'); 
+        editBtn.className='edit-btn no-print'; 
+        editBtn.innerHTML='✏️'; 
+        editBtn.onclick=()=>{ openEditModal(nameDiv); };
+        
+        let delBtn=document.createElement('button'); 
+        delBtn.className='delete-btn no-print'; 
+        delBtn.innerHTML='❌'; 
+        delBtn.onclick=()=>{ row.remove(); updateLayout(); };
+        
+        row.appendChild(textDiv); 
+        row.appendChild(photoDiv); 
+        row.appendChild(editBtn); 
+        row.appendChild(delBtn);
+        
+        document.getElementById('printArea').prepend(row); 
+        updateLayout();
+        document.getElementById('personName').value=''; 
+        document.getElementById('personPhoto').value=''; 
+        finalCroppedImage=null;
+    }
+    
+    function updateLayout(){
+        let rows=document.querySelectorAll('#printArea .record-row'); 
+        let c=rows.length; 
+        if(!c) return;
+        let half=c>5; 
+        let perCol=half?Math.ceil(c/2):c; 
+        let h=100/Math.max(5,perCol);
+        
+        rows.forEach(r=>{ 
+            r.style.height= h + '%'; 
+            if(half) r.classList.add('half-width'); 
+            else r.classList.remove('half-width'); 
+        });
+    }
+    
+    function clearAll(){ 
+        if(confirm("सर्व हटवायचे?")) 
+            document.getElementById('printArea').innerHTML=''; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+    // Dark/Light Mode
+    const themeBtn=document.getElementById('themeToggleBtn');
+    if(localStorage.getItem('theme')==='dark') document.body.classList.add('dark');
+    themeBtn.onclick=()=>{ 
+        document.body.classList.toggle('dark'); 
+        let isDark=document.body.classList.contains('dark'); 
+        themeBtn.innerHTML=isDark?'☀️ Light':'🌙 Dark'; 
+        localStorage.setItem('theme',isDark?'dark':'light'); 
     };
-
-    let globalProcessedData = [];
-    const eroHierarchy = ["katkar", "deshpande", "varak", "mandale"];
-
-    function getEroRank(eroText) {
-        let text = String(eroText || "").toLowerCase();
-        for (let i = 0; i < eroHierarchy.length; i++) {
-            if (text.includes(eroHierarchy[i])) return i;
-        }
-        return 999;
-    }
-
-    function handleFile(e) {
-        if (typeof XLSX === 'undefined') {
-            alert("Excel Library लोड झाली नाही. इंटरनेट तपासा.");
-            return;
-        }
-
-        const file = e.target.files[0];
-        if (!file) return;
-
-        document.getElementById('fileName').innerText = "निवडलेली फाईल: " + file.name;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array', cellDates: true, cellText: true });
-                const firstSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[firstSheetName];
-                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: "", raw: false });
-                
-                processData(jsonData);
-            } catch (err) {
-                alert("Excel फाईल वाचताना त्रुटी आली: " + err.message);
-            }
-        };
-        reader.readAsArrayBuffer(file);
-    }
-
-    function processData(rows) {
-        if (!rows || rows.length === 0) {
-            alert("Excel फाईल रिकामी आहे!");
-            return;
-        }
-
-        let headerIndex = -1;
-        let colIdx = { ero: -1, sup: -1, partNo: -1, partName: -1, bloName: -1, elector: -1, digi: -1, uef: -1, pend: -1 };
-
-        for (let i = 0; i < Math.min(rows.length, 20); i++) {
-            const rowStr = rows[i].map(c => String(c).toLowerCase().trim());
-            
-            if (rowStr.some(cell => cell.includes("supervisor") || cell.includes("blo") || cell.includes("part"))) {
-                headerIndex = i;
-                rowStr.forEach((cell, idx) => {
-                    let isPercent = cell.includes("%") || cell.includes("percent") || cell.includes("pct");
-                    if ((cell.includes("ero") || cell.includes("aero")) && colIdx.ero === -1) colIdx.ero = idx;
-                    else if (cell.includes("supervisor") && colIdx.sup === -1) colIdx.sup = idx;
-                    else if ((cell.includes("part no") || cell.includes("part_no") || cell.includes("partno")) && colIdx.partNo === -1) colIdx.partNo = idx;
-                    else if ((cell.includes("part name") || cell.includes("village")) && colIdx.partName === -1) colIdx.partName = idx;
-                    else if (cell.includes("blo") && colIdx.bloName === -1) colIdx.bloName = idx;
-                    else if ((cell.includes("elector") || cell.includes("voter")) && !isPercent && colIdx.elector === -1) colIdx.elector = idx;
-                    else if ((cell.includes("digitized") || cell.includes("digitised") || cell.includes("efs")) && !isPercent && colIdx.digi === -1) colIdx.digi = idx;
-                    else if (cell.includes("uef") && !isPercent && colIdx.uef === -1) colIdx.uef = idx;
-                    else if (cell.includes("pending") && !isPercent && colIdx.pend === -1) colIdx.pend = idx;
-                });
-                break;
-            }
-        }
-
-        if (colIdx.ero === -1) colIdx.ero = 1;
-        if (colIdx.sup === -1) colIdx.sup = 2;
-        if (colIdx.partNo === -1) colIdx.partNo = 3;
-        if (colIdx.partName === -1) colIdx.partName = 4;
-        if (colIdx.bloName === -1) colIdx.bloName = 5;
-        if (colIdx.elector === -1) colIdx.elector = 6;
-        if (colIdx.digi === -1) colIdx.digi = 7;
-        if (colIdx.uef === -1) colIdx.uef = 8;
-        if (colIdx.pend === -1) colIdx.pend = 9;
-
-        let rawData = headerIndex !== -1 ? rows.slice(headerIndex + 1) : rows;
-        let cleanedRows = [];
-        let currentEro = "";
-        let currentSup = "";
-
-        rawData.forEach(row => {
-            let eroVal = String(row[colIdx.ero] || "").trim();
-            let supVal = String(row[colIdx.sup] || "").trim();
-            let partNo = String(row[colIdx.partNo] || "").trim();
-            let partName = String(row[colIdx.partName] || "").trim();
-            let bloName = String(row[colIdx.bloName] || "").trim();
-
-            if (eroVal !== "") currentEro = eroVal;
-            if (supVal !== "") currentSup = supVal;
-
-            if (partNo !== "" || partName !== "" || bloName !== "") {
-                let parseNum = (val) => {
-                    if (!val) return 0;
-                    let num = parseFloat(String(val).replace(/,/g, '').trim());
-                    return isNaN(num) ? 0 : num;
-                };
-
-                cleanedRows.push({
-                    ero: currentEro,
-                    sup: currentSup,
-                    partNo: partNo,
-                    partName: partName,
-                    bloName: bloName,
-                    elector: parseNum(row[colIdx.elector]),
-                    digi: parseNum(row[colIdx.digi]),
-                    uef: parseNum(row[colIdx.uef]),
-                    pend: parseNum(row[colIdx.pend])
-                });
-            }
-        });
-
-        if (cleanedRows.length === 0) {
-            alert("डेटा लोड झाला नाही, कृपया फाईल तपासा.");
-            return;
-        }
-
-        globalProcessedData = cleanedRows;
-        renderTableWithMergeAndSubtotals(globalProcessedData);
-        generateAreaWiseReport();
-
-        // स्वयंचलितरीत्या GitHub वर सेव्ह करायचे असल्यास खालील लाईन अनकमेंट करा:
-        // saveDataToGitHub();
-    }
-
-    function renderTableWithMergeAndSubtotals(rows) {
-        const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = '';
-
-        let overallElector = 0, overallDigi = 0, overallUef = 0, overallPend = 0;
-        let srNo = 1;
-        let groupedData = {};
-
-        rows.forEach(r => {
-            let ero = r.ero || "Unknown ERO";
-            let sup = r.sup || "Unknown Supervisor";
-            if (!groupedData[ero]) groupedData[ero] = {};
-            if (!groupedData[ero][sup]) groupedData[ero][sup] = [];
-            groupedData[ero][sup].push(r);
-        });
-
-        let sortedEros = Object.keys(groupedData).sort((a, b) => {
-            let rankA = getEroRank(a);
-            let rankB = getEroRank(b);
-            if (rankA !== rankB) return rankA - rankB;
-            return a.localeCompare(b, 'mr', { sensitivity: 'base' });
-        });
-
-        sortedEros.forEach(ero => {
-            let eroElector = 0, eroDigi = 0, eroUef = 0, eroPend = 0;
-            let supList = [];
-
-            for (let sup in groupedData[ero]) {
-                let supRows = groupedData[ero][sup];
-                supRows.sort((a, b) => {
-                    let pctA = a.elector > 0 ? ((a.digi + a.uef) / a.elector) : 0;
-                    let pctB = b.elector > 0 ? ((b.digi + b.uef) / b.elector) : 0;
-                    return pctB - pctA;
-                });
-
-                let sElector = 0, sDigi = 0, sUef = 0, sPend = 0;
-                supRows.forEach(r => {
-                    sElector += r.elector;
-                    sDigi += r.digi;
-                    sUef += r.uef;
-                    sPend += r.pend;
-                });
-
-                let sPct = sElector > 0 ? ((sDigi + sUef) / sElector) : 0;
-                supList.push({ supName: sup, rows: supRows, elector: sElector, digi: sDigi, uef: sUef, pend: sPend, pct: sPct });
-            }
-
-            supList.sort((a, b) => b.pct - a.pct);
-
-            let totalEroRowsCount = 0;
-            supList.forEach(s => { totalEroRowsCount += s.rows.length + 1; });
-
-            let isFirstRowOfEro = true;
-
-            supList.forEach(supObj => {
-                let supRows = supObj.rows;
-                let supRowSpanCount = supRows.length;
-
-                supRows.forEach((r, idx) => {
-                    let tr = document.createElement('tr');
-                    let tdEro = isFirstRowOfEro ? `<td rowspan="${totalEroRowsCount}" class="valign-center">${ero}</td>` : "";
-                    if (isFirstRowOfEro) isFirstRowOfEro = false;
-
-                    let tdSup = idx === 0 ? `<td rowspan="${supRowSpanCount}" class="valign-center">${supObj.supName}</td>` : "";
-                    let bloPct = r.elector > 0 ? (((r.digi + r.uef) / r.elector) * 100).toFixed(2) : "0.00";
-
-                    tr.innerHTML = `
-                        <td>${srNo++}</td>
-                        ${tdEro}
-                        ${tdSup}
-                        <td>${r.partNo || ''}</td>
-                        <td style="text-align: left;">${r.partName || ''}</td>
-                        <td style="text-align: left;">${r.bloName || ''}</td>
-                        <td>${r.elector.toLocaleString()}</td>
-                        <td>${r.digi.toLocaleString()}</td>
-                        <td>${r.uef.toLocaleString()}</td>
-                        <td>${r.pend.toLocaleString()}</td>
-                        <td style="font-weight: 700; color: #0288d1;">${bloPct}%</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-
-                let supPctDisplay = (supObj.pct * 100).toFixed(2);
-                let supTr = document.createElement('tr');
-                supTr.className = 'sup-subtotal';
-                supTr.innerHTML = `
-                    <td colspan="6" style="text-align: right;">Total for ${supObj.supName}:</td>
-                    <td>${supObj.elector.toLocaleString()}</td>
-                    <td>${supObj.digi.toLocaleString()}</td>
-                    <td>${supObj.uef.toLocaleString()}</td>
-                    <td>${supObj.pend.toLocaleString()}</td>
-                    <td style="color: #15803d;">${supPctDisplay}%</td>
-                `;
-                tbody.appendChild(supTr);
-
-                eroElector += supObj.elector;
-                eroDigi += supObj.digi;
-                eroUef += supObj.uef;
-                eroPend += supObj.pend;
-            });
-
-            let eroPct = eroElector > 0 ? (((eroDigi + eroUef) / eroElector) * 100).toFixed(2) : "0.00";
-            let eroTr = document.createElement('tr');
-            eroTr.className = 'ero-subtotal';
-            eroTr.innerHTML = `
-                <td colspan="6" style="text-align: right;">TOTAL FOR ${ero}:</td>
-                <td>${eroElector.toLocaleString()}</td>
-                <td>${eroDigi.toLocaleString()}</td>
-                <td>${eroUef.toLocaleString()}</td>
-                <td>${eroPend.toLocaleString()}</td>
-                <td style="color: #14532d;">${eroPct}%</td>
-            `;
-            tbody.appendChild(eroTr);
-
-            overallElector += eroElector;
-            overallDigi += eroDigi;
-            overallUef += eroUef;
-            overallPend += eroPend;
-        });
-
-        let overallPct = overallElector > 0 ? (((overallDigi + overallUef) / overallElector) * 100).toFixed(2) : "0.00";
-        let grandTr = document.createElement('tr');
-        grandTr.className = 'grand-total';
-        grandTr.innerHTML = `
-            <td colspan="6" style="text-align: right;">GRAND TOTAL:</td>
-            <td>${overallElector.toLocaleString()}</td>
-            <td>${overallDigi.toLocaleString()}</td>
-            <td>${overallUef.toLocaleString()}</td>
-            <td>${overallPend.toLocaleString()}</td>
-            <td style="color: #b71c1c;">${overallPct}%</td>
-        `;
-        tbody.appendChild(grandTr);
-
-        document.getElementById('totalVoters').innerText = overallElector.toLocaleString();
-        document.getElementById('totalDigitized').innerText = overallDigi.toLocaleString();
-        document.getElementById('pendingDigitized').innerText = overallPend.toLocaleString();
-        document.getElementById('digitizedPercent').innerText = overallPct + "%";
-
-        document.getElementById('statsArea').style.display = 'grid';
-        document.getElementById('tableArea').style.display = 'block';
-        document.getElementById('areaReportBtn').style.display = 'inline-block';
-        document.getElementById('bloPopupBtn').style.display = 'inline-block';
-        document.getElementById('downloadBtn').style.display = 'inline-block';
-        document.getElementById('saveGithubBtn').style.display = 'inline-block';
-        document.getElementById('printBtn').style.display = 'inline-block';
-    }
-
-    function openBloModal() {
-        if (!globalProcessedData || globalProcessedData.length === 0) return;
-
-        let bloList = globalProcessedData.map(r => {
-            let pct = r.elector > 0 ? (((r.digi + r.uef) / r.elector) * 100) : 0;
-            return { ...r, pctVal: pct, pctFormatted: pct.toFixed(2) };
-        });
-
-        bloList.sort((a, b) => b.pctVal - a.pctVal);
-
-        const modalTbody = document.getElementById('bloModalTableBody');
-        modalTbody.innerHTML = '';
-
-        let cBelow60 = 0, c61to70 = 0, c71to80 = 0, c81to90 = 0, c91to99 = 0, c100 = 0;
-        let popupTotElector = 0, popupTotDigi = 0, popupTotUef = 0, popupTotPend = 0;
-
-        bloList.forEach((b, index) => {
-            let pct = b.pctVal;
-            if (pct < 60.0) cBelow60++;
-            else if (pct >= 60.0 && pct <= 70.0) c61to70++;
-            else if (pct > 70.0 && pct <= 80.0) c71to80++;
-            else if (pct > 80.0 && pct <= 90.0) c81to90++;
-            else if (pct > 90.0 && pct < 100.0) c91to99++;
-            else if (pct >= 100.0) c100++;
-
-            popupTotElector += b.elector;
-            popupTotDigi += b.digi;
-            popupTotUef += b.uef;
-            popupTotPend += b.pend;
-
-            let tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><strong>${index + 1}</strong></td>
-                <td>${b.partNo || ''}</td>
-                <td style="text-align: left;">${b.partName || ''}</td>
-                <td style="text-align: left; font-weight: 600;">${b.bloName || ''}</td>
-                <td>${b.elector.toLocaleString()}</td>
-                <td>${b.digi.toLocaleString()}</td>
-                <td>${b.uef.toLocaleString()}</td>
-                <td>${b.pend.toLocaleString()}</td>
-                <td style="font-weight: 700; color: #d84315; background-color: #fff3e0;">${b.pctFormatted}%</td>
-            `;
-            modalTbody.appendChild(tr);
-        });
-
-        let popupOverallPct = popupTotElector > 0 ? (((popupTotDigi + popupTotUef) / popupTotElector) * 100).toFixed(2) : "0.00";
-        let totalTr = document.createElement('tr');
-        totalTr.className = 'grand-total';
-        totalTr.innerHTML = `
-            <td colspan="4" style="text-align: right;">TOTAL:</td>
-            <td>${popupTotElector.toLocaleString()}</td>
-            <td>${popupTotDigi.toLocaleString()}</td>
-            <td>${popupTotUef.toLocaleString()}</td>
-            <td>${popupTotPend.toLocaleString()}</td>
-            <td style="color: #b71c1c;">${popupOverallPct}%</td>
-        `;
-        modalTbody.appendChild(totalTr);
-
-        document.getElementById('countBelow60').innerText = cBelow60;
-        document.getElementById('count61to70').innerText = c61to70;
-        document.getElementById('count71to80').innerText = c71to80;
-        document.getElementById('count81to90').innerText = c81to90;
-        document.getElementById('count91to99').innerText = c91to99;
-        document.getElementById('count100').innerText = c100;
-
-        document.body.classList.add('modal-open');
-        document.getElementById('bloModal').style.display = 'block';
-    }
-
-    function closeBloModal() {
-        document.body.classList.remove('modal-open');
-        document.getElementById('bloModal').style.display = 'none';
-    }
-
-    window.onclick = function(event) {
-        let modal = document.getElementById('bloModal');
-        if (event.target == modal) closeBloModal();
-    }
-
-    function generateAreaWiseReport() {
-        if (!globalProcessedData || globalProcessedData.length === 0) return;
-
-        let eroSummary = {};
-        globalProcessedData.forEach(r => {
-            let eroName = r.ero || "Unknown ERO";
-            if (!eroSummary[eroName]) eroSummary[eroName] = { elector: 0, digi: 0, uef: 0, pend: 0 };
-            eroSummary[eroName].elector += r.elector;
-            eroSummary[eroName].digi += r.digi;
-            eroSummary[eroName].uef += r.uef;
-            eroSummary[eroName].pend += r.pend;
-        });
-
-        let sortedEros = Object.keys(eroSummary).sort((a, b) => {
-            let rankA = getEroRank(a);
-            let rankB = getEroRank(b);
-            if (rankA !== rankB) return rankA - rankB;
-            return a.localeCompare(b, 'mr', { sensitivity: 'base' });
-        });
-
-        const areaTbody = document.getElementById('areaTableBody');
-        areaTbody.innerHTML = '';
-
-        let srNo = 1;
-        let totElector = 0, totDigi = 0, totUef = 0, totPend = 0;
-
-        sortedEros.forEach(ero => {
-            let data = eroSummary[ero];
-            let pct = data.elector > 0 ? (((data.digi + data.uef) / data.elector) * 100).toFixed(2) : "0.00";
-
-            totElector += data.elector;
-            totDigi += data.digi;
-            totUef += data.uef;
-            totPend += data.pend;
-
-            let tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${srNo++}</td>
-                <td style="text-align: left; font-weight: 700;">${ero}</td>
-                <td>${data.elector.toLocaleString()}</td>
-                <td style="color: #2e7d32; font-weight: 700;">${data.digi.toLocaleString()}</td>
-                <td>${data.uef.toLocaleString()}</td>
-                <td style="color: #c62828; font-weight: 700;">${data.pend.toLocaleString()}</td>
-                <td style="font-weight: 700; color: #0288d1;">${pct}%</td>
-            `;
-            areaTbody.appendChild(tr);
-        });
-
-        let totalPct = totElector > 0 ? (((totDigi + totUef) / totElector) * 100).toFixed(2) : "0.00";
-        let grandTr = document.createElement('tr');
-        grandTr.className = 'grand-total';
-        grandTr.innerHTML = `
-            <td colspan="2" style="text-align: right;">TOTAL:</td>
-            <td>${totElector.toLocaleString()}</td>
-            <td style="color: #2e7d32;">${totDigi.toLocaleString()}</td>
-            <td>${totUef.toLocaleString()}</td>
-            <td style="color: #c62828;">${totPend.toLocaleString()}</td>
-            <td style="color: #0288d1;">${totalPct}%</td>
-        `;
-        areaTbody.appendChild(grandTr);
-
-        const areaContainer = document.getElementById('areaReportContainer');
-        areaContainer.style.display = 'block';
-        areaContainer.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function downloadExcel() {
-        if (typeof XLSX === 'undefined') return;
-
-        const table = document.getElementById('reportTable');
-        const worksheet = XLSX.utils.table_to_sheet(table);
-
-        worksheet['!cols'] = [
-            { wch: 8 }, { wch: 25 }, { wch: 25 }, { wch: 10 }, 
-            { wch: 30 }, { wch: 25 }, { wch: 15 }, { wch: 18 }, 
-            { wch: 12 }, { wch: 16 }, { wch: 16 }
-        ];
-
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Voter_Report");
-
-        if (document.getElementById('areaReportContainer').style.display !== 'none') {
-            const areaTable = document.getElementById('areaReportTable');
-            const areaWorksheet = XLSX.utils.table_to_sheet(areaTable);
-            XLSX.utils.book_append_sheet(workbook, areaWorksheet, "AERO_Wise_Summary");
-        }
-
-        XLSX.writeFile(workbook, "Voter_Digitization_Report.xlsx");
-    }
-
-    // ==========================================
-    // ☁️ GITHUB SAVE FUNCTION (API INTEGRATION)
-    // ==========================================
-    async function saveDataToGitHub() {
-        if (!globalProcessedData || globalProcessedData.length === 0) {
-            alert("सेव्ह करण्यासाठी डेटा उपलब्ध नाही!");
-            return;
-        }
-
-        if (GITHUB_CONFIG.username === "YOUR_GITHUB_USERNAME" || GITHUB_CONFIG.token === "YOUR_PERSONAL_ACCESS_TOKEN") {
-            alert("कृपया कोडमधील GITHUB_CONFIG सेक्शनमध्ये तुमचे Username, Repo नेम आणि Token टाका!");
-            return;
-        }
-
-        const btn = document.getElementById('saveGithubBtn');
-        btn.innerText = "⏳ Saving...";
-        btn.disabled = true;
-
-        try {
-            const getFileUrl = `https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.filePath}`;
-            
-            // १. जुन्या फाईलची SHA Key मिळवणे
-            let sha = "";
-            const getResponse = await fetch(getFileUrl, {
-                headers: { 
-                    "Authorization": `token ${GITHUB_CONFIG.token}`,
-                    "Accept": "application/vnd.github.v3+json"
+    if(document.body.classList.contains('dark')) themeBtn.innerHTML='☀️ Light'; 
+    else themeBtn.innerHTML='🌙 Dark';
+<\/script>
+</body>
+</html>`;
+
+        // टोकन जनरेटर बटन क्लिक इव्हेंट
+        const tokenBtn = document.getElementById('openTokenGeneratorBtn');
+        if (tokenBtn) {
+            tokenBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const win = window.open('', '_blank');
+                if(win) {
+                    win.document.write(tokenHtmlCode);
+                    win.document.close();
+                } else {
+                    alert("कृपया तुमच्या ब्राउझरचे Pop-up ब्लॉकर बंद करा, जेणेकरून टोकन जनरेटर उघडता येईल.");
                 }
             });
-
-            if (getResponse.ok) {
-                const fileData = await getResponse.json();
-                sha = fileData.sha;
-            }
-
-            // २. डेटा तयार करून UTF-8 Safe Base64 मध्ये कन्व्हर्ट करणे (मराठी फॉन्ट सपोर्टसाठी)
-            const payloadData = {
-                lastUpdated: new Date().toISOString(),
-                totalRecords: globalProcessedData.length,
-                data: globalProcessedData
-            };
-
-            const jsonString = JSON.stringify(payloadData, null, 2);
-            
-            // Unicode characters (Marathi) handle करण्यासाठी btoa चा वापर
-            const utf8Bytes = new TextEncoder().encode(jsonString);
-            let binary = '';
-            utf8Bytes.forEach(b => binary += String.fromCharCode(b));
-            const contentBase64 = btoa(binary);
-
-            // ३. GitHub API वर PUT Request पाठवणे
-            const putResponse = await fetch(getFileUrl, {
-                method: "PUT",
-                headers: {
-                    "Authorization": `token ${GITHUB_CONFIG.token}`,
-                    "Content-Type": "application/json",
-                    "Accept": "application/vnd.github.v3+json"
-                },
-                body: JSON.stringify({
-                    message: "Automated Data Update via Voter Digitization Dashboard",
-                    content: contentBase64,
-                    sha: sha !== "" ? sha : undefined
-                })
-            });
-
-            if (putResponse.ok) {
-                alert("✅ डेटा GitHub मधील " + GITHUB_CONFIG.filePath + " फाईलमध्ये यशस्वीरीत्या सेव्ह झाला आहे!");
-            } else {
-                const errData = await putResponse.json();
-                alert("❌ GitHub वर डेटा सेव्ह करताना अडचण आली: " + (errData.message || "Unknown error"));
-            }
-
-        } catch (error) {
-            console.error("GitHub Sync Error:", error);
-            alert("त्रुटी आली: " + error.message);
-        } finally {
-            btn.innerText = "☁️ Save to GitHub";
-            btn.disabled = false;
         }
-    }
+
+        // Print Studio Pro बटन क्लिक इव्हेंट (फोटो साइज स्लाइडरसह)
+        const printStudioBtn = document.getElementById('openPrintStudioBtn');
+        if (printStudioBtn) {
+            printStudioBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const win = window.open('', '_blank');
+                if(win) {
+                    win.document.write(printStudioHtmlCode);
+                    win.document.close();
+                } else {
+                    alert("कृपया तुमच्या ब्राउझरचे Pop-up ब्लॉकर बंद करा, जेणेकरून Print Studio उघडता येईल.");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                }
+            });
+        }
+
+        // Ripple Effect Button Animation
+        const btns = document.querySelectorAll('.btn-glass');
+        btns.forEach(btn => {
+            btn.addEventListener('mousedown', (e) => {
+                // या दोन बटनांना Ripple Effect लागू होणार नाही, जेणेकरून नवीन विंडो उघडण्यास अडथळा येऊ नये
+                if (btn.id === 'openTokenGeneratorBtn' || btn.id === 'openPrintStudioBtn') return;
+                
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple-effect';
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size/2;
+                const y = e.clientY - rect.top - size/2;
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 500);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            });
+        });
+    })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 
 </body>
