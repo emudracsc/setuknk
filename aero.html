@@ -183,7 +183,6 @@
             
             .table-container { overflow: visible !important; display: block !important; width: 100% !important; margin-top: 0 !important; }
             
-            /* AERO Summary Report वेगळ्या पानावर प्रिंट होण्यासाठी */
             #areaReportContainer { 
                 display: block !important; 
                 page-break-after: always; 
@@ -234,7 +233,7 @@
             <div class="value" id="pendingDigitized" style="color: #c62828;">0</div>
         </div>
         <div class="stat-card">
-            <h4>Digitized %</h4>
+            <h4>Digitized % (EFs + UEF)</h4>
             <div class="value" id="digitizedPercent" style="color: #0288d1;">0%</div>
         </div>
     </div>
@@ -245,7 +244,7 @@
         <button class="btn btn-print" id="printBtn" onclick="window.print()">प्रिंट / PDF सेव करा</button>
     </div>
 
-    <!-- Area-wise Report Display Section (AERO Only - Print Page 1) -->
+    <!-- Area-wise Report Display Section -->
     <div class="table-container" id="areaReportContainer">
         <h3 style="color: #2e7d32; text-align: center;">AERO-wise Summary Report</h3>
         <table id="areaReportTable">
@@ -264,7 +263,7 @@
         </table>
     </div>
 
-    <!-- Detailed Main Report Section (Print Page 2 Onwards) -->
+    <!-- Detailed Main Report Section -->
     <div class="table-container" id="tableArea">
         <h3>जनरेट झालेला तपशीलवार रिपोर्ट:</h3>
         <table id="reportTable">
@@ -337,15 +336,7 @@
 
         let headerIndex = -1;
         let colIdx = {
-            ero: -1,
-            sup: -1,
-            partNo: -1,
-            partName: -1,
-            bloName: -1,
-            elector: -1,
-            digi: -1,
-            uef: -1,
-            pend: -1
+            ero: -1, sup: -1, partNo: -1, partName: -1, bloName: -1, elector: -1, digi: -1, uef: -1, pend: -1
         };
 
         for (let i = 0; i < Math.min(rows.length, 20); i++) {
@@ -431,7 +422,7 @@
 
         globalProcessedData = cleanedRows;
         renderTableWithMergeAndSubtotals(globalProcessedData);
-        generateAreaWiseReport(); // आपोआप AERO रिपोर्ट सुद्धा तयार ठेवतो
+        generateAreaWiseReport();
     }
 
     function renderTableWithMergeAndSubtotals(rows) {
@@ -468,10 +459,10 @@
             for (let sup in groupedData[ero]) {
                 let supRows = groupedData[ero][sup];
 
-                // BLO चा टक्केवारीनुसार (Digitized %) Descending Sorting
+                // BLO चा टक्केवारीनुसार (Digitized + UEF) Descending Sorting
                 supRows.sort((a, b) => {
-                    let pctA = a.elector > 0 ? (a.digi / a.elector) : 0;
-                    let pctB = b.elector > 0 ? (b.digi / b.elector) : 0;
+                    let pctA = a.elector > 0 ? ((a.digi + a.uef) / a.elector) : 0;
+                    let pctB = b.elector > 0 ? ((b.digi + b.uef) / b.elector) : 0;
                     return pctB - pctA;
                 });
 
@@ -483,7 +474,8 @@
                     sPend += r.pend;
                 });
 
-                let sPct = sElector > 0 ? (sDigi / sElector) : 0;
+                // (Digitized + UEF) / Elector
+                let sPct = sElector > 0 ? ((sDigi + sUef) / sElector) : 0;
 
                 supList.push({
                     supName: sup,
@@ -557,7 +549,8 @@
                 eroPend += supObj.pend;
             });
 
-            let eroPct = eroElector > 0 ? ((eroDigi / eroElector) * 100).toFixed(2) : "0.00";
+            // ERO ची एकूण टक्केवारी: (Total EFs + UEF) / Total Elector
+            let eroPct = eroElector > 0 ? (((eroDigi + eroUef) / eroElector) * 100).toFixed(2) : "0.00";
             let eroTr = document.createElement('tr');
             eroTr.className = 'ero-subtotal';
             eroTr.innerHTML = `
@@ -575,7 +568,8 @@
             overallPend += eroPend;
         });
 
-        let overallPct = overallElector > 0 ? ((overallDigi / overallElector) * 100).toFixed(2) : "0.00";
+        // Grand Total टक्केवारी: (Grand Digitized + Grand UEF) / Grand Elector
+        let overallPct = overallElector > 0 ? (((overallDigi + overallUef) / overallElector) * 100).toFixed(2) : "0.00";
         let grandTr = document.createElement('tr');
         grandTr.className = 'grand-total';
         grandTr.innerHTML = `
@@ -611,12 +605,7 @@
             let eroName = r.ero || "Unknown ERO";
 
             if (!eroSummary[eroName]) {
-                eroSummary[eroName] = {
-                    elector: 0,
-                    digi: 0,
-                    uef: 0,
-                    pend: 0
-                };
+                eroSummary[eroName] = { elector: 0, digi: 0, uef: 0, pend: 0 };
             }
 
             eroSummary[eroName].elector += r.elector;
@@ -640,7 +629,9 @@
 
         sortedEros.forEach(ero => {
             let data = eroSummary[ero];
-            let pct = data.elector > 0 ? ((data.digi / data.elector) * 100).toFixed(2) : "0.00";
+            
+            // नव्या लॉजिकनुसार Digitized % = (Total EFs Digitized + Total UEF) / Total Elector * 100
+            let pct = data.elector > 0 ? (((data.digi + data.uef) / data.elector) * 100).toFixed(2) : "0.00";
 
             totElector += data.elector;
             totDigi += data.digi;
@@ -660,7 +651,8 @@
             areaTbody.appendChild(tr);
         });
 
-        let totalPct = totElector > 0 ? ((totDigi / totElector) * 100).toFixed(2) : "0.00";
+        // AERO Summary मधील Grand Total Digitized %
+        let totalPct = totElector > 0 ? (((totDigi + totUef) / totElector) * 100).toFixed(2) : "0.00";
         let grandTr = document.createElement('tr');
         grandTr.className = 'grand-total';
         grandTr.innerHTML = `
