@@ -290,11 +290,64 @@
         .summary-box .title { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; }
         .summary-box .count { font-size: 22px; font-weight: 800; margin-top: 4px; }
 
-        /* PRINT STYLING */
+        /* ========================================================= */
+        /* 🖨️ DUAL SUPPORT PRINT STYLING (PORTRAIT & LANDSCAPE) */
+        /* ========================================================= */
         @media print {
-            @page { size: auto; margin: 5mm; }
-            body { background-color: #fff; padding: 0; margin: 0; }
+            @page { 
+                size: auto;   /* युझरच्या प्रिंट सेटिंगनुसार Portrait किंवा Landscape आपोआप निवडेल */
+                margin: 5mm;  /* जास्तीत जास्त डेटा बसण्यासाठी मार्जिन कमी ठेवली आहे */
+            }
             
+            body { 
+                background-color: #ffffff !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* लपवण्याच्या गोष्टी */
+            p.subtitle, .upload-card, .btn-group, .stats-grid { 
+                display: none !important; 
+            }
+
+            .container { 
+                max-width: 100% !important; 
+                width: 100% !important; 
+                box-shadow: none !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                border: none !important; 
+            }
+
+            .table-container { 
+                overflow: visible !important; 
+                display: block !important; 
+                width: 100% !important; 
+                margin-top: 0 !important; 
+                border: none !important; 
+            }
+
+            table { 
+                width: 100% !important; 
+                max-width: 100% !important;
+                border-collapse: collapse !important; 
+                table-layout: auto !important; /* कॉलम पानाच्या रुंदीनुसार आपोआप रिसाईझ होतील */
+            }
+
+            th, td { 
+                font-size: 6.5pt !important; /* Portrait मध्ये डेटा न कट होण्यासाठी ऑप्टिमाइझ फॉन्ट */
+                padding: 2px 3px !important;  
+                border: 1px solid #000000 !important;
+                white-space: normal !important; /* मजकूर मोठा असल्यास आपोआप पुढच्या लाईनला येईल */
+                word-wrap: break-word !important;
+            }
+
+            thead { display: table-header-group; }
+            tr { page-break-inside: avoid !important; }
+
+            /* पॉपअप प्रिंटसाठी विशेष नियम */
             body.modal-open .container { display: none !important; }
             body.modal-open .modal {
                 position: absolute !important; left: 0 !important; top: 0 !important;
@@ -305,19 +358,8 @@
                 border: none !important; box-shadow: none !important; padding: 0 !important;
                 margin: 0 !important; width: 100% !important; max-width: 100% !important; max-height: none !important;
             }
-            body.modal-open .modal-scrollable { overflow: visible !important; max-height: none !important; border: var(--border-thin) !important; }
+            body.modal-open .modal-scrollable { overflow: visible !important; max-height: none !important; border: 1px solid #000 !important; }
             body.modal-open .close-btn, body.modal-open .modal-print-btn { display: none !important; }
-
-            body:not(.modal-open) h2, body:not(.modal-open) p.subtitle, body:not(.modal-open) .upload-card, 
-            body:not(.modal-open) .btn-group, body:not(.modal-open) .stats-grid, body:not(.modal-open) .modal { display: none !important; }
-
-            .container { max-width: 100% !important; width: 100% !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; border: none !important; }
-            .table-container { overflow: visible !important; display: block !important; width: 100% !important; margin-top: 0 !important; border: none !important; }
-            
-            table { width: 100% !important; border-collapse: collapse !important; }
-            th, td { font-size: 8pt !important; padding: 4px 6px !important; border: 1px solid #000 !important; }
-            tr { page-break-inside: avoid !important; }
-            thead { display: table-header-group; }
         }
     </style>
 </head>
@@ -468,13 +510,13 @@
 
 <script>
     // ==========================================
-    // ⚙️ GITHUB CONFIGURATION (इथे तुमची माहिती भरा)
+    // ⚙️ GITHUB CONFIGURATION
     // ==========================================
     const GITHUB_CONFIG = {
-        username: "emudracsc", // तुमचे GitHub Username टाका
-        repo: "setuknk",           // तुमच्या Repository चे नाव टाका
-        filePath: "data.json",            // फाईलचे नाव (उदा. data.json)
-        token: "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" // तुमचे GitHub Personal Access Token
+        username: "YOUR_GITHUB_USERNAME", // तुमचे GitHub Username
+        repo: "YOUR_REPO_NAME",           // तुमच्या Repository चे नाव
+        filePath: "data.json",            // फाईलचे नाव
+        token: "YOUR_PERSONAL_ACCESS_TOKEN" // तुमचे GitHub Personal Access Token
     };
 
     let globalProcessedData = [];
@@ -740,7 +782,6 @@
         document.getElementById('pendingDigitized').innerText = overallPend.toLocaleString();
         document.getElementById('digitizedPercent').innerText = overallPct + "%";
 
-        /* डेटा लोड झाल्यावर सर्व बटन्स स्क्रीनवर दाखवणे */
         document.getElementById('statsArea').style.display = 'grid';
         document.getElementById('tableArea').style.display = 'block';
         document.getElementById('areaReportBtn').style.display = 'inline-block';
@@ -929,7 +970,7 @@
         }
 
         if (GITHUB_CONFIG.username === "YOUR_GITHUB_USERNAME" || GITHUB_CONFIG.token === "YOUR_PERSONAL_ACCESS_TOKEN") {
-            alert("कृपया कोडमधील Line 333 वर GITHUB_CONFIG मध्ये तुमचे Username, Repo नेम आणि Token टाका!");
+            alert("कृपया GITHUB_CONFIG मध्ये तुमचे Username, Repo नेम आणि Token टाका!");
             return;
         }
 
@@ -940,7 +981,6 @@
         try {
             const getFileUrl = `https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.filePath}`;
             
-            // १. जुन्या फाईलची SHA Key मिळवणे
             let sha = "";
             const getResponse = await fetch(getFileUrl, {
                 headers: { 
@@ -954,7 +994,6 @@
                 sha = fileData.sha;
             }
 
-            // २. डेटा बेस64 मध्ये UTF-8 Encode करणे (मराठी टेक्स्टसाठी)
             const payloadData = {
                 lastUpdated: new Date().toISOString(),
                 totalRecords: globalProcessedData.length,
@@ -967,7 +1006,6 @@
             utf8Bytes.forEach(b => binary += String.fromCharCode(b));
             const contentBase64 = btoa(binary);
 
-            // ३. GitHub API वर PUT Request पाठवणे
             const putResponse = await fetch(getFileUrl, {
                 method: "PUT",
                 headers: {
