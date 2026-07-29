@@ -24,7 +24,7 @@
         }
 
         .container {
-            max-width: 1450px;
+            max-width: 1550px;
             margin: 0 auto;
             background: #fff;
             padding: 25px;
@@ -279,6 +279,7 @@
                     <th>Total EFs Digitized</th>
                     <th>Total UEF</th>
                     <th>Pending Digitized</th>
+                    <th>BLO Digitized %</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -516,6 +517,9 @@
                         tdSup = `<td rowspan="${supRowSpanCount}" class="valign-center">${supObj.supName}</td>`;
                     }
 
+                    // BLO Digitized % = (Total EFs Digitized + Total UEF) / Total Elector * 100
+                    let bloPct = r.elector > 0 ? (((r.digi + r.uef) / r.elector) * 100).toFixed(2) : "0.00";
+
                     tr.innerHTML = `
                         <td>${srNo++}</td>
                         ${tdEro}
@@ -527,6 +531,7 @@
                         <td>${r.digi.toLocaleString()}</td>
                         <td>${r.uef.toLocaleString()}</td>
                         <td>${r.pend.toLocaleString()}</td>
+                        <td style="font-weight: bold; color: #0288d1;">${bloPct}%</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -535,11 +540,12 @@
                 let supTr = document.createElement('tr');
                 supTr.className = 'sup-subtotal';
                 supTr.innerHTML = `
-                    <td colspan="6" style="text-align: right; font-weight: bold;">Total for ${supObj.supName} (${supPctDisplay}%):</td>
+                    <td colspan="6" style="text-align: right; font-weight: bold;">Total for ${supObj.supName}:</td>
                     <td style="font-weight: bold;">${supObj.elector.toLocaleString()}</td>
                     <td style="font-weight: bold;">${supObj.digi.toLocaleString()}</td>
                     <td style="font-weight: bold;">${supObj.uef.toLocaleString()}</td>
                     <td style="font-weight: bold;">${supObj.pend.toLocaleString()}</td>
+                    <td style="font-weight: bold; color: #1b5e20;">${supPctDisplay}%</td>
                 `;
                 tbody.appendChild(supTr);
 
@@ -554,11 +560,12 @@
             let eroTr = document.createElement('tr');
             eroTr.className = 'ero-subtotal';
             eroTr.innerHTML = `
-                <td colspan="6" style="text-align: right; font-weight: bold;">TOTAL FOR ${ero} (Digitized: ${eroPct}%):</td>
+                <td colspan="6" style="text-align: right; font-weight: bold;">TOTAL FOR ${ero}:</td>
                 <td style="font-weight: bold;">${eroElector.toLocaleString()}</td>
                 <td style="font-weight: bold;">${eroDigi.toLocaleString()}</td>
                 <td style="font-weight: bold;">${eroUef.toLocaleString()}</td>
                 <td style="font-weight: bold;">${eroPend.toLocaleString()}</td>
+                <td style="font-weight: bold; color: #004d40;">${eroPct}%</td>
             `;
             tbody.appendChild(eroTr);
 
@@ -573,11 +580,12 @@
         let grandTr = document.createElement('tr');
         grandTr.className = 'grand-total';
         grandTr.innerHTML = `
-            <td colspan="6" style="text-align: right; font-weight: bold;">GRAND TOTAL (Overall Digitized: ${overallPct}%):</td>
+            <td colspan="6" style="text-align: right; font-weight: bold;">GRAND TOTAL:</td>
             <td style="font-weight: bold;">${overallElector.toLocaleString()}</td>
             <td style="font-weight: bold;">${overallDigi.toLocaleString()}</td>
             <td style="font-weight: bold;">${overallUef.toLocaleString()}</td>
             <td style="font-weight: bold;">${overallPend.toLocaleString()}</td>
+            <td style="font-weight: bold; color: #b71c1c;">${overallPct}%</td>
         `;
         tbody.appendChild(grandTr);
 
@@ -629,8 +637,7 @@
 
         sortedEros.forEach(ero => {
             let data = eroSummary[ero];
-            
-            // नव्या लॉजिकनुसार Digitized % = (Total EFs Digitized + Total UEF) / Total Elector * 100
+
             let pct = data.elector > 0 ? (((data.digi + data.uef) / data.elector) * 100).toFixed(2) : "0.00";
 
             totElector += data.elector;
@@ -651,7 +658,6 @@
             areaTbody.appendChild(tr);
         });
 
-        // AERO Summary मधील Grand Total Digitized %
         let totalPct = totElector > 0 ? (((totDigi + totUef) / totElector) * 100).toFixed(2) : "0.00";
         let grandTr = document.createElement('tr');
         grandTr.className = 'grand-total';
@@ -689,7 +695,8 @@
             { wch: 15 }, // Total Elector
             { wch: 18 }, // Total Digitized
             { wch: 12 }, // Total UEF
-            { wch: 16 }  // Pending
+            { wch: 16 }, // Pending
+            { wch: 16 }  // BLO Digitized %
         ];
         worksheet['!cols'] = colWidths;
 
