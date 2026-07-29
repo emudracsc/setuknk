@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Digitization Report - Exact Column Match</title>
+    
+    <!-- SheetJS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #1b5e20;
+            --accent-color: #0288d1;
+            --bg-color: #f4f6f9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1450px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 { color: #1b5e20; text-align: center; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #666; margin-bottom: 25px; }
+
+        .upload-card {
+            border: 2px dashed #a5d6a7;
+            background-color: #f1f8e9;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .custom-file-upload {
+            background-color: #1b5e20;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        input[type="file"] { display: none; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+            display: none;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #ccc;
+            border-top: 4px solid #1b5e20;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card h4 { margin: 0; color: #666; font-size: 13px; text-transform: uppercase; }
+        .stat-card .value { font-size: 24px; font-weight: bold; margin: 8px 0 0 0; }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+            transition: background-color 0.2s;
+        }
+
+        .btn-area { background-color: #2e7d32; color: white; }
+        .btn-area:hover { background-color: #1b5e20; }
+
+        .btn-download { background-color: #0288d1; color: white; }
+        .btn-download:hover { background-color: #0277bd; }
+
+        .btn-print { background-color: #616161; color: white; }
+        .btn-print:hover { background-color: #424242; }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 7px 9px;
+            text-align: center;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .valign-center {
+            vertical-align: middle !important;
+            text-align: center !important;
+            font-weight: bold;
+            background-color: #ffffff;
+        }
+
+        .sup-subtotal {
+            background-color: #e8f5e9;
+            font-weight: bold;
+            color: #1b5e20;
+        }
+
+        .ero-subtotal {
+            background-color: #c8e6c9;
+            font-weight: bold;
+            color: #004d40;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+        }
+
+        .grand-total {
+            background-color: #fff9c4;
+            font-weight: bold;
+            color: #b71c1c;
+            font-size: 13px;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+        }
+
+        /* Area-wise Report Styling */
+        #areaReportContainer {
+            margin-top: 30px;
+            display: none;
+            border-top: 3px solid #2e7d32;
+            padding-top: 15px;
+        }
+
+        #areaReportTable th {
+            background-color: #2e7d32;
+            color: white;
+        }
+
+        /* PRINT STYLING - SEPARATE PAGE BREAK */
+        @media print {
+            @page { size: auto; margin: 5mm; }
+            body { background-color: #fff; padding: 0; margin: 0; }
+            .container { max-width: 100% !important; width: 100% !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
+            h2, p.subtitle, .upload-card, .btn-group, .stats-grid { display: none !important; }
+            
+            .table-container { overflow: visible !important; display: block !important; width: 100% !important; margin-top: 0 !important; }
+            
+            /* AERO Summary Report वेगळ्या पानावर प्रिंट होण्यासाठी */
+            #areaReportContainer { 
+                display: block !important; 
+                page-break-after: always; 
+                break-after: page; 
+                border-top: none !important;
+                padding-top: 0 !important;
+            }
+
+            #areaReportContainer h3, #tableArea h3 {
+                display: block !important;
+                font-size: 12pt;
+                margin-bottom: 10px;
+            }
+
+            table { width: 100% !important; border-collapse: collapse !important; table-layout: auto !important; }
+            th, td { font-size: 8.5pt !important; padding: 4px 5px !important; white-space: normal !important; word-break: break-word !important; }
+            tr { page-break-inside: avoid !important; break-inside: avoid !important; }
+            thead { display: table-header-group; }
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Voter Digitization Report</h2>
+    <p class="subtitle">ERO आणि Supervisor चे मर्जींग (Merge Box) केलेले व Subtotals असणारा सुटसुटीत रिपोर्ट</p>
+
+    <div class="upload-card" onclick="document.getElementById('excelFile').click()">
+        <p style="margin-bottom: 10px;">इथे क्लिक करून तुमची Excel फाईल निवडा</p>
+        <label class="custom-file-upload">Choose File</label>
+        <input type="file" id="excelFile" accept=".xlsx, .xls" onchange="handleFile(event)">
+        <p id="fileName" style="margin-top: 10px; font-weight: bold; color: #1b5e20;"></p>
+    </div>
+
+    <div class="stats-grid" id="statsArea">
+        <div class="stat-card">
+            <h4>Total Elector</h4>
+            <div class="value" id="totalVoters">0</div>
+        </div>
+        <div class="stat-card">
+            <h4>Total EFs Digitized</h4>
+            <div class="value" id="totalDigitized" style="color: #2e7d32;">0</div>
+        </div>
+        <div class="stat-card">
+            <h4>Pending Digitized</h4>
+            <div class="value" id="pendingDigitized" style="color: #c62828;">0</div>
+        </div>
+        <div class="stat-card">
+            <h4>Digitized %</h4>
+            <div class="value" id="digitizedPercent" style="color: #0288d1;">0%</div>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-area" id="areaReportBtn" onclick="generateAreaWiseReport()">AERO-wise Summary Report जनरेट करा</button>
+        <button class="btn btn-download" id="downloadBtn" onclick="downloadExcel()">डिजाइनसह Excel डाउनलोड करा</button>
+        <button class="btn btn-print" id="printBtn" onclick="window.print()">प्रिंट / PDF सेव करा</button>
+    </div>
+
+    <!-- Area-wise Report Display Section (AERO Only - Print Page 1) -->
+    <div class="table-container" id="areaReportContainer">
+        <h3 style="color: #2e7d32; text-align: center;">AERO-wise Summary Report</h3>
+        <table id="areaReportTable">
+            <thead>
+                <tr>
+                    <th>SR. No</th>
+                    <th>AERO / ERO Name</th>
+                    <th>Total Elector</th>
+                    <th>Total EFs Digitized</th>
+                    <th>Total UEF</th>
+                    <th>Pending Digitized</th>
+                    <th>Digitized %</th>
+                </tr>
+            </thead>
+            <tbody id="areaTableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Detailed Main Report Section (Print Page 2 Onwards) -->
+    <div class="table-container" id="tableArea">
+        <h3>जनरेट झालेला तपशीलवार रिपोर्ट:</h3>
+        <table id="reportTable">
+            <thead>
+                <tr>
+                    <th>SR. No</th>
+                    <th>ERO/AERO</th>
+                    <th>Supervisor Name</th>
+                    <th>Part No.</th>
+                    <th>Part Name</th>
+                    <th>Blo Name</th>
+                    <th>Total Elector</th>
+                    <th>Total EFs Digitized</th>
+                    <th>Total UEF</th>
+                    <th>Pending Digitized</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    let globalProcessedData = [];
+
+    const eroHierarchy = ["katkar", "deshpande", "varak", "mandale"];
+
+    function getEroRank(eroText) {
+        let text = String(eroText || "").toLowerCase();
+        for (let i = 0; i < eroHierarchy.length; i++) {
+            if (text.includes(eroHierarchy[i])) return i;
+        }
+        return 999;
+    }
+
+    function handleFile(e) {
+        if (typeof XLSX === 'undefined') {
+            alert("Excel Library लोड झाली नाही. इंटरनेट तपासा.");
+            return;
+        }
+
+        const file = e.target.files[0];
+        if (!file) return;
+
+        document.getElementById('fileName').innerText = "निवडलेली फाईल: " + file.name;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array', cellDates: true, cellText: true });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: "", raw: false });
+                
+                processData(jsonData);
+            } catch (err) {
+                alert("Excel फाईल वाचताना त्रुटी आली: " + err.message);
+                console.error(err);
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    function processData(rows) {
+        if (!rows || rows.length === 0) {
+            alert("Excel फाईल रिकामी आहे!");
+            return;
+        }
+
+        let headerIndex = -1;
+        let colIdx = {
+            ero: -1,
+            sup: -1,
+            partNo: -1,
+            partName: -1,
+            bloName: -1,
+            elector: -1,
+            digi: -1,
+            uef: -1,
+            pend: -1
+        };
+
+        for (let i = 0; i < Math.min(rows.length, 20); i++) {
+            const rowStr = rows[i].map(c => String(c).toLowerCase().trim());
+            
+            if (rowStr.some(cell => cell.includes("supervisor") || cell.includes("blo") || cell.includes("part"))) {
+                headerIndex = i;
+                
+                rowStr.forEach((cell, idx) => {
+                    let isPercent = cell.includes("%") || cell.includes("percent") || cell.includes("pct");
+
+                    if ((cell.includes("ero") || cell.includes("aero")) && colIdx.ero === -1) colIdx.ero = idx;
+                    else if (cell.includes("supervisor") && colIdx.sup === -1) colIdx.sup = idx;
+                    else if ((cell.includes("part no") || cell.includes("part_no") || cell.includes("partno")) && colIdx.partNo === -1) colIdx.partNo = idx;
+                    else if ((cell.includes("part name") || cell.includes("village")) && colIdx.partName === -1) colIdx.partName = idx;
+                    else if (cell.includes("blo") && colIdx.bloName === -1) colIdx.bloName = idx;
+                    else if ((cell.includes("elector") || cell.includes("voter")) && !isPercent && colIdx.elector === -1) colIdx.elector = idx;
+                    else if ((cell.includes("digitized") || cell.includes("digitised") || cell.includes("efs")) && !isPercent && colIdx.digi === -1) colIdx.digi = idx;
+                    else if (cell.includes("uef") && !isPercent && colIdx.uef === -1) colIdx.uef = idx;
+                    else if (cell.includes("pending") && !isPercent && colIdx.pend === -1) colIdx.pend = idx;
+                });
+                break;
+            }
+        }
+
+        if (colIdx.ero === -1) colIdx.ero = 1;
+        if (colIdx.sup === -1) colIdx.sup = 2;
+        if (colIdx.partNo === -1) colIdx.partNo = 3;
+        if (colIdx.partName === -1) colIdx.partName = 4;
+        if (colIdx.bloName === -1) colIdx.bloName = 5;
+        if (colIdx.elector === -1) colIdx.elector = 6;
+        if (colIdx.digi === -1) colIdx.digi = 7;
+        if (colIdx.uef === -1) colIdx.uef = 8;
+        if (colIdx.pend === -1) colIdx.pend = 9;
+
+        let rawData = headerIndex !== -1 ? rows.slice(headerIndex + 1) : rows;
+        let cleanedRows = [];
+        let currentEro = "";
+        let currentSup = "";
+
+        rawData.forEach(row => {
+            let eroVal = String(row[colIdx.ero] || "").trim();
+            let supVal = String(row[colIdx.sup] || "").trim();
+            let partNo = String(row[colIdx.partNo] || "").trim();
+            let partName = String(row[colIdx.partName] || "").trim();
+            let bloName = String(row[colIdx.bloName] || "").trim();
+
+            if (eroVal !== "") currentEro = eroVal;
+            if (supVal !== "") currentSup = supVal;
+
+            let isValidDataRow = (partNo !== "" || partName !== "" || bloName !== "");
+
+            if (isValidDataRow) {
+                let parseNum = (val) => {
+                    if (!val) return 0;
+                    let num = parseFloat(String(val).replace(/,/g, '').trim());
+                    return isNaN(num) ? 0 : num;
+                };
+
+                let elector = parseNum(row[colIdx.elector]);
+                let digi = parseNum(row[colIdx.digi]);
+                let uef = parseNum(row[colIdx.uef]);
+                let pend = parseNum(row[colIdx.pend]);
+
+                cleanedRows.push({
+                    ero: currentEro,
+                    sup: currentSup,
+                    partNo: partNo,
+                    partName: partName,
+                    bloName: bloName,
+                    elector: elector,
+                    digi: digi,
+                    uef: uef,
+                    pend: pend
+                });
+            }
+        });
+
+        if (cleanedRows.length === 0) {
+            alert("डेटा लोड झाला नाही, कृपया फाईल तपासा.");
+            return;
+        }
+
+        globalProcessedData = cleanedRows;
+        renderTableWithMergeAndSubtotals(globalProcessedData);
+        generateAreaWiseReport(); // आपोआप AERO रिपोर्ट सुद्धा तयार ठेवतो
+    }
+
+    function renderTableWithMergeAndSubtotals(rows) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+
+        let overallElector = 0, overallDigi = 0, overallUef = 0, overallPend = 0;
+        let srNo = 1;
+
+        let groupedData = {};
+
+        rows.forEach(r => {
+            let ero = r.ero || "Unknown ERO";
+            let sup = r.sup || "Unknown Supervisor";
+
+            if (!groupedData[ero]) groupedData[ero] = {};
+            if (!groupedData[ero][sup]) groupedData[ero][sup] = [];
+
+            groupedData[ero][sup].push(r);
+        });
+
+        let sortedEros = Object.keys(groupedData).sort((a, b) => {
+            let rankA = getEroRank(a);
+            let rankB = getEroRank(b);
+            if (rankA !== rankB) return rankA - rankB;
+            return a.localeCompare(b, 'mr', { sensitivity: 'base' });
+        });
+
+        sortedEros.forEach(ero => {
+            let eroElector = 0, eroDigi = 0, eroUef = 0, eroPend = 0;
+
+            let supList = [];
+
+            for (let sup in groupedData[ero]) {
+                let supRows = groupedData[ero][sup];
+
+                // BLO चा टक्केवारीनुसार (Digitized %) Descending Sorting
+                supRows.sort((a, b) => {
+                    let pctA = a.elector > 0 ? (a.digi / a.elector) : 0;
+                    let pctB = b.elector > 0 ? (b.digi / b.elector) : 0;
+                    return pctB - pctA;
+                });
+
+                let sElector = 0, sDigi = 0, sUef = 0, sPend = 0;
+                supRows.forEach(r => {
+                    sElector += r.elector;
+                    sDigi += r.digi;
+                    sUef += r.uef;
+                    sPend += r.pend;
+                });
+
+                let sPct = sElector > 0 ? (sDigi / sElector) : 0;
+
+                supList.push({
+                    supName: sup,
+                    rows: supRows,
+                    elector: sElector,
+                    digi: sDigi,
+                    uef: sUef,
+                    pend: sPend,
+                    pct: sPct
+                });
+            }
+
+            // Supervisor चे % नुसार उतरत्या क्रमाने (Descending Order) Sorting
+            supList.sort((a, b) => b.pct - a.pct);
+
+            let totalEroRowsCount = 0;
+            supList.forEach(s => {
+                totalEroRowsCount += s.rows.length + 1;
+            });
+
+            let isFirstRowOfEro = true;
+
+            supList.forEach(supObj => {
+                let supRows = supObj.rows;
+                let supRowSpanCount = supRows.length;
+
+                supRows.forEach((r, idx) => {
+                    let tr = document.createElement('tr');
+
+                    let tdEro = "";
+                    if (isFirstRowOfEro) {
+                        tdEro = `<td rowspan="${totalEroRowsCount}" class="valign-center">${ero}</td>`;
+                        isFirstRowOfEro = false;
+                    }
+
+                    let tdSup = "";
+                    if (idx === 0) {
+                        tdSup = `<td rowspan="${supRowSpanCount}" class="valign-center">${supObj.supName}</td>`;
+                    }
+
+                    tr.innerHTML = `
+                        <td>${srNo++}</td>
+                        ${tdEro}
+                        ${tdSup}
+                        <td>${r.partNo || ''}</td>
+                        <td style="text-align: left;">${r.partName || ''}</td>
+                        <td style="text-align: left;">${r.bloName || ''}</td>
+                        <td>${r.elector.toLocaleString()}</td>
+                        <td>${r.digi.toLocaleString()}</td>
+                        <td>${r.uef.toLocaleString()}</td>
+                        <td>${r.pend.toLocaleString()}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                let supPctDisplay = (supObj.pct * 100).toFixed(2);
+                let supTr = document.createElement('tr');
+                supTr.className = 'sup-subtotal';
+                supTr.innerHTML = `
+                    <td colspan="6" style="text-align: right; font-weight: bold;">Total for ${supObj.supName} (${supPctDisplay}%):</td>
+                    <td style="font-weight: bold;">${supObj.elector.toLocaleString()}</td>
+                    <td style="font-weight: bold;">${supObj.digi.toLocaleString()}</td>
+                    <td style="font-weight: bold;">${supObj.uef.toLocaleString()}</td>
+                    <td style="font-weight: bold;">${supObj.pend.toLocaleString()}</td>
+                `;
+                tbody.appendChild(supTr);
+
+                eroElector += supObj.elector;
+                eroDigi += supObj.digi;
+                eroUef += supObj.uef;
+                eroPend += supObj.pend;
+            });
+
+            let eroPct = eroElector > 0 ? ((eroDigi / eroElector) * 100).toFixed(2) : "0.00";
+            let eroTr = document.createElement('tr');
+            eroTr.className = 'ero-subtotal';
+            eroTr.innerHTML = `
+                <td colspan="6" style="text-align: right; font-weight: bold;">TOTAL FOR ${ero} (Digitized: ${eroPct}%):</td>
+                <td style="font-weight: bold;">${eroElector.toLocaleString()}</td>
+                <td style="font-weight: bold;">${eroDigi.toLocaleString()}</td>
+                <td style="font-weight: bold;">${eroUef.toLocaleString()}</td>
+                <td style="font-weight: bold;">${eroPend.toLocaleString()}</td>
+            `;
+            tbody.appendChild(eroTr);
+
+            overallElector += eroElector;
+            overallDigi += eroDigi;
+            overallUef += eroUef;
+            overallPend += eroPend;
+        });
+
+        let overallPct = overallElector > 0 ? ((overallDigi / overallElector) * 100).toFixed(2) : "0.00";
+        let grandTr = document.createElement('tr');
+        grandTr.className = 'grand-total';
+        grandTr.innerHTML = `
+            <td colspan="6" style="text-align: right; font-weight: bold;">GRAND TOTAL (Overall Digitized: ${overallPct}%):</td>
+            <td style="font-weight: bold;">${overallElector.toLocaleString()}</td>
+            <td style="font-weight: bold;">${overallDigi.toLocaleString()}</td>
+            <td style="font-weight: bold;">${overallUef.toLocaleString()}</td>
+            <td style="font-weight: bold;">${overallPend.toLocaleString()}</td>
+        `;
+        tbody.appendChild(grandTr);
+
+        document.getElementById('totalVoters').innerText = overallElector.toLocaleString();
+        document.getElementById('totalDigitized').innerText = overallDigi.toLocaleString();
+        document.getElementById('pendingDigitized').innerText = overallPend.toLocaleString();
+        document.getElementById('digitizedPercent').innerText = overallPct + "%";
+
+        document.getElementById('statsArea').style.display = 'grid';
+        document.getElementById('tableArea').style.display = 'block';
+        document.getElementById('areaReportBtn').style.display = 'inline-block';
+        document.getElementById('downloadBtn').style.display = 'inline-block';
+        document.getElementById('printBtn').style.display = 'inline-block';
+    }
+
+    function generateAreaWiseReport() {
+        if (!globalProcessedData || globalProcessedData.length === 0) {
+            alert("कृपया प्रथम Excel फाईल अपलोड करा.");
+            return;
+        }
+
+        let eroSummary = {};
+
+        globalProcessedData.forEach(r => {
+            let eroName = r.ero || "Unknown ERO";
+
+            if (!eroSummary[eroName]) {
+                eroSummary[eroName] = {
+                    elector: 0,
+                    digi: 0,
+                    uef: 0,
+                    pend: 0
+                };
+            }
+
+            eroSummary[eroName].elector += r.elector;
+            eroSummary[eroName].digi += r.digi;
+            eroSummary[eroName].uef += r.uef;
+            eroSummary[eroName].pend += r.pend;
+        });
+
+        let sortedEros = Object.keys(eroSummary).sort((a, b) => {
+            let rankA = getEroRank(a);
+            let rankB = getEroRank(b);
+            if (rankA !== rankB) return rankA - rankB;
+            return a.localeCompare(b, 'mr', { sensitivity: 'base' });
+        });
+
+        const areaTbody = document.getElementById('areaTableBody');
+        areaTbody.innerHTML = '';
+
+        let srNo = 1;
+        let totElector = 0, totDigi = 0, totUef = 0, totPend = 0;
+
+        sortedEros.forEach(ero => {
+            let data = eroSummary[ero];
+            let pct = data.elector > 0 ? ((data.digi / data.elector) * 100).toFixed(2) : "0.00";
+
+            totElector += data.elector;
+            totDigi += data.digi;
+            totUef += data.uef;
+            totPend += data.pend;
+
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${srNo++}</td>
+                <td style="text-align: left; font-weight: bold;">${ero}</td>
+                <td>${data.elector.toLocaleString()}</td>
+                <td style="color: green; font-weight: bold;">${data.digi.toLocaleString()}</td>
+                <td>${data.uef.toLocaleString()}</td>
+                <td style="color: red; font-weight: bold;">${data.pend.toLocaleString()}</td>
+                <td style="font-weight: bold; color: #0288d1;">${pct}%</td>
+            `;
+            areaTbody.appendChild(tr);
+        });
+
+        let totalPct = totElector > 0 ? ((totDigi / totElector) * 100).toFixed(2) : "0.00";
+        let grandTr = document.createElement('tr');
+        grandTr.className = 'grand-total';
+        grandTr.innerHTML = `
+            <td colspan="2" style="text-align: right; font-weight: bold;">TOTAL:</td>
+            <td style="font-weight: bold;">${totElector.toLocaleString()}</td>
+            <td style="font-weight: bold; color: green;">${totDigi.toLocaleString()}</td>
+            <td style="font-weight: bold;">${totUef.toLocaleString()}</td>
+            <td style="font-weight: bold; color: red;">${totPend.toLocaleString()}</td>
+            <td style="font-weight: bold; color: #0288d1;">${totalPct}%</td>
+        `;
+        areaTbody.appendChild(grandTr);
+
+        const areaContainer = document.getElementById('areaReportContainer');
+        areaContainer.style.display = 'block';
+        areaContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function downloadExcel() {
+        if (typeof XLSX === 'undefined') {
+            alert("Excel Library लोड झाली नाही.");
+            return;
+        }
+
+        const table = document.getElementById('reportTable');
+        const worksheet = XLSX.utils.table_to_sheet(table);
+
+        const colWidths = [
+            { wch: 8 },  // SR. No
+            { wch: 25 }, // ERO
+            { wch: 25 }, // Supervisor
+            { wch: 10 }, // Part No
+            { wch: 30 }, // Part Name
+            { wch: 25 }, // BLO Name
+            { wch: 15 }, // Total Elector
+            { wch: 18 }, // Total Digitized
+            { wch: 12 }, // Total UEF
+            { wch: 16 }  // Pending
+        ];
+        worksheet['!cols'] = colWidths;
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Voter_Report");
+
+        const areaTable = document.getElementById('areaReportTable');
+        if (document.getElementById('areaReportContainer').style.display !== 'none') {
+            const areaWorksheet = XLSX.utils.table_to_sheet(areaTable);
+            XLSX.utils.book_append_sheet(workbook, areaWorksheet, "AERO_Wise_Summary");
+        }
+
+        XLSX.writeFile(workbook, "Voter_Digitization_Report_PageBreak.xlsx");
+    }
+</script>
+
+</body>
+</html>
