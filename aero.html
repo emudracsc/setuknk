@@ -99,6 +99,9 @@
         .btn-area { background-color: #2e7d32; color: white; }
         .btn-area:hover { background-color: #1b5e20; }
 
+        .btn-popup { background-color: #e65100; color: white; }
+        .btn-popup:hover { background-color: #bf360c; }
+
         .btn-download { background-color: #0288d1; color: white; }
         .btn-download:hover { background-color: #0277bd; }
 
@@ -161,6 +164,74 @@
             border-bottom: 2px solid #000;
         }
 
+        /* POPUP MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 2% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 10px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover { color: #000; }
+
+        .modal-scrollable {
+            overflow-y: auto;
+            max-height: 55vh;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .summary-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f1f8e9;
+            border-radius: 8px;
+            border: 1px solid #c8e6c9;
+        }
+
+        .summary-box {
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #b2dfdb;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .summary-box .title { font-size: 11px; font-weight: bold; color: #555; }
+        .summary-box .count { font-size: 20px; font-weight: bold; margin-top: 5px; color: #1b5e20; }
+
         /* Area-wise Report Styling */
         #areaReportContainer {
             margin-top: 30px;
@@ -174,13 +245,57 @@
             color: white;
         }
 
-        /* PRINT STYLING - SEPARATE PAGE BREAK */
+        /* PRINT STYLING FOR BOTH NORMAL & POPUP REPORT */
         @media print {
             @page { size: auto; margin: 5mm; }
             body { background-color: #fff; padding: 0; margin: 0; }
-            .container { max-width: 100% !important; width: 100% !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
-            h2, p.subtitle, .upload-card, .btn-group, .stats-grid { display: none !important; }
             
+            body.modal-open .container {
+                display: none !important;
+            }
+
+            body.modal-open .modal {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                background-color: transparent !important;
+                display: block !important;
+                overflow: visible !important;
+            }
+
+            body.modal-open .modal-content {
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                max-height: none !important;
+            }
+
+            body.modal-open .modal-scrollable {
+                overflow: visible !important;
+                max-height: none !important;
+                border: none !important;
+            }
+
+            body.modal-open .close-btn, 
+            body.modal-open .modal-print-btn {
+                display: none !important;
+            }
+
+            body:not(.modal-open) h2, 
+            body:not(.modal-open) p.subtitle, 
+            body:not(.modal-open) .upload-card, 
+            body:not(.modal-open) .btn-group, 
+            body:not(.modal-open) .stats-grid, 
+            body:not(.modal-open) .modal { 
+                display: none !important; 
+            }
+
+            .container { max-width: 100% !important; width: 100% !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
             .table-container { overflow: visible !important; display: block !important; width: 100% !important; margin-top: 0 !important; }
             
             #areaReportContainer { 
@@ -191,14 +306,8 @@
                 padding-top: 0 !important;
             }
 
-            #areaReportContainer h3, #tableArea h3 {
-                display: block !important;
-                font-size: 12pt;
-                margin-bottom: 10px;
-            }
-
             table { width: 100% !important; border-collapse: collapse !important; table-layout: auto !important; }
-            th, td { font-size: 8.5pt !important; padding: 4px 5px !important; white-space: normal !important; word-break: break-word !important; }
+            th, td { font-size: 8pt !important; padding: 3px 4px !important; white-space: normal !important; word-break: break-word !important; }
             tr { page-break-inside: avoid !important; break-inside: avoid !important; }
             thead { display: table-header-group; }
             -webkit-print-color-adjust: exact;
@@ -240,8 +349,9 @@
 
     <div class="btn-group">
         <button class="btn btn-area" id="areaReportBtn" onclick="generateAreaWiseReport()">AERO-wise Summary Report जनरेट करा</button>
+        <button class="btn btn-popup" id="bloPopupBtn" onclick="openBloModal()">सर्व BLO विश्लेषणात्मक पॉपअप (Descending Order)</button>
         <button class="btn btn-download" id="downloadBtn" onclick="downloadExcel()">डिजाइनसह Excel डाउनलोड करा</button>
-        <button class="btn btn-print" id="printBtn" onclick="window.print()">प्रिंट / PDF सेव करा</button>
+        <button class="btn btn-print" id="printBtn" onclick="window.print()">मुख्य रिपोर्ट प्रिंट करा</button>
     </div>
 
     <!-- Area-wise Report Display Section -->
@@ -284,6 +394,70 @@
             </thead>
             <tbody id="tableBody"></tbody>
         </table>
+    </div>
+</div>
+
+<!-- POPUP MODAL FOR ALL BLOS (REMOVED SUPERVISOR & ERO COLUMNS) -->
+<div id="bloModal" class="modal">
+    <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <button class="modal-print-btn" onclick="window.print()" style="background-color: #2e7d32; color: white; border: none; padding: 8px 18px; border-radius: 4px; font-weight: bold; cursor: pointer;">
+                🖨️ पॉपअप रिपोर्ट प्रिंट / PDF
+            </button>
+            <span class="close-btn" onclick="closeBloModal()">&times;</span>
+        </div>
+
+        <h3 style="color: #d84315; text-align: center; margin: 5px 0 10px 0;">
+            सर्व BLO ची विश्लेषणात्मक यादी (Descending Order By % )
+        </h3>
+
+        <div class="modal-scrollable">
+            <table>
+                <thead>
+                    <tr style="background-color: #e65100; color: white;">
+                        <th>Rank</th>
+                        <th>Part No.</th>
+                        <th>Part / Village Name</th>
+                        <th>BLO Name</th>
+                        <th>Total Elector</th>
+                        <th>Total EFs</th>
+                        <th>Total UEF</th>
+                        <th>Pending</th>
+                        <th>Digitized %</th>
+                    </tr>
+                </thead>
+                <tbody id="bloModalTableBody"></tbody>
+            </table>
+        </div>
+
+        <!-- SUMMARY STATISTICS GHOSHVARA BELOW TABLE -->
+        <h4 style="margin: 15px 0 5px 0; color: #1b5e20;">BLO टक्कावारीनुसार गोषवारा (Category-wise Count):</h4>
+        <div class="summary-boxes">
+            <div class="summary-box" style="border-top: 4px solid #d32f2f;">
+                <div class="title">Below 60%</div>
+                <div class="count" id="countBelow60" style="color: #d32f2f;">0</div>
+            </div>
+            <div class="summary-box" style="border-top: 4px solid #f57c00;">
+                <div class="title">61% - 70%</div>
+                <div class="count" id="count61to70" style="color: #f57c00;">0</div>
+            </div>
+            <div class="summary-box" style="border-top: 4px solid #fbc02d;">
+                <div class="title">71% - 80%</div>
+                <div class="count" id="count71to80" style="color: #fbc02d;">0</div>
+            </div>
+            <div class="summary-box" style="border-top: 4px solid #0288d1;">
+                <div class="title">81% - 90%</div>
+                <div class="count" id="count81to90" style="color: #0288d1;">0</div>
+            </div>
+            <div class="summary-box" style="border-top: 4px solid #388e3c;">
+                <div class="title">91% - 99.99%</div>
+                <div class="count" id="count91to99" style="color: #388e3c;">0</div>
+            </div>
+            <div class="summary-box" style="border-top: 4px solid #1b5e20; background-color: #e8f5e9;">
+                <div class="title">100% Completed</div>
+                <div class="count" id="count100" style="color: #1b5e20;">0</div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -460,7 +634,6 @@
             for (let sup in groupedData[ero]) {
                 let supRows = groupedData[ero][sup];
 
-                // BLO चा टक्केवारीनुसार (Digitized + UEF) Descending Sorting
                 supRows.sort((a, b) => {
                     let pctA = a.elector > 0 ? ((a.digi + a.uef) / a.elector) : 0;
                     let pctB = b.elector > 0 ? ((b.digi + b.uef) / b.elector) : 0;
@@ -475,7 +648,6 @@
                     sPend += r.pend;
                 });
 
-                // (Digitized + UEF) / Elector
                 let sPct = sElector > 0 ? ((sDigi + sUef) / sElector) : 0;
 
                 supList.push({
@@ -489,7 +661,6 @@
                 });
             }
 
-            // Supervisor चे % नुसार उतरत्या क्रमाने (Descending Order) Sorting
             supList.sort((a, b) => b.pct - a.pct);
 
             let totalEroRowsCount = 0;
@@ -517,7 +688,6 @@
                         tdSup = `<td rowspan="${supRowSpanCount}" class="valign-center">${supObj.supName}</td>`;
                     }
 
-                    // BLO Digitized % = (Total EFs Digitized + Total UEF) / Total Elector * 100
                     let bloPct = r.elector > 0 ? (((r.digi + r.uef) / r.elector) * 100).toFixed(2) : "0.00";
 
                     tr.innerHTML = `
@@ -555,7 +725,6 @@
                 eroPend += supObj.pend;
             });
 
-            // ERO ची एकूण टक्केवारी: (Total EFs + UEF) / Total Elector
             let eroPct = eroElector > 0 ? (((eroDigi + eroUef) / eroElector) * 100).toFixed(2) : "0.00";
             let eroTr = document.createElement('tr');
             eroTr.className = 'ero-subtotal';
@@ -575,7 +744,6 @@
             overallPend += eroPend;
         });
 
-        // Grand Total टक्केवारी: (Grand Digitized + Grand UEF) / Grand Elector
         let overallPct = overallElector > 0 ? (((overallDigi + overallUef) / overallElector) * 100).toFixed(2) : "0.00";
         let grandTr = document.createElement('tr');
         grandTr.className = 'grand-total';
@@ -597,8 +765,80 @@
         document.getElementById('statsArea').style.display = 'grid';
         document.getElementById('tableArea').style.display = 'block';
         document.getElementById('areaReportBtn').style.display = 'inline-block';
+        document.getElementById('bloPopupBtn').style.display = 'inline-block';
         document.getElementById('downloadBtn').style.display = 'inline-block';
         document.getElementById('printBtn').style.display = 'inline-block';
+    }
+
+    /* POPUP LOGIC WITHOUT SUPERVISOR & ERO COLUMNS */
+    function openBloModal() {
+        if (!globalProcessedData || globalProcessedData.length === 0) {
+            alert("कृपया प्रथम Excel फाईल अपलोड करा.");
+            return;
+        }
+
+        let bloList = globalProcessedData.map(r => {
+            let pct = r.elector > 0 ? (((r.digi + r.uef) / r.elector) * 100) : 0;
+            return {
+                ...r,
+                pctVal: pct,
+                pctFormatted: pct.toFixed(2)
+            };
+        });
+
+        bloList.sort((a, b) => b.pctVal - a.pctVal);
+
+        const modalTbody = document.getElementById('bloModalTableBody');
+        modalTbody.innerHTML = '';
+
+        let cBelow60 = 0, c61to70 = 0, c71to80 = 0, c81to90 = 0, c91to99 = 0, c100 = 0;
+
+        bloList.forEach((b, index) => {
+            let pct = b.pctVal;
+
+            if (pct < 60.0) cBelow60++;
+            else if (pct >= 60.0 && pct <= 70.0) c61to70++;
+            else if (pct > 70.0 && pct <= 80.0) c71to80++;
+            else if (pct > 80.0 && pct <= 90.0) c81to90++;
+            else if (pct > 90.0 && pct < 100.0) c91to99++;
+            else if (pct >= 100.0) c100++;
+
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${index + 1}</strong></td>
+                <td>${b.partNo || ''}</td>
+                <td style="text-align: left;">${b.partName || ''}</td>
+                <td style="text-align: left; font-weight: bold;">${b.bloName || ''}</td>
+                <td>${b.elector.toLocaleString()}</td>
+                <td>${b.digi.toLocaleString()}</td>
+                <td>${b.uef.toLocaleString()}</td>
+                <td>${b.pend.toLocaleString()}</td>
+                <td style="font-weight: bold; color: #d84315; background-color: #fbe9e7;">${b.pctFormatted}%</td>
+            `;
+            modalTbody.appendChild(tr);
+        });
+
+        document.getElementById('countBelow60').innerText = cBelow60;
+        document.getElementById('count61to70').innerText = c61to70;
+        document.getElementById('count71to80').innerText = c71to80;
+        document.getElementById('count81to90').innerText = c81to90;
+        document.getElementById('count91to99').innerText = c91to99;
+        document.getElementById('count100').innerText = c100;
+
+        document.body.classList.add('modal-open');
+        document.getElementById('bloModal').style.display = 'block';
+    }
+
+    function closeBloModal() {
+        document.body.classList.remove('modal-open');
+        document.getElementById('bloModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        let modal = document.getElementById('bloModal');
+        if (event.target == modal) {
+            closeBloModal();
+        }
     }
 
     function generateAreaWiseReport() {
