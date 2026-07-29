@@ -359,7 +359,7 @@
 
     <!-- Area-wise Summary Table -->
     <div class="table-container" id="areaReportContainer">
-        <h3 style="color: var(--primary-green); text-align: center; margin: 15px 0;">AERO-wise Summary Report (Descending Order by %)</h3>
+        <h3 style="color: var(--primary-green); text-align: center; margin: 15px 0;">AERO-wise Summary Report</h3>
         <table id="areaReportTable">
             <thead>
                 <tr>
@@ -410,7 +410,7 @@
         </div>
 
         <h3 style="color: var(--accent-orange); text-align: center; margin: 5px 0 15px 0; font-size: 20px;">
-            All Blo Report(195-332)
+            सर्व BLO ची विश्लेषणात्मक यादी (Descending Order By % )
         </h3>
 
         <div class="modal-scrollable">
@@ -813,7 +813,7 @@
         if (event.target == modal) closeBloModal();
     }
 
-    /* AERO-WISE REPORT FUNCTION (SORTED BY % DESCENDING) */
+    /* AERO-WISE REPORT FUNCTION (PURVI PRAMANE HIERARCHY SEQUENCE) */
     function generateAreaWiseReport() {
         if (!globalProcessedData || globalProcessedData.length === 0) return;
 
@@ -827,23 +827,13 @@
             eroSummary[eroName].pend += r.pend;
         });
 
-        // ERO/AERO लिस्ट %नुसार सॉर्ट करण्यासाठी Array मध्ये रूपांतरित करणे
-        let areaList = Object.keys(eroSummary).map(eroName => {
-            let data = eroSummary[eroName];
-            let pct = data.elector > 0 ? (((data.digi + data.uef) / data.elector) * 100) : 0;
-            return {
-                ero: eroName,
-                elector: data.elector,
-                digi: data.digi,
-                uef: data.uef,
-                pend: data.pend,
-                pctVal: pct,
-                pctFormatted: pct.toFixed(2)
-            };
+        // पूर्ववत ERO Rank/Hierarchy नुसार क्रमवारी लावणे
+        let sortedEros = Object.keys(eroSummary).sort((a, b) => {
+            let rankA = getEroRank(a);
+            let rankB = getEroRank(b);
+            if (rankA !== rankB) return rankA - rankB;
+            return a.localeCompare(b, 'mr', { sensitivity: 'base' });
         });
-
-        // Percentage नुसार Descending Order (जास्त ते कमी) मध्ये शॉर्ट करणे
-        areaList.sort((a, b) => b.pctVal - a.pctVal);
 
         const areaTbody = document.getElementById('areaTableBody');
         areaTbody.innerHTML = '';
@@ -851,23 +841,26 @@
         let srNo = 1;
         let totElector = 0, totDigi = 0, totUef = 0, totPend = 0;
 
-        areaList.forEach(item => {
-            totElector += item.elector;
-            totDigi += item.digi;
-            totUef += item.uef;
-            totPend += item.pend;
+        sortedEros.forEach(ero => {
+            let data = eroSummary[ero];
+            let pct = data.elector > 0 ? (((data.digi + data.uef) / data.elector) * 100).toFixed(2) : "0.00";
+
+            totElector += data.elector;
+            totDigi += data.digi;
+            totUef += data.uef;
+            totPend += data.pend;
 
             let tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${srNo++}</td>
-                <td style="text-align: left; font-weight: 700;">${item.ero}</td>
-                <td>${item.elector.toLocaleString()}</td>
-                <td style="color: #2e7d32; font-weight: 700;">${item.digi.toLocaleString()}</td>
-                <td>${item.uef.toLocaleString()}</td>
-                <td style="color: #c62828; font-weight: 700;">${item.pend.toLocaleString()}</td>
-                <td style="font-weight: 700; color: #0288d1; background-color: #f0f9ff;">${item.pctFormatted}%</td>
+                <td style="text-align: left; font-weight: 700;">${ero}</td>
+                <td>${data.elector.toLocaleString()}</td>
+                <td style="color: #2e7d32; font-weight: 700;">${data.digi.toLocaleString()}</td>
+                <td>${data.uef.toLocaleString()}</td>
+                <td style="color: #c62828; font-weight: 700;">${data.pend.toLocaleString()}</td>
+                <td style="font-weight: 700; color: #0288d1;">${pct}%</td>
             `;
-            areaTableBody.appendChild(tr);
+            areaTbody.appendChild(tr);
         });
 
         let totalPct = totElector > 0 ? (((totDigi + totUef) / totElector) * 100).toFixed(2) : "0.00";
@@ -881,7 +874,7 @@
             <td style="color: #c62828;">${totPend.toLocaleString()}</td>
             <td style="color: #0288d1;">${totalPct}%</td>
         `;
-        areaTableBody.appendChild(grandTr);
+        areaTbody.appendChild(grandTr);
 
         const areaContainer = document.getElementById('areaReportContainer');
         areaContainer.style.display = 'block';
