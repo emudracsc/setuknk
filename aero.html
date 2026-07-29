@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voter Digitization Report - Custom Design</title>
+    <title>Voter Digitization Report - GitHub Sync</title>
     
     <!-- SheetJS Library -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -144,6 +144,9 @@
 
         .btn-download { background-color: #0288d1; color: white; }
         .btn-download:hover { background-color: #0277bd; transform: translateY(-1px); }
+
+        .btn-github { background-color: #24292e; color: white; }
+        .btn-github:hover { background-color: #0f1419; transform: translateY(-1px); }
 
         .btn-print { background-color: #475569; color: white; }
         .btn-print:hover { background-color: #334155; transform: translateY(-1px); }
@@ -322,7 +325,7 @@
 
 <div class="container">
     <h2>Voter Digitization Report</h2>
-    <p class="subtitle">Custom UI Design & High Contrast Subtotals सह अद्ययावत रिपोर्ट</p>
+    <p class="subtitle">AERO-wise Summary (Hierarchy Wise) & GitHub Sync</p>
 
     <div class="upload-card" onclick="document.getElementById('excelFile').click()">
         <p style="margin-bottom: 12px; font-weight: 600; font-size: 16px; color: #334155;">इथे क्लिक करून तुमची Excel फाईल निवडा</p>
@@ -354,6 +357,7 @@
         <button class="btn btn-area" id="areaReportBtn" onclick="generateAreaWiseReport()">AERO-wise Summary Report</button>
         <button class="btn btn-popup" id="bloPopupBtn" onclick="openBloModal()">सर्व BLO विश्लेषणात्मक पॉपअप</button>
         <button class="btn btn-download" id="downloadBtn" onclick="downloadExcel()">Excel डाउनलोड</button>
+        <button class="btn btn-github" id="saveGithubBtn" onclick="saveDataToGitHub()">☁️ Save to GitHub</button>
         <button class="btn btn-print" id="printBtn" onclick="window.print()">मुख्य रिपोर्ट प्रिंट करा</button>
     </div>
 
@@ -463,6 +467,16 @@
 </div>
 
 <script>
+    // ==========================================
+    // ⚙️ GITHUB CONFIGURATION (इथे तुमची माहिती भरा)
+    // ==========================================
+    const GITHUB_CONFIG = {
+        username: "emudracsc", // तुमचे GitHub Username टाका
+        repo: "setuknkE",           // तुमच्या Repository चे नाव टाका
+        filePath: "data.json",            // फाईलचे नाव (उदा. data.json)
+        token: "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" // तुमचे GitHub Personal Access Token
+    };
+
     let globalProcessedData = [];
     const eroHierarchy = ["katkar", "deshpande", "varak", "mandale"];
 
@@ -726,11 +740,13 @@
         document.getElementById('pendingDigitized').innerText = overallPend.toLocaleString();
         document.getElementById('digitizedPercent').innerText = overallPct + "%";
 
+        /* डेटा लोड झाल्यावर सर्व बटन्स स्क्रीनवर दाखवणे */
         document.getElementById('statsArea').style.display = 'grid';
         document.getElementById('tableArea').style.display = 'block';
         document.getElementById('areaReportBtn').style.display = 'inline-block';
         document.getElementById('bloPopupBtn').style.display = 'inline-block';
         document.getElementById('downloadBtn').style.display = 'inline-block';
+        document.getElementById('saveGithubBtn').style.display = 'inline-block';
         document.getElementById('printBtn').style.display = 'inline-block';
     }
 
@@ -813,7 +829,6 @@
         if (event.target == modal) closeBloModal();
     }
 
-    /* AERO-WISE REPORT FUNCTION (PURVI PRAMANE HIERARCHY SEQUENCE) */
     function generateAreaWiseReport() {
         if (!globalProcessedData || globalProcessedData.length === 0) return;
 
@@ -827,7 +842,6 @@
             eroSummary[eroName].pend += r.pend;
         });
 
-        // पूर्ववत ERO Rank/Hierarchy नुसार क्रमवारी लावणे
         let sortedEros = Object.keys(eroSummary).sort((a, b) => {
             let rankA = getEroRank(a);
             let rankB = getEroRank(b);
@@ -903,6 +917,85 @@
         }
 
         XLSX.writeFile(workbook, "Voter_Digitization_Report.xlsx");
+    }
+
+    // ==========================================
+    // ☁️ GITHUB SAVE FUNCTION (API INTEGRATION)
+    // ==========================================
+    async function saveDataToGitHub() {
+        if (!globalProcessedData || globalProcessedData.length === 0) {
+            alert("सेव्ह करण्यासाठी डेटा उपलब्ध नाही!");
+            return;
+        }
+
+        if (GITHUB_CONFIG.username === "YOUR_GITHUB_USERNAME" || GITHUB_CONFIG.token === "YOUR_PERSONAL_ACCESS_TOKEN") {
+            alert("कृपया कोडमधील Line 333 वर GITHUB_CONFIG मध्ये तुमचे Username, Repo नेम आणि Token टाका!");
+            return;
+        }
+
+        const btn = document.getElementById('saveGithubBtn');
+        btn.innerText = "⏳ Saving...";
+        btn.disabled = true;
+
+        try {
+            const getFileUrl = `https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.filePath}`;
+            
+            // १. जुन्या फाईलची SHA Key मिळवणे
+            let sha = "";
+            const getResponse = await fetch(getFileUrl, {
+                headers: { 
+                    "Authorization": `token ${GITHUB_CONFIG.token}`,
+                    "Accept": "application/vnd.github.v3+json"
+                }
+            });
+
+            if (getResponse.ok) {
+                const fileData = await getResponse.json();
+                sha = fileData.sha;
+            }
+
+            // २. डेटा बेस64 मध्ये UTF-8 Encode करणे (मराठी टेक्स्टसाठी)
+            const payloadData = {
+                lastUpdated: new Date().toISOString(),
+                totalRecords: globalProcessedData.length,
+                data: globalProcessedData
+            };
+
+            const jsonString = JSON.stringify(payloadData, null, 2);
+            const utf8Bytes = new TextEncoder().encode(jsonString);
+            let binary = '';
+            utf8Bytes.forEach(b => binary += String.fromCharCode(b));
+            const contentBase64 = btoa(binary);
+
+            // ३. GitHub API वर PUT Request पाठवणे
+            const putResponse = await fetch(getFileUrl, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `token ${GITHUB_CONFIG.token}`,
+                    "Content-Type": "application/json",
+                    "Accept": "application/vnd.github.v3+json"
+                },
+                body: JSON.stringify({
+                    message: "Automated Data Update via Voter Digitization Dashboard",
+                    content: contentBase64,
+                    sha: sha !== "" ? sha : undefined
+                })
+            });
+
+            if (putResponse.ok) {
+                alert("✅ डेटा GitHub मधील " + GITHUB_CONFIG.filePath + " फाईलमध्ये सेव्ह झाला आहे!");
+            } else {
+                const errData = await putResponse.json();
+                alert("❌ GitHub वर डेटा सेव्ह करताना अडचण आली: " + (errData.message || "Unknown error"));
+            }
+
+        } catch (error) {
+            console.error("GitHub Sync Error:", error);
+            alert("त्रुटी आली: " + error.message);
+        } finally {
+            btn.innerText = "☁️ Save to GitHub";
+            btn.disabled = false;
+        }
     }
 </script>
 
