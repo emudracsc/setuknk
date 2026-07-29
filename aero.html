@@ -250,7 +250,6 @@
 
         .close-btn {
             color: #94a3b8;
-            float: right;
             font-size: 32px;
             font-weight: bold;
             cursor: pointer;
@@ -258,6 +257,32 @@
         }
 
         .close-btn:hover { color: #0f172a; }
+
+        /* FILTER BUTTONS IN POPUP */
+        .filter-btn-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+            background-color: #f1f5f9;
+            color: #334155;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent-orange);
+            color: white;
+            border-color: var(--accent-orange);
+            box-shadow: 0 2px 4px rgba(230, 81, 0, 0.3);
+        }
 
         .modal-scrollable {
             overflow-y: auto;
@@ -290,15 +315,9 @@
         .summary-box .title { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; }
         .summary-box .count { font-size: 22px; font-weight: 800; margin-top: 4px; }
 
-        /* ========================================================= */
-        /* 🖨️ DUAL SUPPORT PRINT STYLING (PORTRAIT & LANDSCAPE) */
-        /* ========================================================= */
+        /* PRINT STYLING */
         @media print {
-            @page { 
-                size: auto;   /* युझरच्या प्रिंट सेटिंगनुसार Portrait किंवा Landscape आपोआप निवडेल */
-                margin: 5mm;  /* जास्तीत जास्त डेटा बसण्यासाठी मार्जिन कमी ठेवली आहे */
-            }
-            
+            @page { size: auto; margin: 5mm; }
             body { 
                 background-color: #ffffff !important; 
                 padding: 0 !important; 
@@ -307,8 +326,7 @@
                 print-color-adjust: exact !important;
             }
 
-            /* लपवण्याच्या गोष्टी */
-            p.subtitle, .upload-card, .btn-group, .stats-grid { 
+            p.subtitle, .upload-card, .btn-group, .stats-grid, .filter-btn-group { 
                 display: none !important; 
             }
 
@@ -329,25 +347,30 @@
                 border: none !important; 
             }
 
+            #areaReportContainer {
+                page-break-before: always !important; 
+                break-before: page !important;
+                margin-top: 20px !important;
+            }
+
             table { 
                 width: 100% !important; 
                 max-width: 100% !important;
                 border-collapse: collapse !important; 
-                table-layout: auto !important; /* कॉलम पानाच्या रुंदीनुसार आपोआप रिसाईझ होतील */
+                table-layout: auto !important; 
             }
 
             th, td { 
-                font-size: 6.5pt !important; /* Portrait मध्ये डेटा न कट होण्यासाठी ऑप्टिमाइझ फॉन्ट */
+                font-size: 6.5pt !important; 
                 padding: 2px 3px !important;  
                 border: 1px solid #000000 !important;
-                white-space: normal !important; /* मजकूर मोठा असल्यास आपोआप पुढच्या लाईनला येईल */
+                white-space: normal !important; 
                 word-wrap: break-word !important;
             }
 
             thead { display: table-header-group; }
             tr { page-break-inside: avoid !important; }
 
-            /* पॉपअप प्रिंटसाठी विशेष नियम */
             body.modal-open .container { display: none !important; }
             body.modal-open .modal {
                 position: absolute !important; left: 0 !important; top: 0 !important;
@@ -403,25 +426,6 @@
         <button class="btn btn-print" id="printBtn" onclick="window.print()">मुख्य रिपोर्ट प्रिंट करा</button>
     </div>
 
-    <!-- Area-wise Summary Table -->
-    <div class="table-container" id="areaReportContainer">
-        <h3 style="color: var(--primary-green); text-align: center; margin: 15px 0;">AERO-wise Summary Report</h3>
-        <table id="areaReportTable">
-            <thead>
-                <tr>
-                    <th>SR. No</th>
-                    <th>AERO / ERO Name</th>
-                    <th>Total Elector</th>
-                    <th>Total EFs Digitized</th>
-                    <th>Total UEF</th>
-                    <th>Pending Digitized</th>
-                    <th>Digitized %</th>
-                </tr>
-            </thead>
-            <tbody id="areaTableBody"></tbody>
-        </table>
-    </div>
-
     <!-- Main Detailed Table -->
     <div class="table-container" id="tableArea">
         <table id="reportTable">
@@ -443,19 +447,46 @@
             <tbody id="tableBody"></tbody>
         </table>
     </div>
+
+    <!-- Area-wise Summary Table -->
+    <div class="table-container" id="areaReportContainer">
+        <h3 style="color: var(--primary-green); text-align: center; margin: 15px 0;">AERO-wise Summary Report</h3>
+        <table id="areaReportTable">
+            <thead>
+                <tr>
+                    <th>SR. No</th>
+                    <th>AERO / ERO Name</th>
+                    <th>Total Elector</th>
+                    <th>Total EFs Digitized</th>
+                    <th>Total UEF</th>
+                    <th>Pending Digitized</th>
+                    <th>Digitized %</th>
+                </tr>
+            </thead>
+            <tbody id="areaTableBody"></tbody>
+        </table>
+    </div>
 </div>
 
-<!-- POPUP MODAL -->
+<!-- POPUP MODAL WITH SORTING BUTTONS -->
 <div id="bloModal" class="modal">
     <div class="modal-content">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <button class="modal-print-btn" onclick="window.print()" style="background-color: var(--primary-green); color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <button class="modal-print-btn" onclick="window.print()" style="background-color: var(--primary-green); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer;">
                 🖨️ पॉपअप रिपोर्ट प्रिंट / PDF
             </button>
+
+            <!-- 🔽 Ascending & Descending Filter Buttons -->
+            <div class="filter-btn-group">
+                <span style="font-weight: bold; font-size: 13px; color: #475569;">Sort By %:</span>
+                <button id="btnDesc" class="filter-btn active" onclick="setBloSortOrder('DESC')">⬇️ High to Low (Descending)</button>
+                <button id="btnAsc" class="filter-btn" onclick="setBloSortOrder('ASC')">⬆️ Low to High (Ascending)</button>
+            </div>
+
             <span class="close-btn" onclick="closeBloModal()">&times;</span>
         </div>
 
-        <h3 style="color: var(--accent-orange); text-align: center; margin: 5px 0 15px 0; font-size: 20px;">
+        <h3 id="bloModalTitle" style="color: var(--accent-orange); text-align: center; margin: 10px 0 10px 0; font-size: 20px;">
             सर्व BLO ची विश्लेषणात्मक यादी (Descending Order By % )
         </h3>
 
@@ -478,7 +509,7 @@
             </table>
         </div>
 
-        <h4 style="margin: 20px 0 8px 0; color: var(--primary-green);">BLO टक्कावारीनुसार गोषवारा (Category-wise Count):</h4>
+        <h4 style="margin: 15px 0 8px 0; color: var(--primary-green);">BLO टक्कावारीनुसार गोषवारा (Category-wise Count):</h4>
         <div class="summary-boxes">
             <div class="summary-box" style="border-top: 4px solid #d32f2f;">
                 <div class="title">Below 60%</div>
@@ -509,17 +540,15 @@
 </div>
 
 <script>
-    // ==========================================
-    // ⚙️ GITHUB CONFIGURATION
-    // ==========================================
     const GITHUB_CONFIG = {
-        username: "YOUR_GITHUB_USERNAME", // तुमचे GitHub Username
-        repo: "YOUR_REPO_NAME",           // तुमच्या Repository चे नाव
-        filePath: "data.json",            // फाईलचे नाव
-        token: "YOUR_PERSONAL_ACCESS_TOKEN" // तुमचे GitHub Personal Access Token
+        username: "YOUR_GITHUB_USERNAME",
+        repo: "YOUR_REPO_NAME",
+        filePath: "data.json",
+        token: "YOUR_PERSONAL_ACCESS_TOKEN"
     };
 
     let globalProcessedData = [];
+    let currentBloSortOrder = 'DESC'; // Default Descending
     const eroHierarchy = ["katkar", "deshpande", "varak", "mandale"];
 
     function getEroRank(eroText) {
@@ -791,15 +820,45 @@
         document.getElementById('printBtn').style.display = 'inline-block';
     }
 
+    /* ---------------------------------------------------- */
+    /* 🔄 POPUP SORTING LOGIC (ASCENDING / DESCENDING)      */
+    /* ---------------------------------------------------- */
+    function setBloSortOrder(order) {
+        currentBloSortOrder = order;
+        
+        // Update active class on buttons
+        if (order === 'DESC') {
+            document.getElementById('btnDesc').classList.add('active');
+            document.getElementById('btnAsc').classList.remove('active');
+            document.getElementById('bloModalTitle').innerText = "सर्व BLO ची विश्लेषणात्मक यादी (Descending Order By % )";
+        } else {
+            document.getElementById('btnAsc').classList.add('active');
+            document.getElementById('btnDesc').classList.remove('active');
+            document.getElementById('bloModalTitle').innerText = "सर्व BLO ची विश्लेषणात्मक यादी (Ascending Order By % )";
+        }
+        
+        renderBloModalData();
+    }
+
     function openBloModal() {
         if (!globalProcessedData || globalProcessedData.length === 0) return;
+        renderBloModalData();
+        document.body.classList.add('modal-open');
+        document.getElementById('bloModal').style.display = 'block';
+    }
 
+    function renderBloModalData() {
         let bloList = globalProcessedData.map(r => {
             let pct = r.elector > 0 ? (((r.digi + r.uef) / r.elector) * 100) : 0;
             return { ...r, pctVal: pct, pctFormatted: pct.toFixed(2) };
         });
 
-        bloList.sort((a, b) => b.pctVal - a.pctVal);
+        // Sorting Logic Based on Active Selection
+        if (currentBloSortOrder === 'ASC') {
+            bloList.sort((a, b) => a.pctVal - b.pctVal);
+        } else {
+            bloList.sort((a, b) => b.pctVal - a.pctVal);
+        }
 
         const modalTbody = document.getElementById('bloModalTableBody');
         modalTbody.innerHTML = '';
@@ -855,9 +914,6 @@
         document.getElementById('count81to90').innerText = c81to90;
         document.getElementById('count91to99').innerText = c91to99;
         document.getElementById('count100').innerText = c100;
-
-        document.body.classList.add('modal-open');
-        document.getElementById('bloModal').style.display = 'block';
     }
 
     function closeBloModal() {
@@ -960,9 +1016,6 @@
         XLSX.writeFile(workbook, "Voter_Digitization_Report.xlsx");
     }
 
-    // ==========================================
-    // ☁️ GITHUB SAVE FUNCTION (API INTEGRATION)
-    // ==========================================
     async function saveDataToGitHub() {
         if (!globalProcessedData || globalProcessedData.length === 0) {
             alert("सेव्ह करण्यासाठी डेटा उपलब्ध नाही!");
