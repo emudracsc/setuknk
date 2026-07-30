@@ -437,8 +437,8 @@
                     <input type="text" id="totalArea" required placeholder="उदा. २.५० हे.र.">
                 </div>
                 <div class="input-group">
-                    <label>दिनांक (DD/MM/YYYY)</label>
-                    <input type="text" id="formDate" required placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDateInput(this)">
+                    <label>दिनांक (कॅलेंडर मधून निवडा)</label>
+                    <input type="date" id="formDate" required>
                 </div>
                 <div class="input-group">
                     <label>मोबाईल क्रमांक</label>
@@ -494,7 +494,7 @@
                                 <td><input type="text" class="c-area" required placeholder="क्षेत्र"></td>
                                 <td><input type="text" class="c-crop" required placeholder="पीक"></td>
                                 <td><input type="text" class="c-parea" required placeholder="पेरलेले"></td>
-                                <td><input type="text" class="c-date" required placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDateInput(this)"></td>
+                                <td><input type="date" class="c-date" required></td>
                                 <td><button type="button" class="btn-danger-sm" onclick="removeRow(this)">✕</button></td>
                             </tr>
                         </tbody>
@@ -588,16 +588,14 @@
 </div>
 
 <script>
-    // ऑटो-फॉरमॅट: युझरने नंबर टाईप केल्यास आपोआप DD/MM/YYYY फॉरमॅट तयार होतो
-    function formatDateInput(input) {
-        var v = input.value.replace(/\D/g, '');
-        if (v.length >= 5) {
-            input.value = v.slice(0, 2) + '/' + v.slice(2, 4) + '/' + v.slice(4, 8);
-        } else if (v.length >= 3) {
-            input.value = v.slice(0, 2) + '/' + v.slice(2);
-        } else {
-            input.value = v;
+    // YYYY-MM-DD फॉरमॅटचे DD/MM/YYYY मध्ये रूपांतर करणारा फंक्शन
+    function formatDateToDisplay(dateStr) {
+        if (!dateStr) return '';
+        var parts = dateStr.split('-');
+        if (parts.length === 3) {
+            return parts[2] + '/' + parts[1] + '/' + parts[0];
         }
+        return dateStr;
     }
 
     function addCropRow() {
@@ -612,7 +610,7 @@
             <td><input type="text" class="c-area" required placeholder="क्षेत्र"></td>
             <td><input type="text" class="c-crop" required placeholder="पीक"></td>
             <td><input type="text" class="c-parea" required placeholder="पेरलेले"></td>
-            <td><input type="text" class="c-date" required placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDateInput(this)"></td>
+            <td><input type="date" class="c-date" required></td>
             <td><button type="button" class="btn-danger-sm" onclick="removeRow(this)">✕</button></td>
         `;
         tbody.appendChild(tr);
@@ -646,7 +644,7 @@
         var district = document.getElementById('district').value.trim();
         var mouje = document.getElementById('mouje').value.trim();
         var totalArea = document.getElementById('totalArea').value.trim();
-        var formDate = document.getElementById('formDate').value.trim();
+        var formDateRaw = document.getElementById('formDate').value;
         var mobile = document.getElementById('mobileNo').value.trim();
 
         var farmerId = document.getElementById('farmerId').value.trim();
@@ -655,7 +653,7 @@
         var bankBranch = document.getElementById('bankBranch').value.trim();
         var ifscCode = document.getElementById('ifscCode').value.trim();
 
-        if (!name || !village || !taluka || !district || !mouje || !totalArea || !formDate || !mobile) {
+        if (!name || !village || !taluka || !district || !mouje || !totalArea || !formDateRaw || !mobile) {
             alert('कृपया सर्व आवश्यक शेतकरी माहिती भरा.');
             return;
         }
@@ -672,6 +670,8 @@
             return;
         }
 
+        var displayFormDate = formatDateToDisplay(formDateRaw);
+
         document.getElementById('outName').innerText = name;
         document.getElementById('outName2').innerText = name;
         document.getElementById('outVillage').innerText = village;
@@ -679,7 +679,7 @@
         document.getElementById('outDistrict').innerText = district;
         document.getElementById('outMouje').innerText = mouje;
         document.getElementById('outTotalArea').innerText = totalArea;
-        document.getElementById('outDate').innerText = formDate;
+        document.getElementById('outDate').innerText = displayFormDate;
         document.getElementById('outPlace').innerText = village + ', ' + taluka;
         document.getElementById('outMobile2').innerText = mobile;
 
@@ -699,7 +699,8 @@
             var area = r.querySelector('.c-area').value;
             var crop = r.querySelector('.c-crop').value;
             var parea = r.querySelector('.c-parea').value;
-            var dateVal = r.querySelector('.c-date').value;
+            var dateValRaw = r.querySelector('.c-date').value;
+            var displayCropDate = formatDateToDisplay(dateValRaw);
 
             var tr = document.createElement('tr');
             tr.innerHTML = `
@@ -710,7 +711,7 @@
                 <td>${area}</td>
                 <td>${crop}</td>
                 <td>${parea}</td>
-                <td>${dateVal}</td>
+                <td>${displayCropDate}</td>
             `;
             tbody.appendChild(tr);
         });
