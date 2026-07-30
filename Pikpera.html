@@ -21,7 +21,7 @@
 
         body {
             font-family: 'Mukta', Arial, sans-serif;
-            font-size: 14pt; /* मुख्य मजकुरासाठी 14pt फॉन्ट */
+            font-size: 14pt;
             color: #1e2a3e;
             line-height: 1.3;
             background: #eef2f7;
@@ -189,7 +189,6 @@
             align-items: center;
         }
 
-        /* प्रिंट करण्यायोग्य शीट (14pt फॉन्ट आणि एका पानावर फिट) */
         .printable-sheet {
             display: none;
             background: white;
@@ -210,7 +209,7 @@
         .header h2 {
             margin: 0 0 1px 0;
             color: #135544;
-            font-size: 18pt; /* शीर्षकासाठी मोठा फॉन्ट */
+            font-size: 18pt;
             font-weight: 700;
         }
 
@@ -235,7 +234,7 @@
         .form-section {
             margin-bottom: 4px;
             text-align: justify;
-            font-size: 14pt; /* मुख्य मजकूर 14pt */
+            font-size: 14pt;
         }
 
         .form-section strong {
@@ -253,7 +252,7 @@
             width: 100%;
             border-collapse: collapse;
             margin: 4px 0;
-            font-size: 12pt; /* तक्त्याचा फॉन्ट */
+            font-size: 12pt;
         }
 
         table.output-table th {
@@ -276,7 +275,7 @@
 
         .declaration {
             margin: 4px 0;
-            font-size: 12pt; /* घोषणापत्राचा फॉन्ट 12pt (एका पानावर फिट बसण्यासाठी) */
+            font-size: 12pt;
             text-align: justify;
         }
 
@@ -326,10 +325,9 @@
             color: #1f3a4b;
         }
 
-        .footer-info .inline-highlight {
+        .inline-highlight {
             border-bottom: 1px dotted #1f6e5c;
             display: inline-block;
-            min-width: 80px;
             font-weight: 600;
             text-align: center;
             color: #135544;
@@ -411,6 +409,28 @@
                 <div class="input-group">
                     <label>मोबाईल क्रमांक</label>
                     <input type="tel" id="mobileNo" required placeholder="९८७६५४३२१०" maxlength="10">
+                </div>
+
+                <!-- नवीन जोडलेले बॉक्सेस -->
+                <div class="input-group">
+                    <label>फार्मर आयडी (Farmer ID)</label>
+                    <input type="text" id="farmerId" placeholder="उदा. MH12345678">
+                </div>
+                <div class="input-group">
+                    <label>बँकेचे नाव</label>
+                    <input type="text" id="bankName" placeholder="उदा. स्टेट बँक ऑफ इंडिया">
+                </div>
+                <div class="input-group">
+                    <label>खाते क्रमांक</label>
+                    <input type="text" id="accountNo" placeholder="उदा. 12345678901">
+                </div>
+                <div class="input-group">
+                    <label>शाखा (Branch)</label>
+                    <input type="text" id="bankBranch" placeholder="उदा. बारामती">
+                </div>
+                <div class="input-group">
+                    <label>IFSC कोड</label>
+                    <input type="text" id="ifscCode" placeholder="उदा. SBIN0001234">
                 </div>
             </div>
 
@@ -505,14 +525,14 @@
         </div>
 
         <div style="margin: 4px 0 2px 0; padding: 0 2px; font-size:12pt;">
-            <span style="display:inline-block; min-width:110px;"><strong>फार्मर आयडी</strong> : ______________</span>
+            <span style="display:inline-block; min-width:110px;"><strong>फार्मर आयडी</strong> : <span id="outFarmerId" class="inline-highlight" style="min-width:110px;">&nbsp;</span></span>
             <span style="display:inline-block; min-width:130px; margin-left:14px;"><strong>मोबाईल</strong> : <span id="outMobile2" class="inline-highlight" style="min-width:110px;">&nbsp;</span></span>
         </div>
         <div style="margin: 2px 0 4px 0; padding: 0 2px; font-size:12pt;">
-            <span style="display:inline-block; min-width:120px;"><strong>बँकेचे नाव</strong> : ______________</span>
-            <span style="display:inline-block; min-width:120px; margin-left:4px;"><strong>खाते क्र.</strong> : ______________</span>
-            <span style="display:inline-block; min-width:100px; margin-left:4px;"><strong>शाखा</strong> : ______________</span>
-            <span style="display:inline-block; min-width:90px; margin-left:4px;"><strong>IFSC</strong> : ______________</span>
+            <span style="display:inline-block; min-width:120px;"><strong>बँकेचे नाव</strong> : <span id="outBankName" class="inline-highlight" style="min-width:100px;">&nbsp;</span></span>
+            <span style="display:inline-block; min-width:120px; margin-left:4px;"><strong>खाते क्र.</strong> : <span id="outAccountNo" class="inline-highlight" style="min-width:100px;">&nbsp;</span></span>
+            <span style="display:inline-block; min-width:100px; margin-left:4px;"><strong>शाखा</strong> : <span id="outBankBranch" class="inline-highlight" style="min-width:80px;">&nbsp;</span></span>
+            <span style="display:inline-block; min-width:90px; margin-left:4px;"><strong>IFSC</strong> : <span id="outIfscCode" class="inline-highlight" style="min-width:80px;">&nbsp;</span></span>
         </div>
 
         <div class="footer-info">
@@ -592,8 +612,15 @@
         var formDate = document.getElementById('formDate').value;
         var mobile = document.getElementById('mobileNo').value.trim();
 
+        // बँक व आयडी माहिती
+        var farmerId = document.getElementById('farmerId').value.trim();
+        var bankName = document.getElementById('bankName').value.trim();
+        var accountNo = document.getElementById('accountNo').value.trim();
+        var bankBranch = document.getElementById('bankBranch').value.trim();
+        var ifscCode = document.getElementById('ifscCode').value.trim();
+
         if (!name || !village || !taluka || !district || !mouje || !totalArea || !formDate || !mobile) {
-            alert('कृपया सर्व शेतकरी माहिती भरा.');
+            alert('कृपया सर्व आवश्यक शेतकरी माहिती भरा.');
             return;
         }
 
@@ -621,6 +648,13 @@
         document.getElementById('outDate').innerText = displayDate;
         document.getElementById('outPlace').innerText = village + ', ' + taluka;
         document.getElementById('outMobile2').innerText = mobile;
+
+        // नवीन डेटा प्रिंट शीटवर मॅप करणे
+        document.getElementById('outFarmerId').innerText = farmerId || '________';
+        document.getElementById('outBankName').innerText = bankName || '________';
+        document.getElementById('outAccountNo').innerText = accountNo || '________';
+        document.getElementById('outBankBranch').innerText = bankBranch || '________';
+        document.getElementById('outIfscCode').innerText = ifscCode || '________';
 
         var tbody = document.getElementById('outputTableBody');
         tbody.innerHTML = '';
